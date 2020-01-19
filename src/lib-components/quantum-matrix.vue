@@ -176,8 +176,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { range } from './utils'
-import { colorComplex } from './colors'
+import { range } from '@/lib-components/utils'
+import { colorComplex } from '@/lib-components/colors'
 
 interface IMatrixElement {
   i: number

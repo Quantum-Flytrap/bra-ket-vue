@@ -76,8 +76,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Complex, Photons, VectorEntry } from 'quantum-tensors'
-import { range } from './utils'
-import { hslToHex, TAU } from './colors'
+import { range } from '@/lib-components/utils'
+import { hslToHex, TAU } from '@/lib-components/colors'
 
 // from interfaces.ts
 interface IParticleCoord {
