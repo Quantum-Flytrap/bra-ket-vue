@@ -1,8 +1,11 @@
 {
   "name": "bra-ket-vue",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Interactive display of quantum states and operations, Vue components.",
-  "contributors": ["Piotr Migdał", "Klem Jankiewicz"],
+  "contributors": [
+    "Piotr Migdał",
+    "Klem Jankiewicz"
+  ],
   "license": "MIT",
   "repository": "https://github.com/Quantum-Game/bra-ket-vue",
   "main": "dist/bra-ket-vue.ssr.js",
