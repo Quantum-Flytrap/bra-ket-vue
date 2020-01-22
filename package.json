@@ -28,7 +28,8 @@
     "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "quantum-tensors": "^0.2.5"
+    "quantum-tensors": "^0.2.5",
+    "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -61,7 +62,6 @@
     "sass-loader": "^8.0.2",
     "typescript": "^3.7.3",
     "vue": "^2.6.10",
-    "vue-property-decorator": "^8.3.0",
     "vue-template-compiler": "^2.6.10"
   },
   "peerDependencies": {
