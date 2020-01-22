@@ -175,9 +175,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { range } from '@/lib-components/utils'
-import { colorComplex } from '@/lib-components/colors'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { range } from '@/lib-components/utils';
+import { colorComplex } from '@/lib-components/colors';
 
 interface IMatrixElement {
   i: number
@@ -189,55 +189,60 @@ interface IMatrixElement {
 @Component
 export default class QuanutmMatrix extends Vue {
   @Prop({ default: () => 40 }) private size!: number
+
   @Prop({ default: () => [] }) private coordNamesIn!: string[][]
+
   @Prop({ default: () => [] }) private coordNamesOut!: string[][]
-  //@Prop({ default: () => [] }) private dimensionNames!: string[]
+
+  // @Prop({ default: () => [] }) private dimensionNames!: string[]
   @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
 
   selectedColumn = -1
-  selectedEntry: IMatrixElement = { i: -1, j: -1, re: 0, im: 0 }
+
+  selectedEntry: IMatrixElement = {
+    i: -1, j: -1, re: 0, im: 0,
+  }
 
   arcs = range(8).map((i) => {
-    const r = this.rScale(1)
-    const alpha = (2 * Math.PI * i) / 8
-    const beta = Math.PI / 8
+    const r = this.rScale(1);
+    const alpha = (2 * Math.PI * i) / 8;
+    const beta = Math.PI / 8;
     return {
       x0: r * Math.cos(alpha - beta),
       y0: r * Math.sin(alpha - beta),
       x1: r * Math.cos(alpha + beta),
       y1: r * Math.sin(alpha + beta),
       re: Math.cos(alpha),
-      im: Math.sin(alpha)
-    }
+      im: Math.sin(alpha),
+    };
   })
 
   get selectedNonzero(): boolean {
-    return this.selectedEntry.re !== 0 || this.selectedEntry.im !== 0
+    return this.selectedEntry.re !== 0 || this.selectedEntry.im !== 0;
   }
 
   get selectedEntryPhaseId(): number {
-    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re)
-    return (Math.round((8 * phi) / (2 * Math.PI)) + 8) % 8
+    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re);
+    return (Math.round((8 * phi) / (2 * Math.PI)) + 8) % 8;
   }
 
   get selectedPhaseTau(): number {
-    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re)
-    return phi / (2 * Math.PI)
+    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re);
+    return phi / (2 * Math.PI);
   }
 
   get selectedInLabelOne(): string {
     if (this.selectedEntry.i < 0) {
-      return ''
-    } else {
-      return this.labelsIn[this.selectedEntry.i][0]
+      return '';
     }
+    return this.labelsIn[this.selectedEntry.i][0];
   }
 
   get selectedOutputLabels(): { ones: string[]; indices: number[] } {
-    const js = this.matrixElements.filter((d) => d.i === this.selectedEntry.i)
-    const indices = js.map((d) => d.j)
-    const ones = indices.map((j) => this.labelsOut[j][0])
-    return { ones, indices }
+    const js = this.matrixElements.filter((d) => d.i === this.selectedEntry.i);
+    const indices = js.map((d) => d.j);
+    const ones = indices.map((j) => this.labelsOut[j][0]);
+    return { ones, indices };
   }
 
   /**
@@ -245,49 +250,51 @@ export default class QuanutmMatrix extends Vue {
    * Here I do only for 2 dims.
    */
   get labelsIn(): string[] {
-    const [names1, names2] = this.coordNamesIn
-    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`))
+    const [names1, names2] = this.coordNamesIn;
+    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`));
   }
 
   /**
    * @see {@link labelsIn}
    */
   get labelsOut(): string[] {
-    const [names1, names2] = this.coordNamesOut
-    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`))
+    const [names1, names2] = this.coordNamesOut;
+    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`));
   }
 
   get columnSize(): number {
-    return this.size * this.labelsIn.length
+    return this.size * this.labelsIn.length;
   }
 
   get rowSize(): number {
-    return this.size * this.labelsOut.length
+    return this.size * this.labelsOut.length;
   }
 
   get allTileLocations(): { i: number; j: number }[] {
-    return this.labelsOut.flatMap((_, j) => this.labelsIn.map((_, i) => ({ i, j, re: 0, im: 0 })))
+    return this.labelsOut.flatMap((_, j) => this.labelsIn.map((_, i) => ({
+      i, j, re: 0, im: 0,
+    })));
   }
 
   scale(i: number): number {
-    return i * this.size
+    return i * this.size;
   }
 
   generateColor(re: number, im: number): string {
-    return colorComplex(re, im)
+    return colorComplex(re, im);
   }
 
   rScale(re: number, im = 0): number {
-    return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2)
+    return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2);
   }
 
   /**
    * @todo Show directly on the legend.
    */
   tileMouseOver(tile: IMatrixElement): void {
-    this.selectedColumn = tile.i
-    this.selectedEntry = tile
-    this.$emit('columnMouseover', tile.i)
+    this.selectedColumn = tile.i;
+    this.selectedEntry = tile;
+    this.$emit('columnMouseover', tile.i);
   }
 
   /**
@@ -295,8 +302,8 @@ export default class QuanutmMatrix extends Vue {
    * (After using Operator rather than passed parameteres.)
    */
   swapDimensions(): void {
-    this.selectedColumn = -1 // later we reassign
-    this.$emit('swapDimensions')
+    this.selectedColumn = -1; // later we reassign
+    this.$emit('swapDimensions');
   }
 }
 </script>

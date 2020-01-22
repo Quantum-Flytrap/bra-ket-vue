@@ -74,10 +74,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Complex, Photons, VectorEntry } from 'quantum-tensors'
-import { range } from '@/lib-components/utils'
-import { hslToHex, TAU } from '@/lib-components/colors'
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Complex, Photons, VectorEntry } from 'quantum-tensors';
+import { range } from '@/lib-components/utils';
+import { hslToHex, TAU } from '@/lib-components/colors';
 
 // from interfaces.ts
 interface IParticleCoord {
@@ -96,85 +96,90 @@ interface IKetComponent {
 
 // from QuantumFrame.ts
 const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] => {
-    const ns = range(photons.nPhotons)
-    return photons.vector.entries
-        .map(
-        (entry: VectorEntry): IKetComponent => {
-            const particleCoords = ns.map(
-            (i: number): IParticleCoord => {
-                const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4)
-                return { kind: 'photon', x, y, dir, pol }
-            }
-            )
+  const ns = range(photons.nPhotons);
+  return photons.vector.entries
+    .map(
+      (entry: VectorEntry): IKetComponent => {
+        const particleCoords = ns.map(
+          (i: number): IParticleCoord => {
+            const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
             return {
-            amplitude: entry.value,
-            particleCoords
-            }
-        }
-        )
-        .filter(
-        (ketComponent: IKetComponent): boolean => ketComponent.amplitude.r ** 2 > probThreshold
-        )
-}
+              kind: 'photon', x, y, dir, pol,
+            };
+          },
+        );
+        return {
+          amplitude: entry.value,
+          particleCoords,
+        };
+      },
+    )
+    .filter(
+      (ketComponent: IKetComponent): boolean => ketComponent.amplitude.r ** 2 > probThreshold,
+    );
+};
 
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class KetViewer extends Vue {
   // TODO: Currently kinda ugly
   // TODO: Move logic to engine Helpers
   @Prop() readonly photons!: Photons
-  //@Prop() readonly grid!: Grid
+
+  // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
   ketHidden = true
+
   styles = ['polar', 'cartesian', 'color']
+
   selectedStyle = 'polar'
 
   toggleKets(): void {
-    this.ketHidden = !this.ketHidden
+    this.ketHidden = !this.ketHidden;
   }
 
   toPercent(x: number, precision = 1): string {
-    return (100 * x).toFixed(precision)
+    return (100 * x).toFixed(precision);
   }
 
-//   elementName(x: number, y: number): string {
-//     return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name
-//   }
+  //   elementName(x: number, y: number): string {
+  //     return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name
+  //   }
 
   renderComplexPolar(z: Complex, precision = 2): string {
-    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`
+    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
   }
 
   renderComplexCartesian(z: Complex, precision = 2): string {
-    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`
+    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
   }
 
   discScale(r: number): number {
-    return 8 * r
+    return 8 * r;
   }
 
   complexToColor(z: Complex): string {
-    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360
-    return hslToHex(angleInDegrees, 100, 50)
+    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
+    return hslToHex(angleInDegrees, 100, 50);
   }
 
   renderDir(dir: number): string {
-    return ['⤑', '⇡', '⇠', '⇣'][dir]
+    return ['⤑', '⇡', '⇠', '⇣'][dir];
   }
 
   renderPol(pol: number): string {
-    return ['H', 'V'][pol]
+    return ['H', 'V'][pol];
   }
 
-//   get absorptions(): IAbsorption[] {
-//     return this.frame.absorptions
-//   }
+  //   get absorptions(): IAbsorption[] {
+  //     return this.frame.absorptions
+  //   }
 
   get ketComponents(): IKetComponent[] {
-    return ketComponents(this.photons)
+    return ketComponents(this.photons);
   }
 }
 </script>
