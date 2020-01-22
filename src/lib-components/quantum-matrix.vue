@@ -271,7 +271,7 @@ export default class QuanutmMatrix extends Vue {
   }
 
   get allTileLocations(): { i: number; j: number }[] {
-    return this.labelsOut.flatMap((_, j) => this.labelsIn.map((_, i) => ({
+    return this.labelsOut.flatMap((_val1, j) => this.labelsIn.map((_val2, i) => ({
       i, j, re: 0, im: 0,
     })));
   }
