@@ -1,183 +1,205 @@
 <template>
-  <svg class="quantum-matrix" :width="columnSize + 3.5 * size" :height="rowSize + 6.5 * size">
-    <g class="labels-in" :transform="`translate(${3 * size}, ${1 * size})`">
-      <text class="label" :x="rowSize / 2" :y="scale(-0.25)">
-        Input
-      </text>
-      <text
-        v-for="(coord, i) in coordNamesIn[0]"
-        :key="`label-in-1-${coord}`"
-        class="label-in"
-        :class="{ 'label-selected': coord === selectedInLabelOne }"
-        :x="scale(coordNamesIn[1].length * (i + 0.5))"
-        :y="scale(0.5)"
-      >
-        {{ coord }}
-      </text>
-      <rect
-        v-for="(label, i) in labelsIn"
-        :key="`menu-tile-out-2-${i}`"
-        class="menu-tile"
-        :x="scale(i)"
-        :y="scale(1)"
-        :width="size"
-        :height="size"
-      />
-      <text
-        v-for="(label, i) in labelsIn"
-        :key="`label-in-2-${label}`"
-        class="label-in"
-        :class="{ 'label-selected': i === selectedEntry.i }"
-        :x="scale(i + 0.5)"
-        :y="scale(1.5)"
-      >
-        {{ label[1] }}
-      </text>
-      <rect
-        v-for="(coord, i) in coordNamesIn[0]"
-        :key="`menu-tile-out-1-${i}`"
-        class="menu-tile-head"
-        :x="scale(coordNamesIn[1].length * i)"
-        :y="scale(0)"
-        :width="coordNamesIn[1].length * size"
-        :height="2 * size"
-      />
-    </g>
-    <g class="labels-out" :transform="`translate(${1 * size}, ${3 * size})`">
-      <text class="label" :transform="`translate(${scale(-0.25)},${columnSize / 2}) rotate(270)`">
-        Output
-      </text>
-      <text
-        v-for="(coord, j) in coordNamesOut[0]"
-        :key="`label-out-1-${coord}`"
-        class="label-out"
-        :class="{ 'label-selected': selectedOutputLabels.ones.indexOf(coord) >= 0 }"
-        :x="scale(0.5)"
-        :y="scale(coordNamesOut[1].length * (j + 0.5))"
-      >
-        {{ coord }}
-      </text>
-      <rect
-        v-for="(label, j) in labelsOut"
-        :key="`menu-tile-in-2-${j}`"
-        class="menu-tile"
-        :x="scale(1)"
-        :y="scale(j)"
-        :width="size"
-        :height="size"
-      />
-      <text
-        v-for="(label, j) in labelsOut"
-        :key="`label-out-2-${label}`"
-        class="label-out"
-        :class="{ 'label-selected': selectedOutputLabels.indices.indexOf(j) >= 0 }"
-        :x="scale(1.5)"
-        :y="scale(j + 0.5)"
-      >
-        {{ label[1] }}
-      </text>
-      <rect
-        v-for="(coord, j) in coordNamesOut[0]"
-        :key="`menu-tile-in-1-${j}`"
-        class="menu-tile-head"
-        :x="scale(0)"
-        :y="scale(coordNamesOut[1].length * j)"
-        :width="2 * size"
-        :height="coordNamesOut[1].length * size"
-      />
-      <g class="dimension-labels" @click="swapDimensions()">
-        <text
-          v-for="(dimensionName, j) in dimensionNames"
-          :key="`label-${dimensionName}`"
-          :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
-          class="dimension-label"
-        >
-          {{ dimensionName }}
-        </text>
-        <text
-          :transform="`translate(${scale(1)},${columnSize + scale(1.25)})`"
-          class="dimension-swap"
-        >
-          ⇄
-        </text>
-      </g>
-    </g>
-
-    <g :transform="`translate(${3 * size}, ${3 * size})`">
-      <rect
-        v-for="d in allTileLocations"
-        :key="`entry-tile-${d.i}-${d.j}`"
-        class="entry-tile"
-        :x="scale(d.i)"
-        :y="scale(d.j)"
-        :width="size"
-        :height="size"
-        @mouseover="tileMouseOver(d)"
-      />
-      <rect class="entry-boarder" :x="0" :y="0" :width="columnSize" :height="rowSize" />
-      <circle
-        v-for="d in matrixElements"
-        :key="`circle-${d.i}-${d.j}`"
-        class="tile-value"
-        :cx="scale(d.i + 0.5)"
-        :cy="scale(d.j + 0.5)"
-        :r="rScale(d.re, d.im)"
-        :style="{ fill: generateColor(d.re, d.im) }"
-        @mouseover="tileMouseOver(d)"
-      />
-      <rect
-        v-if="selectedColumn > -1"
-        class="selected-column"
-        :x="scale(selectedColumn)"
-        :y="0"
-        :width="size"
-        :height="columnSize"
-      />
-    </g>
-    <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
-      <g>
-        <text class="label" :x="0" :y="0">
-          Amplitude
-        </text>
-        <circle class="radius-reference" :cx="scale(0)" :cy="scale(1)" :r="rScale(1)" />
-        <circle
-          class="radius-value"
-          :cx="scale(0)"
-          :cy="scale(1)"
-          :r="selectedNonzero ? rScale(selectedEntry.re, selectedEntry.im) : rScale(1)"
-        />
-        <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
-          {{ Math.sqrt(selectedEntry.re ** 2 + selectedEntry.im ** 2 || 0).toFixed(3) }}
-        </text>
-      </g>
-      <g :transform="`translate(${scale(3)}, 0)`">
-        <text class="label" :x="0" :y="0">
-          Phase
-        </text>
-        <g :transform="`translate(0, ${scale(1)})`">
-          <path
-            v-for="(a, i) in arcs"
-            :key="`arc-${i}`"
-            class="phase-arc"
-            :style="{
-              fill: generateColor(a.re, a.im),
-              opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
-            }"
-            :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
+  <div class="matrix-viewer">
+    <div>
+      <svg class="quantum-matrix" :width="columnSize + 3.5 * size" :height="rowSize + 6.5 * size">
+        <g class="labels-in" :transform="`translate(${3 * size}, ${1 * size})`">
+          <text class="label" :x="rowSize / 2" :y="scale(-0.4)">
+            Input
+          </text>
+          <text
+            v-for="(coord, i) in coordNamesIn[0]"
+            :key="`label-in-1-${coord}`"
+            class="label-in"
+            :class="{ 'label-selected': coord === selectedInLabelOne }"
+            :x="scale(coordNamesIn[1].length * (i + 0.5))"
+            :y="scale(0.5)"
+          >
+            {{ coord }}
+          </text>
+          <rect
+            v-for="(label, i) in labelsIn"
+            :key="`menu-tile-out-2-${i}`"
+            class="menu-tile"
+            :x="scale(i)"
+            :y="scale(1)"
+            :width="size"
+            :height="size"
+          />
+          <text
+            v-for="(label, i) in labelsIn"
+            :key="`label-in-2-${label}`"
+            class="label-in"
+            :class="{ 'label-selected': i === selectedEntry.i }"
+            :x="scale(i + 0.5)"
+            :y="scale(1.5)"
+          >
+            {{ label[1] }}
+          </text>
+          <rect
+            v-for="(coord, i) in coordNamesIn[0]"
+            :key="`menu-tile-out-1-${i}`"
+            class="menu-tile-head"
+            :x="scale(coordNamesIn[1].length * i)"
+            :y="scale(0)"
+            :width="coordNamesIn[1].length * size"
+            :height="2 * size"
           />
         </g>
-        <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
-          {{ selectedPhaseTau.toFixed(2) }} 𝛕
-        </text>
-      </g>
-    </g>
-  </svg>
+        <g class="labels-out" :transform="`translate(${1 * size}, ${3 * size})`">
+        <text class="label" :transform="`translate(${scale(-0.4)},${columnSize / 2}) rotate(270)`">
+            Output
+          </text>
+          <text
+            v-for="(coord, j) in coordNamesOut[0]"
+            :key="`label-out-1-${coord}`"
+            class="label-out"
+            :class="{ 'label-selected': selectedOutputLabels.ones.indexOf(coord) >= 0 }"
+            :x="scale(0.5)"
+            :y="scale(coordNamesOut[1].length * (j + 0.5))"
+          >
+            {{ coord }}
+          </text>
+          <rect
+            v-for="(label, j) in labelsOut"
+            :key="`menu-tile-in-2-${j}`"
+            class="menu-tile"
+            :x="scale(1)"
+            :y="scale(j)"
+            :width="size"
+            :height="size"
+          />
+          <text
+            v-for="(label, j) in labelsOut"
+            :key="`label-out-2-${label}`"
+            class="label-out"
+            :class="{ 'label-selected': selectedOutputLabels.indices.indexOf(j) >= 0 }"
+            :x="scale(1.5)"
+            :y="scale(j + 0.5)"
+          >
+            {{ label[1] }}
+          </text>
+          <rect
+            v-for="(coord, j) in coordNamesOut[0]"
+            :key="`menu-tile-in-1-${j}`"
+            class="menu-tile-head"
+            :x="scale(0)"
+            :y="scale(coordNamesOut[1].length * j)"
+            :width="2 * size"
+            :height="coordNamesOut[1].length * size"
+          />
+          <g class="dimension-labels" @click="swapDimensions()">
+            <text
+              v-for="(dimensionName, j) in dimensionNames"
+              :key="`label-${dimensionName}`"
+              :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
+              class="dimension-label"
+            >
+              {{ dimensionName }}
+            </text>
+            <text
+              :transform="`translate(${scale(1)},${columnSize + scale(1.25)})`"
+              class="dimension-swap"
+            >
+              ⇄
+            </text>
+          </g>
+        </g>
+
+        <g :transform="`translate(${3 * size}, ${3 * size})`">
+          <rect
+            v-for="d in allTileLocations"
+            :key="`entry-tile-${d.i}-${d.j}`"
+            class="entry-tile"
+            :x="scale(d.i)"
+            :y="scale(d.j)"
+            :width="size"
+            :height="size"
+            @mouseover="tileMouseOver(d)"
+          />
+          <rect class="entry-boarder" :x="0" :y="0" :width="columnSize" :height="rowSize" />
+          <circle
+            v-for="d in matrixElements"
+            :key="`circle-${d.i}-${d.j}`"
+            class="tile-value"
+            :cx="scale(d.i + 0.5)"
+            :cy="scale(d.j + 0.5)"
+            :r="rScale(d.re, d.im)"
+            :style="{ fill: generateColor(d.re, d.im) }"
+            @mouseover="tileMouseOver(d)"
+          />
+          <rect
+            v-if="selectedColumn > -1"
+            class="selected-column"
+            :x="scale(selectedColumn)"
+            :y="0"
+            :width="size"
+            :height="columnSize"
+          />
+        </g>
+        <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
+          <g>
+            <text class="label" :x="0" :y="0">
+              Amplitude
+            </text>
+            <circle class="radius-reference" :cx="scale(0)" :cy="scale(1)" :r="rScale(1)" />
+            <circle
+              class="radius-value"
+              :cx="scale(0)"
+              :cy="scale(1)"
+              :r="selectedNonzero ? rScale(selectedEntry.re, selectedEntry.im) : rScale(1)"
+            />
+            <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+              {{ Math.sqrt(selectedEntry.re ** 2 + selectedEntry.im ** 2 || 0).toFixed(3) }}
+            </text>
+          </g>
+          <g :transform="`translate(${scale(3)}, 0)`">
+            <text class="label" :x="0" :y="0">
+              Phase
+            </text>
+            <g :transform="`translate(0, ${scale(1)})`">
+              <path
+                v-for="(a, i) in arcs"
+                :key="`arc-${i}`"
+                class="phase-arc"
+                :style="{
+                  fill: generateColor(a.re, a.im),
+                  opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
+                }"
+                :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
+              />
+            </g>
+            <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+              {{ selectedPhaseTau.toFixed(2) }} 𝛕
+            </text>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="matrix-legend">
+        <viewer-button>⇅</viewer-button>
+      </div>
+      <div class="matrix-legend">
+        <div class="legend-text">base change</div>
+        <div>
+          <viewer-button type=icon>→  ↑</viewer-button>
+          <viewer-button type=icon>↖  ↗</viewer-button>
+          <viewer-button type=icon>↺  ↻</viewer-button>
+        </div>
+      </div>
+      <div class="matrix-legend" >
+        <div class="legend-text">amplitude</div>
+        <div class="legend-text">phase</div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { range } from '@/lib-components/utils';
 import { colorComplex } from '@/lib-components/colors';
+import ViewerButton from '@/lib-components/viewer-button.vue';
 
 interface IMatrixElement {
   i: number
@@ -186,7 +208,12 @@ interface IMatrixElement {
   im: number
 }
 
-@Component
+@Component({
+  components: {
+    ViewerButton,
+  },
+})
+
 export default class QuanutmMatrix extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
@@ -309,18 +336,34 @@ export default class QuanutmMatrix extends Vue {
 </script>
 
 <style scoped lang="scss">
+.matrix-viewer {
+  display: flex;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+.matrix-legend {
+  margin-top: 30px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  width: 300px;
+}
+.legend-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  font-weight: 300;
+  padding-bottom: 10px;
+}
 .quantum-matrix {
   display: inline-block;
 }
-
 .label-in,
 .label-out {
   font-size: 16px;
   dominant-baseline: central;
   text-anchor: middle;
-  fill: #5c00d3;
+  fill: white;
   cursor: default;
-  font-weight: 900;
+  font-weight: 300;
 }
 
 .label-in.label-selected,
@@ -338,7 +381,7 @@ export default class QuanutmMatrix extends Vue {
 }
 
 .dimension-swap {
-  font-size: 12px;
+  font-size: 18px;
   text-anchor: middle;
   dominant-baseline: central;
   fill: white;
@@ -349,29 +392,30 @@ export default class QuanutmMatrix extends Vue {
 .label {
   font-size: 12px;
   text-anchor: middle;
-  fill: white;
+  fill: rgba(255, 255, 255, 0.5);
   cursor: default;
   text-transform: uppercase;
+  font-weight: 300;
 }
 
 .selected-column {
-  fill: none;
+  fill: rgba(255, 255, 255, 0.1);
   stroke: #ffffff;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
 }
 
 .entry-tile,
 .menu-tile {
-  fill: #2e006a; // to Klem: which color should we use?
-  stroke: #5c00d3;
-  stroke-width: 0.5px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1px;
 }
 
 .entry-boarder,
 .menu-tile-head {
   fill: none;
-  stroke: #5c00d3;
-  stroke-width: 1.5px;
+  stroke: #fff;
+  stroke-width: 1px;
 }
 
 .tile-value {
@@ -379,8 +423,8 @@ export default class QuanutmMatrix extends Vue {
 }
 
 .tile-value:hover {
-  stroke: white;
-  stroke-width: 1px;
+  stroke: rgb(255, 255, 255);
+  stroke-width: 2px;
 }
 
 .radius-reference {
@@ -393,7 +437,7 @@ export default class QuanutmMatrix extends Vue {
 }
 
 .phase-arc {
-  stroke: #5c00d3;
+  stroke: rgba(0, 0, 0, 0.1);
   stroke-width: 0.5px;
 }
 </style>
