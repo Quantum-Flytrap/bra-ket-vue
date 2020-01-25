@@ -4,6 +4,9 @@ import {
   Photons, OperatorEntry, Operator, beamSplitter,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
+// import CoordinateLegend from './lib-components/coordinate-legend.vue';
+// import ViewerButton from './lib-components/viewer-button.vue';
+import KetList from './lib-components/ket-list-viewer.vue';
 
 const sizeX = 8;
 const sizeY = 8;
@@ -24,6 +27,9 @@ export default Vue.extend({
   components: {
     KetViewer,
     QuantumMatrix,
+    // CoordinateLegend,
+    // ViewerButton,
+    KetList,
   },
   data() {
     return {
@@ -35,7 +41,7 @@ export default Vue.extend({
   // a lot from EncyclopediaTransition.vue
   computed: {
     coordNames(): string[][] {
-      const coordsDir = ['⇢', '⇡', '⇠', '⇣'];
+      const coordsDir = ['→', '↑', '←', '↓'];
       const coordsPol = ['H', 'V'];
       return this.dirPolOrder ? [coordsDir, coordsPol] : [coordsPol, coordsDir];
     },
@@ -74,11 +80,26 @@ export default Vue.extend({
         @columnMouseover="console.log($event)"
         @swapDimensions="dirPolOrder = !dirPolOrder"
     />
+    <ket-list :photons="state" />
+    <div></div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 #app {
-  background-color: #000000;
+  background-color: #242424; //GREY
+  //background-color: #210235; //QG DARK PURPLE
+  //background-color: #2e006a; //QG BRIGHT PURPLE
+}
+.ket-viewer{
+  max-width: 500px;
+  padding: 30px;
+}
+.quantum-matrix{
+  margin: 30px;
+}
+.ket-list{
+  max-width: 700px;
+  padding: 30px;
 }
 </style>
