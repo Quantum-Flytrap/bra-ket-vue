@@ -277,11 +277,12 @@ interface IMatrixElement {
 export default class QuanutmMatrix extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
-  @Prop({ default: () => [] }) private coordNamesIn!: string[][]
+  @Prop({ default: () => [[]] }) private coordNamesIn!: string[][]
 
-  @Prop({ default: () => [] }) private coordNamesOut!: string[][]
+  @Prop({ default: () => [[]] }) private coordNamesOut!: string[][]
 
-  // @Prop({ default: () => [] }) private dimensionNames!: string[]
+  @Prop({ default: () => [] }) private dimensionNames!: string[]
+
   @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
 
   selectedColumn = -1

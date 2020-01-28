@@ -88,8 +88,8 @@ export default Vue.extend({
 <style lang="scss" scoped>
 #app {
   background-color: #242424; //GREY
-  //background-color: #210235; //QG DARK PURPLE
-  //background-color: #2e006a; //QG BRIGHT PURPLE
+  // background-color: #210235; //QG DARK PURPLE
+  // background-color: #2e006a; //QG BRIGHT PURPLE
 }
 .ket-viewer{
   max-width: 500px;
