@@ -50,7 +50,7 @@ export default class CoordinateLegend extends Vue {
 .legend {
   padding-top: 10px;
   padding-bottom: 15px;
-  font-size: 0.6rem;
+  font-size: 10px;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   & .legend-complex {
@@ -58,7 +58,7 @@ export default class CoordinateLegend extends Vue {
     margin-right: 5px;
   }
   & .legend-coord-xy {
-    color: #ff9100;
+    color: #fff;
     margin: 5px;
   }
   & .legend-dir {
@@ -66,7 +66,7 @@ export default class CoordinateLegend extends Vue {
     margin: 5px;
   }
   & .legend-pol {
-    color: #fff;
+    color: #ff9100;
     margin-left: 5px;
   }
 }

@@ -105,14 +105,7 @@
     > -->
     <!-- LEGEND -->
     <div v-if="showLegend && ketComponents.length > 0" class="legend-list">
-      <span v-if="selectedStyle === 'color'">
-        <coordinate-legend
-        :styles="'color'"
-        />
-      </span>
-      <span v-else>
-        <coordinate-legend />
-      </span>
+      <coordinate-legend :selected-style="selectedStyle"/>
     </div>
     <!-- LEGEND END -->
     <!-- BUTTONS -->
@@ -122,9 +115,7 @@
     </div>
     <div class="btn-group">
       <span>
-    <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
-          <viewer-button :class="{ selected: style === selectedStyle }">{{ style }}</viewer-button>
-        </span>
+        <view-button-group @selected="selectedStyle = $event"/>
       </span>
       <span>
         <viewer-button type=icon>→  ↑</viewer-button>
@@ -142,6 +133,7 @@ import { range } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
+import ViewButtonGroup from '@/lib-components/view-button-group.vue';
 
 // from interfaces.ts
 interface IParticleCoord {
@@ -188,6 +180,7 @@ const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] 
   components: {
     CoordinateLegend,
     ViewerButton,
+    ViewButtonGroup,
   },
 })
 
@@ -283,8 +276,6 @@ td {
     font-size: 0.8rem;
   }
   & .quantum-state-viewer {
-    //padding-top: 10px;
-    //padding-bottom: 10px;
     font-weight: 500;
     display: flex;
     flex-wrap: wrap;
@@ -301,19 +292,17 @@ td {
       margin: 10px;
     }
     & .ket-component {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(0, 0, 0, 0.3);
       margin: 5px;
       line-height: 1.4rem;
-      font-size: 0.8rem;
+      font-size: 14px;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
       align-items: center;
       & .ket-complex {
-        background-color: rgba(0, 0, 0, 0.65);
         color: #9d40ff;
-        padding: 0px 6px 0px 6px;
-        margin: 2px;
+        padding: 0px 0px 0px 6px;
       }
       & .ket-disk {
         margin-left: 5px;

@@ -4,9 +4,7 @@
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     > -->
     <div class="btn-group">
-      <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
-        <viewer-button :class="{ selected: style === selectedStyle }">{{ style }}</viewer-button>
-      </span>
+      <view-button-group @selected="selectedStyle = $event"/>
     </div>
     <!-- VIEWER -->
     <div class="quantum-state-viewer">
@@ -59,14 +57,7 @@
       <!-- FIX - choosing color disc doesnt change the legend -->
     </div>
     <div v-if="showLegend && ketComponents.length > 0" class="legend">
-      <span v-if="selectedStyle === 'color'">
-        <coordinate-legend
-        :styles="'color'"
-        />
-      </span>
-      <span v-else>
-        <coordinate-legend />
-      </span>
+      <coordinate-legend :selected-style="selectedStyle"/>
     </div>
   </div>
 </template>
@@ -77,7 +68,7 @@ import { Complex, Photons, VectorEntry } from 'quantum-tensors';
 import { range } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
-import ViewerButton from '@/lib-components/viewer-button.vue';
+import ViewButtonGroup from '@/lib-components/view-button-group.vue';
 
 // from interfaces.ts
 interface IParticleCoord {
@@ -123,7 +114,7 @@ const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] 
 @Component({
   components: {
     CoordinateLegend,
-    ViewerButton,
+    ViewButtonGroup,
   },
 })
 
@@ -201,7 +192,7 @@ export default class KetViewer extends Vue {
   align-content: space-between;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   & .hidebutton {
-    font-size: 0.8rem;
+    font-size: 12px;
   }
   & .quantum-state-viewer {
     padding-top: 10px;
@@ -213,37 +204,35 @@ export default class KetViewer extends Vue {
     flex-wrap: wrap;
     justify-content: center;
     & .controls {
-      font-size: 0.8rem;
+      font-size: 12px;
       color: white;
       padding: 10px;
     }
     & .absorptions {
-      font-size: 0.8rem;
+      font-size: 12px;
       color: white;
       padding: 10;
       margin: 10px;
     }
     & .ket-component {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(0, 0, 0, 0.3);
       margin: 5px;
       line-height: 1.4rem;
-      font-size: 0.8rem;
+      font-size: 14px;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
       align-items: center;
       & .ket-complex {
-        background-color: rgba(0, 0, 0, 0.65);
         color: #9d40ff;
-        padding: 0px 6px 0px 6px;
-        margin: 2px;
+        padding: 0px 0px 0px 6px;
       }
       & .ket-disk {
         margin-left: 5px;
       }
       & .ket-coord {
         color: #fff;
-        padding: 1px;
+        padding: 0px 6px;
         margin: 2px;
         & .ket-dir {
           color: #ff0055;
@@ -267,7 +256,7 @@ export default class KetViewer extends Vue {
 }
 
 .step {
-  font-size: 0.8rem;
+  font-size: 12px;
   line-height: 150%;
 }
 
