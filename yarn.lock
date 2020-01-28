@@ -7255,10 +7255,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.2.5.tgz#228532973851fd07a2b4cb86c9f2b75ca9fe32ca"
-  integrity sha512-ATyy9xgoS8GaaCqBgkApf97wSNOvTtpcRzAGfYP1Q85zerMRpKs9XA09ArmAmzja8gGHrJE7ZhZkGcmxddBlQw==
+quantum-tensors@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.2.7.tgz#1fbd31ea82c79ba07c703fbda6aa681ba4ab72f9"
+  integrity sha512-p6bc6li/2XPH6bQNwOlcavafF94yoKwUscBD2Vk4UIpALj3UZOKdq24nhU7yITn3CRLyB0CkGUcUmsiU0UklcQ==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"

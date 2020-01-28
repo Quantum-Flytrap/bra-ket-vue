@@ -28,7 +28,7 @@
     "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
-    "quantum-tensors": "^0.2.5",
+    "quantum-tensors": "^0.2.7",
     "vue-property-decorator": "^8.3.0"
   },
   "devDependencies": {

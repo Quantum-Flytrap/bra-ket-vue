@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Photons, OperatorEntry, Operator, beamSplitter,
+  Photons, OperatorEntry, Operator, Elements,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
 // import CoordinateLegend from './lib-components/coordinate-legend.vue';
@@ -12,7 +12,7 @@ const sizeX = 8;
 const sizeY = 8;
 const state = new Photons(sizeX, sizeY);
 state.addPhotonIndicator(0, 2, '>', 'H');
-const operations: [number, number, Operator][] = [[0, 2, beamSplitter(135)]];
+const operations: [number, number, Operator][] = [[0, 2, Elements.beamSplitter(135)]];
 state.actOnSinglePhotons(operations);
 
 interface IMatrixElement {
@@ -34,7 +34,7 @@ export default Vue.extend({
   data() {
     return {
       state,
-      operator: beamSplitter(45),
+      operator: Elements.beamSplitter(45),
       dirPolOrder: true,
     };
   },
