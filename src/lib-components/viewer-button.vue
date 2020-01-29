@@ -1,5 +1,5 @@
 <template>
-  <button>
+  <button :class="computeClass">
     <slot></slot>
   </button>
 </template>
@@ -9,6 +9,10 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 @Component
 export default class ViewerButton extends Vue {
   @Prop({ default: 'basic' }) readonly type!: string
+
+  get computeClass(): string[] {
+    return [this.type];
+  }
 }
 </script>
 

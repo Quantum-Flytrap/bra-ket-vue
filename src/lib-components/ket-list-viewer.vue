@@ -119,7 +119,7 @@
       </span>
       <span>
         <viewer-button type=icon>→  ↑</viewer-button>
-        <viewer-button type=icon>↖  ↗</viewer-button>
+        <viewer-button type=icon>↖ ↗</viewer-button>
         <viewer-button type=icon>↺  ↻</viewer-button>
       </span>
     </div>
