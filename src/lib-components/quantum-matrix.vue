@@ -117,6 +117,14 @@
             @mouseover="tileMouseOver(d)"
           />
           <rect class="entry-boarder" :x="0" :y="0" :width="columnSize" :height="rowSize" />
+          <rect
+            v-if="selectedColumn > -1"
+            class="selected-column"
+            :x="scale(selectedColumn)"
+            :y="0"
+            :width="size"
+            :height="columnSize"
+          />
           <circle
             v-for="d in matrixElements"
             :key="`circle-${d.i}-${d.j}`"
@@ -126,14 +134,6 @@
             :r="rScale(d.re, d.im)"
             :style="{ fill: generateColor(d.re, d.im) }"
             @mouseover="tileMouseOver(d)"
-          />
-          <rect
-            v-if="selectedColumn > -1"
-            class="selected-column"
-            :x="scale(selectedColumn)"
-            :y="0"
-            :width="size"
-            :height="columnSize"
           />
         </g>
         <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
@@ -183,7 +183,7 @@
         <div class="legend-text">base change</div>
         <div>
           <viewer-button type=icon>→  ↑</viewer-button>
-          <viewer-button type=icon>↖  ↗</viewer-button>
+          <viewer-button type=icon>↖ ↗</viewer-button>
           <viewer-button type=icon>↺  ↻</viewer-button>
         </div>
       </div>
