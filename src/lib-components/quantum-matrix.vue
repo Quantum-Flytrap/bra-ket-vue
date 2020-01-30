@@ -92,7 +92,7 @@
           />
           <!-- <g class="dimension-labels" @click="swapDimensions()">
             <text
-              v-for="(dimensionName, j) in dimensionNames"
+              v-for="(dimensionName, j) in dimensionNamesOut"
               :key="`label-${dimensionName}`"
               :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
               class="dimension-label"
@@ -186,7 +186,7 @@
           <g class="labels-out" :transform="`translate(10, 20)`">
             <g class="dimension-labels" @click="swapDimensions()">
               <text
-              v-for="(dimensionName, j) in dimensionNames"
+              v-for="(dimensionName, j) in dimensionNamesOut"
               :key="`label-${dimensionName}`"
               :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
               class="dimension-label"
@@ -257,6 +257,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Operator } from 'quantum-tensors';
 import { range } from '@/lib-components/utils';
 import { colorComplex } from '@/lib-components/colors';
 import ViewerButton from '@/lib-components/viewer-button.vue';
@@ -277,13 +278,33 @@ interface IMatrixElement {
 export default class QuanutmMatrix extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
-  @Prop({ default: () => [[]] }) private coordNamesIn!: string[][]
+  @Prop({ default: () => [[]] }) private operator!: Operator
 
-  @Prop({ default: () => [[]] }) private coordNamesOut!: string[][]
+  /**
+   * Temporary, to convert from operator.
+   */
+  get matrixElements(): IMatrixElement[] {
+    return this.operator.toIndexIndexValues().map((entry) => ({
+      i: entry.i,
+      j: entry.j,
+      re: entry.v.re,
+      im: entry.v.im,
+    }));
+  }
 
-  @Prop({ default: () => [] }) private dimensionNames!: string[]
+  // ['→', '↑', '←', '↓'];
 
-  @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
+  get coordNamesIn(): string[][] {
+    return this.operator.coordNamesIn;
+  }
+
+  get coordNamesOut(): string[][] {
+    return this.operator.coordNamesOut;
+  }
+
+  get dimensionNamesOut(): string[] {
+    return this.operator.dimensionsOut.map((dim) => dim.name);
+  }
 
   selectedColumn = -1
 
