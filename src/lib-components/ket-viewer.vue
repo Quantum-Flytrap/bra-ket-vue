@@ -1,8 +1,5 @@
 <template>
-  <div ref="wrapper" class="ket-viewer" :class="{ ketHidden: ketHidden }">
-    <!-- <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    > -->
+  <div ref="wrapper" class="ket-viewer">
     <div v-if="showTable" class="btn-group">
       <view-button-group @selected="selectedStyle = $event"/>
     </div>
@@ -128,15 +125,9 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: true }) readonly showTable!: boolean
 
-  ketHidden = true
-
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
-
-  toggleKets(): void {
-    this.ketHidden = !this.ketHidden;
-  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -268,18 +259,4 @@ h3 {
   font-size: 1rem;
 }
 
-// .hidebutton {
-//   display: none;
-//   cursor: pointer;
-//   font-weight: bold;
-//   @media screen and (max-width: 1000px) {
-//     display: block;
-//   }
-// }
-
-// .ketHidden {
-//   @media screen and (max-width: 1000px) {
-//     height: 20px;
-//   }
-// }
 </style>

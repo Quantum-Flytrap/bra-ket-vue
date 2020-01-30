@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="view-button-group" :class="{ ketHidden: ketHidden }">
+  <div ref="wrapper" class="view-button-group">
     <div class="btn-group">
       <span
         v-for="(style, index) in styles"

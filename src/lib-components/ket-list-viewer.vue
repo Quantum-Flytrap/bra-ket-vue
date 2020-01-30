@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="ket-list" :class="{ ketHidden: ketHidden }">
+  <div ref="wrapper" class="ket-list">
   <table>
     <thead>
       <tr>
@@ -99,10 +99,6 @@
       </tr>
     </tbody>
   </table>
-
-    <!-- <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    > -->
     <!-- LEGEND -->
     <div v-if="showLegend && ketComponents.length > 0" class="legend-list">
       <coordinate-legend :selected-style="selectedStyle"/>
@@ -192,15 +188,9 @@ export default class KetList extends Vue {
   // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
-  ketHidden = true
-
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
-
-  toggleKets(): void {
-    this.ketHidden = !this.ketHidden;
-  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
