@@ -1,7 +1,10 @@
 <template>
   <div class="matrix-viewer">
     <div>
-      <svg class="quantum-matrix" :width="columnSize + 3.5 * size" :height="rowSize + 6.5 * size">
+      <svg class="quantum-matrix"
+        :width="columnSize + 3.5 * size"
+        :height="rowSize + 6.5 * size"
+        >
         <g class="labels-in" :transform="`translate(${3 * size}, ${1 * size})`">
           <text class="label" :x="rowSize / 2" :y="scale(-0.4)">
             Input
@@ -87,7 +90,7 @@
             :width="2 * size"
             :height="coordNamesOut[1].length * size"
           />
-          <g class="dimension-labels" @click="swapDimensions()">
+          <!-- <g class="dimension-labels" @click="swapDimensions()">
             <text
               v-for="(dimensionName, j) in dimensionNames"
               :key="`label-${dimensionName}`"
@@ -102,7 +105,7 @@
             >
               ⇄
             </text>
-          </g>
+          </g> -->
         </g>
 
         <g :transform="`translate(${3 * size}, ${3 * size})`">
@@ -117,6 +120,14 @@
             @mouseover="tileMouseOver(d)"
           />
           <rect class="entry-boarder" :x="0" :y="0" :width="columnSize" :height="rowSize" />
+          <rect
+            v-if="selectedColumn > -1"
+            class="selected-column"
+            :x="scale(selectedColumn)"
+            :y="0"
+            :width="size"
+            :height="columnSize"
+          />
           <circle
             v-for="d in matrixElements"
             :key="`circle-${d.i}-${d.j}`"
@@ -127,16 +138,8 @@
             :style="{ fill: generateColor(d.re, d.im) }"
             @mouseover="tileMouseOver(d)"
           />
-          <rect
-            v-if="selectedColumn > -1"
-            class="selected-column"
-            :x="scale(selectedColumn)"
-            :y="0"
-            :width="size"
-            :height="columnSize"
-          />
         </g>
-        <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
+        <!-- <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
           <g>
             <text class="label" :x="0" :y="0">
               Amplitude
@@ -172,24 +175,81 @@
               {{ selectedPhaseTau.toFixed(2) }} 𝛕
             </text>
           </g>
-        </g>
+        </g> -->
       </svg>
     </div>
-    <div>
+    <div class="legend-container">
       <div class="matrix-legend">
-        <viewer-button>⇅</viewer-button>
+        <svg class="quantum-matrix"
+        :width="300"
+        :height="30">
+          <g class="labels-out" :transform="`translate(10, 20)`">
+            <g class="dimension-labels" @click="swapDimensions()">
+              <text
+              v-for="(dimensionName, j) in dimensionNames"
+              :key="`label-${dimensionName}`"
+              :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
+              class="dimension-label"
+            >
+              {{ dimensionName }}
+            </text>
+              <text class="dimension-swap">
+                ⇅
+              </text>
+            </g>
+          </g>
+        </svg>
       </div>
       <div class="matrix-legend">
         <div class="legend-text">base change</div>
         <div>
           <viewer-button type=icon>→  ↑</viewer-button>
-          <viewer-button type=icon>↖  ↗</viewer-button>
+          <viewer-button type=icon>↖ ↗</viewer-button>
           <viewer-button type=icon>↺  ↻</viewer-button>
         </div>
       </div>
       <div class="matrix-legend" >
-        <div class="legend-text">amplitude</div>
-        <div class="legend-text">phase</div>
+        <svg class="quantum-matrix"
+        :width="300"
+        :height="100">
+          <g class="legend" :transform="`translate(35, 20)`">
+            <g>
+              <text class="label" :x="0" :y="0">
+                Amplitude
+              </text>
+              <circle class="radius-reference" :cx="scale(0)" :cy="scale(1)" :r="rScale(1)" />
+              <circle
+                class="radius-value"
+                :cx="scale(0)"
+                :cy="scale(1)"
+                :r="selectedNonzero ? rScale(selectedEntry.re, selectedEntry.im) : rScale(1)"
+              />
+              <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+                {{ Math.sqrt(selectedEntry.re ** 2 + selectedEntry.im ** 2 || 0).toFixed(3) }}
+              </text>
+            </g>
+            <g :transform="`translate(${scale(3)}, 0)`">
+              <text class="label" :x="0" :y="0">
+                Phase
+              </text>
+              <g :transform="`translate(0, ${scale(1)})`">
+                <path
+                  v-for="(a, i) in arcs"
+                  :key="`arc-${i}`"
+                  class="phase-arc"
+                  :style="{
+                    fill: generateColor(a.re, a.im),
+                    opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
+                  }"
+                  :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
+                />
+              </g>
+              <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+                {{ selectedPhaseTau.toFixed(2) }} 𝛕
+              </text>
+            </g>
+          </g>
+        </svg>
       </div>
     </div>
   </div>
@@ -339,6 +399,9 @@ export default class QuanutmMatrix extends Vue {
 .matrix-viewer {
   display: flex;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+.legend-container {
+  display: block;
 }
 .matrix-legend {
   margin-top: 30px;

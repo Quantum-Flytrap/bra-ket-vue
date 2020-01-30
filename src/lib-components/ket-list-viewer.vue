@@ -3,9 +3,9 @@
   <table>
     <thead>
       <tr>
-        <th>NO</th>
-        <th>EIGENVALUE</th>
-        <th>EIGENVECTOR</th>
+        <th class="w1">no</th>
+        <th class="w2">value 01</th>
+        <th>value 02</th>
       </tr>
     </thead>
     <tbody>
@@ -119,7 +119,7 @@
       </span>
       <span>
         <viewer-button type=icon>→  ↑</viewer-button>
-        <viewer-button type=icon>↖  ↗</viewer-button>
+        <viewer-button type=icon>↖ ↗</viewer-button>
         <viewer-button type=icon>↺  ↻</viewer-button>
       </span>
     </div>
@@ -247,20 +247,25 @@ export default class KetList extends Vue {
 
 <style lang="scss" scoped>
 table {
-  //border-bottom: 1px solid rgba(255, 255, 255, 1);
   font-size: 12px;
   font-weight: 300;
   text-align: left;
   color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
   border-collapse: separate;
   border-spacing: 10px;
 }
 th {
   font-weight: 300;
+  text-transform: uppercase;
 }
 td {
   border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.w1 {
+  width: 40px;
+}
+.w2 {
+  width: 80px;
 }
 .ket-list {
   padding-top: 10px;
@@ -330,10 +335,8 @@ td {
   & .btn-legend {
     font-size: 12px;
     font-weight: 300;
-    //text-align: left;
     color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
-    //width: 100%;
   }
   & .btn-group {
     text-align: center;

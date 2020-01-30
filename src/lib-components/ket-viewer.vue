@@ -3,7 +3,7 @@
     <!-- <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     > -->
-    <div class="btn-group">
+    <div v-if="showTable" class="btn-group">
       <view-button-group @selected="selectedStyle = $event"/>
     </div>
     <!-- VIEWER -->
@@ -56,8 +56,8 @@
       </div> -->
       <!-- FIX - choosing color disc doesnt change the legend -->
     </div>
-    <div v-if="showLegend && ketComponents.length > 0" class="legend">
-      <coordinate-legend :selected-style="selectedStyle"/>
+    <div v-if="showLegend && ketComponents.length > 0" >
+      <coordinate-legend class="legend" :selected-style="selectedStyle"/>
     </div>
   </div>
 </template>
@@ -125,6 +125,8 @@ export default class KetViewer extends Vue {
 
   // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
+
+  @Prop({ default: true }) readonly showTable!: boolean
 
   ketHidden = true
 
@@ -195,10 +197,6 @@ export default class KetViewer extends Vue {
     font-size: 12px;
   }
   & .quantum-state-viewer {
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     font-weight: 500;
     display: flex;
     flex-wrap: wrap;
@@ -249,10 +247,16 @@ export default class KetViewer extends Vue {
     justify-content: center;
     max-width: 100%;
     margin-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   }
   @media screen and (max-width: 1000px) {
     border: none;
   }
+}
+.legend {
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .step {
