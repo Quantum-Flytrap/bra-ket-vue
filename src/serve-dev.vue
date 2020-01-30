@@ -29,7 +29,6 @@ export default Vue.extend({
     return {
       state,
       operator: Elements.beamSplitter(45),
-      dirPolOrder: true,
     };
   },
 });
@@ -40,8 +39,6 @@ export default Vue.extend({
     <ket-viewer :photons="state" />
     <quantum-matrix
         :operator="operator"
-        @columnMouseover="console.log($event)"
-        @swapDimensions="dirPolOrder = !dirPolOrder"
     />
     <ket-list :photons="state" />
     <div></div>
