@@ -71,6 +71,7 @@ export default Vue.extend({
 <template>
   <div id="app">
     <ket-viewer :photons="state" />
+    <ket-viewer :photons="state" :show-legend="false" :show-table="false"/>
     <quantum-matrix
         :coord-names-in="coordNames"
         :coord-names-out="coordNames"

@@ -15,40 +15,7 @@
         <td>
           <!-- VIEWER -->
           <div class="quantum-state-viewer">
-            <span
-              v-for="(ketComponent, index) in ketComponents"
-              :key="`ket-component-${index}`"
-              class="ket-component"
-            >
-              <span v-if="selectedStyle === 'polar'" class="ket-complex">
-                {{ renderComplexPolar(ketComponent.amplitude) }}
-              </span>
-              <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
-                {{ renderComplexCartesian(ketComponent.amplitude) }}
-              </span>
-              <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
-                <circle
-                  cx="8"
-                  cy="8"
-                  :r="discScale(ketComponent.amplitude.r)"
-                  :fill="complexToColor(ketComponent.amplitude)"
-                />
-              </svg>
-              <span
-                v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
-                :key="`ket-component-${pIndex}`"
-                class="ket-coord"
-              >
-                | {{ particleCoord.x }},{{ particleCoord.y }}
-                <span class="ket-dir">
-                  {{ renderDir(particleCoord.dir) }}
-                </span>
-                <span class="ket-pol">
-                  {{ renderPol(particleCoord.pol) }}
-                </span>
-                ⟩
-              </span>
-            </span>
+            <ket-viewer :photons="state" :show-legend="false" :show-table="false"/>
           </div>
           <!-- VIEWER END -->
         </td>
@@ -59,50 +26,13 @@
         <td>
           <!-- VIEWER -->
           <div class="quantum-state-viewer">
-            <span
-              v-for="(ketComponent, index) in ketComponents"
-              :key="`ket-component-${index}`"
-              class="ket-component"
-            >
-              <span v-if="selectedStyle === 'polar'" class="ket-complex">
-                {{ renderComplexPolar(ketComponent.amplitude) }}
-              </span>
-              <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
-                {{ renderComplexCartesian(ketComponent.amplitude) }}
-              </span>
-              <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
-                <circle
-                  cx="8"
-                  cy="8"
-                  :r="discScale(ketComponent.amplitude.r)"
-                  :fill="complexToColor(ketComponent.amplitude)"
-                />
-              </svg>
-              <span
-                v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
-                :key="`ket-component-${pIndex}`"
-                class="ket-coord"
-              >
-                | {{ particleCoord.x }},{{ particleCoord.y }}
-                <span class="ket-dir">
-                  {{ renderDir(particleCoord.dir) }}
-                </span>
-                <span class="ket-pol">
-                  {{ renderPol(particleCoord.pol) }}
-                </span>
-                ⟩
-              </span>
-            </span>
+            <ket-viewer :photons="state" :show-legend="false" :show-table="false"/>
           </div>
           <!-- VIEWER END -->
         </td>
       </tr>
     </tbody>
   </table>
-
-    <!-- <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    > -->
     <!-- LEGEND -->
     <div v-if="showLegend && ketComponents.length > 0" class="legend-list">
       <coordinate-legend :selected-style="selectedStyle"/>
@@ -130,10 +60,10 @@
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import { Complex, Photons, VectorEntry } from 'quantum-tensors';
 import { range } from '@/lib-components/utils';
-import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
+import KetViewer from '@/lib-components/ket-viewer.vue';
 
 // from interfaces.ts
 interface IParticleCoord {
@@ -181,6 +111,7 @@ const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] 
     CoordinateLegend,
     ViewerButton,
     ViewButtonGroup,
+    KetViewer,
   },
 })
 
@@ -201,43 +132,6 @@ export default class KetList extends Vue {
   toggleKets(): void {
     this.ketHidden = !this.ketHidden;
   }
-
-  toPercent(x: number, precision = 1): string {
-    return (100 * x).toFixed(precision);
-  }
-
-  //   elementName(x: number, y: number): string {
-  //     return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name
-  //   }
-
-  renderComplexPolar(z: Complex, precision = 2): string {
-    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
-  }
-
-  renderComplexCartesian(z: Complex, precision = 2): string {
-    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
-  }
-
-  discScale(r: number): number {
-    return 8 * r;
-  }
-
-  complexToColor(z: Complex): string {
-    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
-    return hslToHex(angleInDegrees, 100, 50);
-  }
-
-  renderDir(dir: number): string {
-    return ['→', '↑', '←', '↓'][dir];
-  }
-
-  renderPol(pol: number): string {
-    return ['H', 'V'][pol];
-  }
-
-  //   get absorptions(): IAbsorption[] {
-  //     return this.frame.absorptions
-  //   }
 
   get ketComponents(): IKetComponent[] {
     return ketComponents(this.photons);
