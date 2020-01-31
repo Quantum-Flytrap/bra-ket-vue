@@ -1,10 +1,13 @@
 <template>
-  <div ref="wrapper" class="ket-viewer" :class="{ ketHidden: ketHidden }">
-    <!-- <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    > -->
-    <div v-if="showTable" class="btn-group">
-      <view-button-group @selected="selectedStyle = $event"/>
+  <div
+    ref="wrapper"
+    class="ket-viewer"
+  >
+    <div
+      v-if="showTable"
+      class="btn-group"
+    >
+      <view-button-group @selected="selectedStyle = $event" />
     </div>
     <!-- VIEWER -->
     <div class="quantum-state-viewer">
@@ -13,13 +16,24 @@
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span v-if="selectedStyle === 'polar'" class="ket-complex">
+        <span
+          v-if="selectedStyle === 'polar'"
+          class="ket-complex"
+        >
           {{ renderComplexPolar(ketComponent.amplitude) }}
         </span>
-        <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
+        <span
+          v-if="selectedStyle === 'cartesian'"
+          class="ket-complex"
+        >
           {{ renderComplexCartesian(ketComponent.amplitude) }}
         </span>
-        <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
+        <svg
+          v-if="selectedStyle === 'color'"
+          height="16"
+          width="16"
+          class="ket-disk"
+        >
           <circle
             cx="8"
             cy="8"
@@ -56,8 +70,11 @@
       </div> -->
       <!-- FIX - choosing color disc doesnt change the legend -->
     </div>
-    <div v-if="showLegend && ketComponents.length > 0" >
-      <coordinate-legend class="legend" :selected-style="selectedStyle"/>
+    <div v-if="showLegend && ketComponents.length > 0">
+      <coordinate-legend
+        class="legend"
+        :selected-style="selectedStyle"
+      />
     </div>
   </div>
 </template>
@@ -128,15 +145,9 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: true }) readonly showTable!: boolean
 
-  ketHidden = true
-
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
-
-  toggleKets(): void {
-    this.ketHidden = !this.ketHidden;
-  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -268,18 +279,4 @@ h3 {
   font-size: 1rem;
 }
 
-// .hidebutton {
-//   display: none;
-//   cursor: pointer;
-//   font-weight: bold;
-//   @media screen and (max-width: 1000px) {
-//     display: block;
-//   }
-// }
-
-// .ketHidden {
-//   @media screen and (max-width: 1000px) {
-//     height: 20px;
-//   }
-// }
 </style>

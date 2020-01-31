@@ -1,111 +1,139 @@
 <template>
-  <div ref="wrapper" class="ket-list" :class="{ ketHidden: ketHidden }">
-  <table>
-    <thead>
-      <tr>
-        <th class="w1">no</th>
-        <th class="w2">value 01</th>
-        <th>value 02</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>01</td>
-        <td>0.104</td>
-        <td>
-          <!-- VIEWER -->
-          <div class="quantum-state-viewer">
-            <span
-              v-for="(ketComponent, index) in ketComponents"
-              :key="`ket-component-${index}`"
-              class="ket-component"
-            >
-              <span v-if="selectedStyle === 'polar'" class="ket-complex">
-                {{ renderComplexPolar(ketComponent.amplitude) }}
-              </span>
-              <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
-                {{ renderComplexCartesian(ketComponent.amplitude) }}
-              </span>
-              <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
-                <circle
-                  cx="8"
-                  cy="8"
-                  :r="discScale(ketComponent.amplitude.r)"
-                  :fill="complexToColor(ketComponent.amplitude)"
-                />
-              </svg>
+  <div
+    ref="wrapper"
+    class="ket-list"
+  >
+    <table>
+      <thead>
+        <tr>
+          <th class="w1">
+            no
+          </th>
+          <th class="w2">
+            value 01
+          </th>
+          <th>value 02</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td>0.104</td>
+          <td>
+            <!-- VIEWER -->
+            <div class="quantum-state-viewer">
               <span
-                v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
-                :key="`ket-component-${pIndex}`"
-                class="ket-coord"
+                v-for="(ketComponent, index) in ketComponents"
+                :key="`ket-component-${index}`"
+                class="ket-component"
               >
-                | {{ particleCoord.x }},{{ particleCoord.y }}
-                <span class="ket-dir">
-                  {{ renderDir(particleCoord.dir) }}
+                <span
+                  v-if="selectedStyle === 'polar'"
+                  class="ket-complex"
+                >
+                  {{ renderComplexPolar(ketComponent.amplitude) }}
                 </span>
-                <span class="ket-pol">
-                  {{ renderPol(particleCoord.pol) }}
+                <span
+                  v-if="selectedStyle === 'cartesian'"
+                  class="ket-complex"
+                >
+                  {{ renderComplexCartesian(ketComponent.amplitude) }}
                 </span>
-                ⟩
+                <svg
+                  v-if="selectedStyle === 'color'"
+                  height="16"
+                  width="16"
+                  class="ket-disk"
+                >
+                  <circle
+                    cx="8"
+                    cy="8"
+                    :r="discScale(ketComponent.amplitude.r)"
+                    :fill="complexToColor(ketComponent.amplitude)"
+                  />
+                </svg>
+                <span
+                  v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
+                  :key="`ket-component-${pIndex}`"
+                  class="ket-coord"
+                >
+                  | {{ particleCoord.x }},{{ particleCoord.y }}
+                  <span class="ket-dir">
+                    {{ renderDir(particleCoord.dir) }}
+                  </span>
+                  <span class="ket-pol">
+                    {{ renderPol(particleCoord.pol) }}
+                  </span>
+                  ⟩
+                </span>
               </span>
-            </span>
-          </div>
+            </div>
           <!-- VIEWER END -->
-        </td>
-      </tr>
-      <tr>
-        <td>02</td>
-        <td>0.302</td>
-        <td>
-          <!-- VIEWER -->
-          <div class="quantum-state-viewer">
-            <span
-              v-for="(ketComponent, index) in ketComponents"
-              :key="`ket-component-${index}`"
-              class="ket-component"
-            >
-              <span v-if="selectedStyle === 'polar'" class="ket-complex">
-                {{ renderComplexPolar(ketComponent.amplitude) }}
-              </span>
-              <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
-                {{ renderComplexCartesian(ketComponent.amplitude) }}
-              </span>
-              <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
-                <circle
-                  cx="8"
-                  cy="8"
-                  :r="discScale(ketComponent.amplitude.r)"
-                  :fill="complexToColor(ketComponent.amplitude)"
-                />
-              </svg>
+          </td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td>0.302</td>
+          <td>
+            <!-- VIEWER -->
+            <div class="quantum-state-viewer">
               <span
-                v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
-                :key="`ket-component-${pIndex}`"
-                class="ket-coord"
+                v-for="(ketComponent, index) in ketComponents"
+                :key="`ket-component-${index}`"
+                class="ket-component"
               >
-                | {{ particleCoord.x }},{{ particleCoord.y }}
-                <span class="ket-dir">
-                  {{ renderDir(particleCoord.dir) }}
+                <span
+                  v-if="selectedStyle === 'polar'"
+                  class="ket-complex"
+                >
+                  {{ renderComplexPolar(ketComponent.amplitude) }}
                 </span>
-                <span class="ket-pol">
-                  {{ renderPol(particleCoord.pol) }}
+                <span
+                  v-if="selectedStyle === 'cartesian'"
+                  class="ket-complex"
+                >
+                  {{ renderComplexCartesian(ketComponent.amplitude) }}
                 </span>
-                ⟩
+                <svg
+                  v-if="selectedStyle === 'color'"
+                  height="16"
+                  width="16"
+                  class="ket-disk"
+                >
+                  <circle
+                    cx="8"
+                    cy="8"
+                    :r="discScale(ketComponent.amplitude.r)"
+                    :fill="complexToColor(ketComponent.amplitude)"
+                  />
+                </svg>
+                <span
+                  v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
+                  :key="`ket-component-${pIndex}`"
+                  class="ket-coord"
+                >
+                  | {{ particleCoord.x }},{{ particleCoord.y }}
+                  <span class="ket-dir">
+                    {{ renderDir(particleCoord.dir) }}
+                  </span>
+                  <span class="ket-pol">
+                    {{ renderPol(particleCoord.pol) }}
+                  </span>
+                  ⟩
+                </span>
               </span>
-            </span>
-          </div>
+            </div>
           <!-- VIEWER END -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-    <!-- <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    > -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <!-- LEGEND -->
-    <div v-if="showLegend && ketComponents.length > 0" class="legend-list">
-      <coordinate-legend :selected-style="selectedStyle"/>
+    <div
+      v-if="showLegend && ketComponents.length > 0"
+      class="legend-list"
+    >
+      <coordinate-legend :selected-style="selectedStyle" />
     </div>
     <!-- LEGEND END -->
     <!-- BUTTONS -->
@@ -115,12 +143,12 @@
     </div>
     <div class="btn-group">
       <span>
-        <view-button-group @selected="selectedStyle = $event"/>
+        <view-button-group @selected="selectedStyle = $event" />
       </span>
       <span>
-        <viewer-button type=icon>→  ↑</viewer-button>
-        <viewer-button type=icon>↖ ↗</viewer-button>
-        <viewer-button type=icon>↺  ↻</viewer-button>
+        <viewer-button type="icon">→  ↑</viewer-button>
+        <viewer-button type="icon">↖ ↗</viewer-button>
+        <viewer-button type="icon">↺  ↻</viewer-button>
       </span>
     </div>
   </div>
@@ -192,15 +220,9 @@ export default class KetList extends Vue {
   // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
-  ketHidden = true
-
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
-
-  toggleKets(): void {
-    this.ketHidden = !this.ketHidden;
-  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
