@@ -1,9 +1,11 @@
 <template>
-  <g class="labels-in">
+  <g
+    class="labels-in"
+    :transform="transformation"
+  >
     <text
       class="label"
-      :x="spatialLength / 2"
-      :y="scale(-0.4)"
+      :transform="`translate(${spatialLength / 2}, ${scale(-0.4)}) ${axisLabelTransformation}`"
     >
       {{ axisLabel }}
     </text>
@@ -11,8 +13,7 @@
       v-for="(coord, i) in coordNames[0]"
       :key="`label-in-1-${coord}`"
       class="label-in"
-      :x="scale(coordNames[1].length * (i + 0.5))"
-      :y="scale(0.5)"
+      :transform="`translate(${scale(coordNames[1].length * (i + 0.5))}, ${scale(0.5)}) ${invTransformation}`"
     >
       {{ coord }}
     </text>
@@ -29,8 +30,7 @@
       v-for="(label, i) in labels"
       :key="`label-in-2-${label}`"
       class="label-in"
-      :x="scale(i + 0.5)"
-      :y="scale(1.5)"
+      :transform="`translate(${scale(i + 0.5)}, ${scale(1.5)}) ${invTransformation}`"
     >
       {{ label[1] }}
     </text>
@@ -43,6 +43,26 @@
       :width="coordNames[1].length * size"
       :height="2 * size"
     />
+    <g
+      v-if="dimensionNames"
+      class="dimension-labels"
+      @click="$emit('swapDimension')"
+    >
+      <text
+        v-for="(dimensionName, j) in dimensionNames"
+        :key="`label-${dimensionName}`"
+        :transform="`translate(${spatialLength + scale(0.25)}, ${scale(j + 0.5)}) ${axisLabelTransformation}`"
+        class="dimension-label"
+      >
+        {{ dimensionName }}
+      </text>
+      <text
+        :transform="`translate(${spatialLength + scale(1.25)}, ${scale(1)}) ${invTransformation}`"
+        class="dimension-swap"
+      >
+        ⇄
+      </text>
+    </g>
   </g>
 </template>
 
@@ -58,14 +78,53 @@ export default class MatrixLabels extends Vue {
 
   @Prop({ default: () => '' }) private axisLabel!: string
 
-  @Prop({ required: true }) private location!: number
+  @Prop({ required: true }) private location!: string
 
   @Prop({ required: true }) private coordNames!: string[][]
 
   @Prop({ default: () => [] }) private selected!: number[]
 
+  @Prop({ default: () => [] }) private dimensionNames!: number[]
+
   scale(i: number): number {
     return i * this.size;
+  }
+
+  /**
+   * Global transformation.
+   * @todo 'right' and 'bottom'
+   */
+  get transformation(): string {
+    switch (this.location) {
+      case 'top':
+        return '';
+      case 'left':
+        return 'scale(-1, 1) rotate(90)';
+      default:
+        return '';
+    }
+  }
+
+  get axisLabelTransformation(): string {
+    switch (this.location) {
+      case 'top':
+        return '';
+      case 'left':
+        return 'scale(-1, 1)';
+      default:
+        return '';
+    }
+  }
+
+  get invTransformation(): string {
+    switch (this.location) {
+      case 'top':
+        return '';
+      case 'left':
+        return 'scale(-1, 1) rotate(90)';
+      default:
+        return '';
+    }
   }
 
   get labels(): string[] {

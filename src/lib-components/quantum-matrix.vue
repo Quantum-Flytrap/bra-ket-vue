@@ -14,6 +14,15 @@
             :coordNames="coordNamesIn"
           />
         </g>
+        <g :transform="`translate(${1 * size}, ${3 * size})`">
+          <matrix-labels
+            :size="size"
+            axis-label="output"
+            location="left"
+            :coordNames="coordNamesOut"
+            :dimensionNames="dimensionNamesOut"
+          />
+        </g>
         <g :transform="`translate(${3 * size}, ${3 * size})`">
           <rect
             v-for="d in allTileLocations"
@@ -170,12 +179,12 @@ export default class QuantumMatrix extends Vue {
     i: -1, j: -1, re: 0, im: 0,
   }
 
-  get selectedInLabelOne(): string {
-    if (this.selectedEntry.i < 0) {
-      return '';
-    }
-    return this.labelsIn[this.selectedEntry.i][0];
-  }
+  // get selectedInLabelOne(): string {
+  //   if (this.selectedEntry.i < 0) {
+  //     return '';
+  //   }
+  //   return this.labelsIn[this.selectedEntry.i][0];
+  // }
 
   get selectedOutputLabels(): { ones: string[]; indices: number[] } {
     const js = this.matrixElements.filter((d) => d.i === this.selectedEntry.i);
@@ -298,5 +307,15 @@ export default class QuantumMatrix extends Vue {
 .tile-value:hover {
   stroke: rgb(255, 255, 255);
   stroke-width: 2px;
+}
+
+.swap-label,
+.dimension-label {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: rgba(255, 255, 255, 0.5);
+  cursor: default;
+  text-transform: uppercase;
+  font-weight: 300;
 }
 </style>
