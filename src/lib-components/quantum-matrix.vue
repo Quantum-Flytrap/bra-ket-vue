@@ -6,122 +6,14 @@
         :width="columnSize + 3.5 * size"
         :height="rowSize + 6.5 * size"
       >
-        <g
-          class="labels-in"
-          :transform="`translate(${3 * size}, ${1 * size})`"
-        >
-          <text
-            class="label"
-            :x="rowSize / 2"
-            :y="scale(-0.4)"
-          >
-            Input
-          </text>
-          <text
-            v-for="(coord, i) in coordNamesIn[0]"
-            :key="`label-in-1-${coord}`"
-            class="label-in"
-            :class="{ 'label-selected': coord === selectedInLabelOne }"
-            :x="scale(coordNamesIn[1].length * (i + 0.5))"
-            :y="scale(0.5)"
-          >
-            {{ coord }}
-          </text>
-          <rect
-            v-for="(label, i) in labelsIn"
-            :key="`menu-tile-out-2-${i}`"
-            class="menu-tile"
-            :x="scale(i)"
-            :y="scale(1)"
-            :width="size"
-            :height="size"
-          />
-          <text
-            v-for="(label, i) in labelsIn"
-            :key="`label-in-2-${label}`"
-            class="label-in"
-            :class="{ 'label-selected': i === selectedEntry.i }"
-            :x="scale(i + 0.5)"
-            :y="scale(1.5)"
-          >
-            {{ label[1] }}
-          </text>
-          <rect
-            v-for="(coord, i) in coordNamesIn[0]"
-            :key="`menu-tile-out-1-${i}`"
-            class="menu-tile-head"
-            :x="scale(coordNamesIn[1].length * i)"
-            :y="scale(0)"
-            :width="coordNamesIn[1].length * size"
-            :height="2 * size"
+        <g :transform="`translate(${3 * size}, ${1 * size})`">
+          <matrix-labels
+            :size="size"
+            axis-label="input"
+            location="top"
+            :coordNames="coordNamesIn"
           />
         </g>
-        <g
-          class="labels-out"
-          :transform="`translate(${1 * size}, ${3 * size})`"
-        >
-          <text
-            class="label"
-            :transform="`translate(${scale(-0.4)},${columnSize / 2}) rotate(270)`"
-          >
-            Output
-          </text>
-          <text
-            v-for="(coord, j) in coordNamesOut[0]"
-            :key="`label-out-1-${coord}`"
-            class="label-out"
-            :class="{ 'label-selected': selectedOutputLabels.ones.indexOf(coord) >= 0 }"
-            :x="scale(0.5)"
-            :y="scale(coordNamesOut[1].length * (j + 0.5))"
-          >
-            {{ coord }}
-          </text>
-          <rect
-            v-for="(label, j) in labelsOut"
-            :key="`menu-tile-in-2-${j}`"
-            class="menu-tile"
-            :x="scale(1)"
-            :y="scale(j)"
-            :width="size"
-            :height="size"
-          />
-          <text
-            v-for="(label, j) in labelsOut"
-            :key="`label-out-2-${label}`"
-            class="label-out"
-            :class="{ 'label-selected': selectedOutputLabels.indices.indexOf(j) >= 0 }"
-            :x="scale(1.5)"
-            :y="scale(j + 0.5)"
-          >
-            {{ label[1] }}
-          </text>
-          <rect
-            v-for="(coord, j) in coordNamesOut[0]"
-            :key="`menu-tile-in-1-${j}`"
-            class="menu-tile-head"
-            :x="scale(0)"
-            :y="scale(coordNamesOut[1].length * j)"
-            :width="2 * size"
-            :height="coordNamesOut[1].length * size"
-          />
-          <!-- <g class="dimension-labels" @click="swapDimensions()">
-            <text
-              v-for="(dimensionName, j) in dimensionNamesOut"
-              :key="`label-${dimensionName}`"
-              :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
-              class="dimension-label"
-            >
-              {{ dimensionName }}
-            </text>
-            <text
-              :transform="`translate(${scale(1)},${columnSize + scale(1.25)})`"
-              class="dimension-swap"
-            >
-              ⇄
-            </text>
-          </g> -->
-        </g>
-
         <g :transform="`translate(${3 * size}, ${3 * size})`">
           <rect
             v-for="d in allTileLocations"
@@ -221,6 +113,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Operator } from 'quantum-tensors';
 import { colorComplex } from '@/lib-components/colors';
+import { range } from '@/lib-components/utils';
+import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
 import ComplexLegend from '@/lib-components/complex-legend.vue';
 
@@ -233,6 +127,7 @@ interface IMatrixElement {
 
 @Component({
   components: {
+    MatrixLabels,
     ViewerButton,
     ComplexLegend,
   },
@@ -290,15 +185,6 @@ export default class QuantumMatrix extends Vue {
   }
 
   /**
-   * @todo Flattening should be in QT.Dimension.
-   * Here I do only for 2 dims.
-   */
-  get labelsIn(): string[] {
-    const [names1, names2] = this.coordNamesIn;
-    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`));
-  }
-
-  /**
    * @see {@link labelsIn}
    */
   get labelsOut(): string[] {
@@ -307,17 +193,18 @@ export default class QuantumMatrix extends Vue {
   }
 
   get columnSize(): number {
-    return this.size * this.labelsIn.length;
+    return this.size * this.operator.totalSizeIn;
   }
 
   get rowSize(): number {
-    return this.size * this.labelsOut.length;
+    return this.size * this.operator.totalSizeOut;
   }
 
   get allTileLocations(): { i: number; j: number }[] {
-    return this.labelsOut.flatMap((_val1, j) => this.labelsIn.map((_val2, i) => ({
-      i, j, re: 0, im: 0,
-    })));
+    return range(this.operator.totalSizeOut)
+      .flatMap((j) => range(this.operator.totalSizeIn).map((i) => ({
+        i, j, re: 0, im: 0,
+      })));
   }
 
   scale(i: number): number {
@@ -376,38 +263,6 @@ export default class QuantumMatrix extends Vue {
 .quantum-matrix {
   display: inline-block;
 }
-.label-in,
-.label-out {
-  font-size: 16px;
-  dominant-baseline: central;
-  text-anchor: middle;
-  fill: white;
-  cursor: default;
-  font-weight: 300;
-}
-
-.label-in.label-selected,
-.label-out.label-selected {
-  fill: white;
-}
-
-.dimension-label {
-  font-size: 12px;
-  text-anchor: end;
-  dominant-baseline: central;
-  fill: white;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-.dimension-swap {
-  font-size: 18px;
-  text-anchor: middle;
-  dominant-baseline: central;
-  fill: white;
-  cursor: pointer;
-  text-transform: uppercase;
-}
 
 .label {
   font-size: 12px;
@@ -424,15 +279,13 @@ export default class QuantumMatrix extends Vue {
   stroke-width: 1px;
 }
 
-.entry-tile,
-.menu-tile {
+.entry-tile {
   fill: rgba(0, 0, 0, 0);
   stroke: rgba(255, 255, 255, 0.1);
   stroke-width: 1px;
 }
 
-.entry-boarder,
-.menu-tile-head {
+.entry-boarder {
   fill: none;
   stroke: #fff;
   stroke-width: 1px;
