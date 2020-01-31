@@ -38,10 +38,10 @@ export default Vue.extend({
   <div id="app">
     <ket-viewer :photons="state" />
     <quantum-matrix
-        :operator="operator"
+      :operator="operator"
     />
     <ket-list :photons="state" />
-    <div></div>
+    <div />
   </div>
 </template>
 

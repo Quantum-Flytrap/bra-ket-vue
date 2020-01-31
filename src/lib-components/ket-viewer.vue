@@ -1,7 +1,13 @@
 <template>
-  <div ref="wrapper" class="ket-viewer">
-    <div v-if="showTable" class="btn-group">
-      <view-button-group @selected="selectedStyle = $event"/>
+  <div
+    ref="wrapper"
+    class="ket-viewer"
+  >
+    <div
+      v-if="showTable"
+      class="btn-group"
+    >
+      <view-button-group @selected="selectedStyle = $event" />
     </div>
     <!-- VIEWER -->
     <div class="quantum-state-viewer">
@@ -10,13 +16,24 @@
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span v-if="selectedStyle === 'polar'" class="ket-complex">
+        <span
+          v-if="selectedStyle === 'polar'"
+          class="ket-complex"
+        >
           {{ renderComplexPolar(ketComponent.amplitude) }}
         </span>
-        <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
+        <span
+          v-if="selectedStyle === 'cartesian'"
+          class="ket-complex"
+        >
           {{ renderComplexCartesian(ketComponent.amplitude) }}
         </span>
-        <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
+        <svg
+          v-if="selectedStyle === 'color'"
+          height="16"
+          width="16"
+          class="ket-disk"
+        >
           <circle
             cx="8"
             cy="8"
@@ -53,8 +70,11 @@
       </div> -->
       <!-- FIX - choosing color disc doesnt change the legend -->
     </div>
-    <div v-if="showLegend && ketComponents.length > 0" >
-      <coordinate-legend class="legend" :selected-style="selectedStyle"/>
+    <div v-if="showLegend && ketComponents.length > 0">
+      <coordinate-legend
+        class="legend"
+        :selected-style="selectedStyle"
+      />
     </div>
   </div>
 </template>

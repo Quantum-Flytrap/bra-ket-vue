@@ -1,12 +1,20 @@
 <template>
   <div class="matrix-viewer">
     <div>
-      <svg class="quantum-matrix"
+      <svg
+        class="quantum-matrix"
         :width="columnSize + 3.5 * size"
         :height="rowSize + 6.5 * size"
+      >
+        <g
+          class="labels-in"
+          :transform="`translate(${3 * size}, ${1 * size})`"
         >
-        <g class="labels-in" :transform="`translate(${3 * size}, ${1 * size})`">
-          <text class="label" :x="rowSize / 2" :y="scale(-0.4)">
+          <text
+            class="label"
+            :x="rowSize / 2"
+            :y="scale(-0.4)"
+          >
             Input
           </text>
           <text
@@ -48,8 +56,14 @@
             :height="2 * size"
           />
         </g>
-        <g class="labels-out" :transform="`translate(${1 * size}, ${3 * size})`">
-        <text class="label" :transform="`translate(${scale(-0.4)},${columnSize / 2}) rotate(270)`">
+        <g
+          class="labels-out"
+          :transform="`translate(${1 * size}, ${3 * size})`"
+        >
+          <text
+            class="label"
+            :transform="`translate(${scale(-0.4)},${columnSize / 2}) rotate(270)`"
+          >
             Output
           </text>
           <text
@@ -119,7 +133,13 @@
             :height="size"
             @mouseover="tileMouseOver(d)"
           />
-          <rect class="entry-boarder" :x="0" :y="0" :width="columnSize" :height="rowSize" />
+          <rect
+            class="entry-boarder"
+            :x="0"
+            :y="0"
+            :width="columnSize"
+            :height="rowSize"
+          />
           <rect
             v-if="selectedColumn > -1"
             class="selected-column"
@@ -143,19 +163,27 @@
     </div>
     <div class="legend-container">
       <div class="matrix-legend">
-        <svg class="quantum-matrix"
-        :width="300"
-        :height="30">
-          <g class="labels-out" :transform="`translate(10, 20)`">
-            <g class="dimension-labels" @click="swapDimensions()">
-              <text
-              v-for="(dimensionName, j) in dimensionNamesOut"
-              :key="`label-${dimensionName}`"
-              :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
-              class="dimension-label"
+        <svg
+          class="quantum-matrix"
+          :width="300"
+          :height="30"
+        >
+          <g
+            class="labels-out"
+            :transform="`translate(10, 20)`"
+          >
+            <g
+              class="dimension-labels"
+              @click="swapDimensions()"
             >
-              {{ dimensionName }}
-            </text>
+              <text
+                v-for="(dimensionName, j) in dimensionNamesOut"
+                :key="`label-${dimensionName}`"
+                :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
+                class="dimension-label"
+              >
+                {{ dimensionName }}
+              </text>
               <text class="dimension-swap">
                 ⇅
               </text>
@@ -164,15 +192,26 @@
         </svg>
       </div>
       <div class="matrix-legend">
-        <div class="legend-text">base change</div>
+        <div class="legend-text">
+          base change
+        </div>
         <div>
-          <viewer-button type=icon>→  ↑</viewer-button>
-          <viewer-button type=icon>↖ ↗</viewer-button>
-          <viewer-button type=icon>↺  ↻</viewer-button>
+          <viewer-button type="icon">
+            →  ↑
+          </viewer-button>
+          <viewer-button type="icon">
+            ↖ ↗
+          </viewer-button>
+          <viewer-button type="icon">
+            ↺  ↻
+          </viewer-button>
         </div>
       </div>
-      <div class="matrix-legend" >
-        <complex-legend :re="selectedEntry.re" :im="selectedEntry.im"/>
+      <div class="matrix-legend">
+        <complex-legend
+          :re="selectedEntry.re"
+          :im="selectedEntry.im"
+        />
       </div>
     </div>
   </div>

@@ -1,5 +1,8 @@
 <template>
-  <div ref="wrapper" class="view-button-group">
+  <div
+    ref="wrapper"
+    class="view-button-group"
+  >
     <div class="btn-group">
       <span
         v-for="(style, index) in styles"

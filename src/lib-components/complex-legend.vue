@@ -1,45 +1,73 @@
 <template>
-  <svg class="quantum-matrix"
+  <svg
+    class="quantum-matrix"
     :width="300"
-    :height="100">
-      <g class="legend" :transform="`translate(35, 20)`">
-        <g>
-          <text class="label" :x="0" :y="0">
-            Amplitude
-          </text>
-          <circle class="radius-reference" :cx="scale(0)" :cy="scale(1)" :r="rScale(1)" />
-          <circle
-            class="radius-value"
-            :cx="scale(0)"
-            :cy="scale(1)"
-            :r="selectedNonzero ? rScale(re, im) : rScale(1)"
-          />
-          <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
-            {{ Math.sqrt(re ** 2 + im ** 2 || 0).toFixed(3) }}
-          </text>
-        </g>
-        <g :transform="`translate(${scale(3)}, 0)`">
-          <text class="label" :x="0" :y="0">
-            Phase
-          </text>
-          <g :transform="`translate(0, ${scale(1)})`">
-            <path
-              v-for="(a, i) in arcs"
-              :key="`arc-${i}`"
-              class="phase-arc"
-              :style="{
-                fill: generateColor(a.re, a.im),
-                opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
-              }"
-              :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
-            />
-          </g>
-          <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
-            {{ selectedPhaseTau.toFixed(2) }} 𝛕
-          </text>
-        </g>
+    :height="100"
+  >
+    <g
+      class="legend"
+      :transform="`translate(35, 20)`"
+    >
+      <g>
+        <text
+          class="label"
+          :x="0"
+          :y="0"
+        >
+          Amplitude
+        </text>
+        <circle
+          class="radius-reference"
+          :cx="scale(0)"
+          :cy="scale(1)"
+          :r="rScale(1)"
+        />
+        <circle
+          class="radius-value"
+          :cx="scale(0)"
+          :cy="scale(1)"
+          :r="selectedNonzero ? rScale(re, im) : rScale(1)"
+        />
+        <text
+          v-if="selectedNonzero"
+          class="label"
+          :x="rScale(0)"
+          :y="scale(2)"
+        >
+          {{ Math.sqrt(re ** 2 + im ** 2 || 0).toFixed(3) }}
+        </text>
       </g>
-    </svg>
+      <g :transform="`translate(${scale(3)}, 0)`">
+        <text
+          class="label"
+          :x="0"
+          :y="0"
+        >
+          Phase
+        </text>
+        <g :transform="`translate(0, ${scale(1)})`">
+          <path
+            v-for="(a, i) in arcs"
+            :key="`arc-${i}`"
+            class="phase-arc"
+            :style="{
+              fill: generateColor(a.re, a.im),
+              opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
+            }"
+            :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
+          />
+        </g>
+        <text
+          v-if="selectedNonzero"
+          class="label"
+          :x="rScale(0)"
+          :y="scale(2)"
+        >
+          {{ selectedPhaseTau.toFixed(2) }} 𝛕
+        </text>
+      </g>
+    </g>
+  </svg>
 </template>
 
 <script lang="ts">
