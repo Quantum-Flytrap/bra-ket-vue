@@ -6,7 +6,6 @@
         :width="columnSize + 3.5 * size"
         :height="rowSize + 6.5 * size"
       >
-<<<<<<< HEAD
         <g :transform="`translate(${3 * size}, ${1 * size})`">
           <matrix-labels
             :size="size"
@@ -22,105 +21,6 @@
             location="left"
             :coordNames="coordNamesOut"
             :dimensionNames="dimensionNamesOut"
-=======
-        <g
-          class="labels-in"
-          :transform="`translate(${3 * size}, ${1 * size})`"
-        >
-          <text
-            class="label"
-            :x="rowSize / 2"
-            :y="scale(-0.4)"
-          >
-            Input
-          </text>
-          <text
-            v-for="(coord, i) in coordNamesIn[0]"
-            :key="`label-in-1-${coord}`"
-            class="label-in"
-            :class="{ 'label-selected': coord === selectedInLabelOne }"
-            :x="scale(coordNamesIn[1].length * (i + 0.5))"
-            :y="scale(0.5)"
-          >
-            {{ coord }}
-          </text>
-          <rect
-            v-for="(label, i) in labelsIn"
-            :key="`menu-tile-out-2-${i}`"
-            class="menu-tile"
-            :x="scale(i)"
-            :y="scale(1)"
-            :width="size"
-            :height="size"
-          />
-          <text
-            v-for="(label, i) in labelsIn"
-            :key="`label-in-2-${label}`"
-            class="label-in"
-            :class="{ 'label-selected': i === selectedEntry.i }"
-            :x="scale(i + 0.5)"
-            :y="scale(1.5)"
-          >
-            {{ label[1] }}
-          </text>
-          <rect
-            v-for="(coord, i) in coordNamesIn[0]"
-            :key="`menu-tile-out-1-${i}`"
-            class="menu-tile-head"
-            :x="scale(coordNamesIn[1].length * i)"
-            :y="scale(0)"
-            :width="coordNamesIn[1].length * size"
-            :height="2 * size"
-          />
-        </g>
-        <g
-          class="labels-out"
-          :transform="`translate(${1 * size}, ${3 * size})`"
-        >
-          <text
-            class="label"
-            :transform="`translate(${scale(-0.4)},${columnSize / 2}) rotate(270)`"
-          >
-            Output
-          </text>
-          <text
-            v-for="(coord, j) in coordNamesOut[0]"
-            :key="`label-out-1-${coord}`"
-            class="label-out"
-            :class="{ 'label-selected': selectedOutputLabels.ones.indexOf(coord) >= 0 }"
-            :x="scale(0.5)"
-            :y="scale(coordNamesOut[1].length * (j + 0.5))"
-          >
-            {{ coord }}
-          </text>
-          <rect
-            v-for="(label, j) in labelsOut"
-            :key="`menu-tile-in-2-${j}`"
-            class="menu-tile"
-            :x="scale(1)"
-            :y="scale(j)"
-            :width="size"
-            :height="size"
-          />
-          <text
-            v-for="(label, j) in labelsOut"
-            :key="`label-out-2-${label}`"
-            class="label-out"
-            :class="{ 'label-selected': selectedOutputLabels.indices.indexOf(j) >= 0 }"
-            :x="scale(1.5)"
-            :y="scale(j + 0.5)"
-          >
-            {{ label[1] }}
-          </text>
-          <rect
-            v-for="(coord, j) in coordNamesOut[0]"
-            :key="`menu-tile-in-1-${j}`"
-            class="menu-tile-head"
-            :x="scale(0)"
-            :y="scale(coordNamesOut[1].length * j)"
-            :width="2 * size"
-            :height="coordNamesOut[1].length * size"
->>>>>>> ket's are not visible in the table
           />
         </g>
         <g :transform="`translate(${3 * size}, ${3 * size})`">
@@ -209,82 +109,10 @@
         </div>
       </div>
       <div class="matrix-legend">
-<<<<<<< HEAD
         <complex-legend
           :re="selectedEntry.re"
           :im="selectedEntry.im"
         />
-=======
-        <svg
-          class="quantum-matrix"
-          :width="300"
-          :height="100"
-        >
-          <g
-            class="legend"
-            :transform="`translate(35, 20)`"
-          >
-            <g>
-              <text
-                class="label"
-                :x="0"
-                :y="0"
-              >
-                Amplitude
-              </text>
-              <circle
-                class="radius-reference"
-                :cx="scale(0)"
-                :cy="scale(1)"
-                :r="rScale(1)"
-              />
-              <circle
-                class="radius-value"
-                :cx="scale(0)"
-                :cy="scale(1)"
-                :r="selectedNonzero ? rScale(selectedEntry.re, selectedEntry.im) : rScale(1)"
-              />
-              <text
-                v-if="selectedNonzero"
-                class="label"
-                :x="rScale(0)"
-                :y="scale(2)"
-              >
-                {{ Math.sqrt(selectedEntry.re ** 2 + selectedEntry.im ** 2 || 0).toFixed(3) }}
-              </text>
-            </g>
-            <g :transform="`translate(${scale(3)}, 0)`">
-              <text
-                class="label"
-                :x="0"
-                :y="0"
-              >
-                Phase
-              </text>
-              <g :transform="`translate(0, ${scale(1)})`">
-                <path
-                  v-for="(a, i) in arcs"
-                  :key="`arc-${i}`"
-                  class="phase-arc"
-                  :style="{
-                    fill: generateColor(a.re, a.im),
-                    opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
-                  }"
-                  :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
-                />
-              </g>
-              <text
-                v-if="selectedNonzero"
-                class="label"
-                :x="rScale(0)"
-                :y="scale(2)"
-              >
-                {{ selectedPhaseTau.toFixed(2) }} 𝛕
-              </text>
-            </g>
-          </g>
-        </svg>
->>>>>>> ket's are not visible in the table
       </div>
     </div>
   </div>

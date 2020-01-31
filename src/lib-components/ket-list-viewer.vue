@@ -23,7 +23,7 @@
             <!-- VIEWER -->
             <div class="quantum-state-viewer">
               <ket-viewer
-                :photons="state"
+                :photons="photons"
                 :show-legend="false"
                 :show-table="false"
               />
@@ -38,7 +38,7 @@
             <!-- VIEWER -->
             <div class="quantum-state-viewer">
               <ket-viewer
-                :photons="state"
+                :photons="photons"
                 :show-legend="false"
                 :show-table="false"
               />
@@ -50,7 +50,7 @@
     </table>
     <!-- LEGEND -->
     <div
-      v-if="showLegend && ketComponents.length > 0"
+      v-if="showLegend"
       class="legend-list"
     >
       <coordinate-legend :selected-style="selectedStyle" />
@@ -76,53 +76,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Complex, Photons, VectorEntry } from 'quantum-tensors';
-import { range } from '@/lib-components/utils';
+import { Photons } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
 import KetViewer from '@/lib-components/ket-viewer.vue';
-
-// from interfaces.ts
-interface IParticleCoord {
-  kind: string // for now only 'photon'
-  x: number
-  y: number
-  dir: number // 0: > 1: ^, 2: <. 3: v
-  pol: number // 0: H, 1: V
-}
-
-// from QuantumFrame.ts
-interface IKetComponent {
-  amplitude: Complex
-  particleCoords: IParticleCoord[]
-}
-
-// from QuantumFrame.ts
-const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] => {
-  const ns = range(photons.nPhotons);
-  return photons.vector.entries
-    .map(
-      (entry: VectorEntry): IKetComponent => {
-        const particleCoords = ns.map(
-          (i: number): IParticleCoord => {
-            const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
-            return {
-              kind: 'photon', x, y, dir, pol,
-            };
-          },
-        );
-        return {
-          amplitude: entry.value,
-          particleCoords,
-        };
-      },
-    )
-    .filter(
-      (ketComponent: IKetComponent): boolean => ketComponent.amplitude.r ** 2 > probThreshold,
-    );
-};
-
 
 @Component({
   components: {
@@ -144,10 +102,6 @@ export default class KetList extends Vue {
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
-
-  get ketComponents(): IKetComponent[] {
-    return ketComponents(this.photons);
-  }
 }
 </script>
 
