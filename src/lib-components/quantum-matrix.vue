@@ -3,10 +3,10 @@
     <div>
       <svg
         class="quantum-matrix"
-        :width="columnSize + 3.5 * size"
-        :height="rowSize + 6.5 * size"
+        :width="columnSize + (1.5 + coordNamesIn.length) * size"
+        :height="rowSize + (4.5 + coordNamesOut.length) * size"
       >
-        <g :transform="`translate(${3 * size}, ${1 * size})`">
+        <g :transform="`translate(${(coordNamesOut.length + 1) * size}, ${1 * size})`">
           <matrix-labels
             :size="size"
             axis-label="input"
@@ -14,7 +14,7 @@
             :coordNames="coordNamesIn"
           />
         </g>
-        <g :transform="`translate(${1 * size}, ${3 * size})`">
+        <g :transform="`translate(${1 * size}, ${(coordNamesIn.length + 1) * size})`">
           <matrix-labels
             :size="size"
             axis-label="output"
@@ -23,7 +23,7 @@
             :dimensionNames="dimensionNamesOut"
           />
         </g>
-        <g :transform="`translate(${3 * size}, ${3 * size})`">
+        <g :transform="`translate(${(coordNamesOut.length + 1) * size}, ${(coordNamesIn.length + 1) * size})`">
           <rect
             v-for="d in allTileLocations"
             :key="`entry-tile-${d.i}-${d.j}`"

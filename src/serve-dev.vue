@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Photons, Operator, Elements,
+  Photons, Operator, Elements, Dimension,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
 // import CoordinateLegend from './lib-components/coordinate-legend.vue';
@@ -29,6 +29,8 @@ export default Vue.extend({
     return {
       state,
       operator: Elements.beamSplitter(45),
+      operator2: Operator.identity([Dimension.spin()]),
+      operator3: Operator.identity([Dimension.spin(), Dimension.position(3, 'energy')]),
     };
   },
 });
@@ -42,9 +44,9 @@ export default Vue.extend({
       :show-legend="false"
       :show-table="false"
     />
-    <quantum-matrix
-      :operator="operator"
-    />
+    <quantum-matrix :operator="operator" />
+    <quantum-matrix :operator="operator2" />
+    <quantum-matrix :operator="operator3" />
     <ket-list :photons="state" />
     <div />
   </div>
