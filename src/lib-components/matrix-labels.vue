@@ -1,6 +1,6 @@
 <template>
   <g
-    class="labels-in"
+    class="matrix-labels"
     :transform="transformation"
   >
     <text
@@ -9,39 +9,42 @@
     >
       {{ axisLabel }}
     </text>
-    <text
-      v-for="(coord, i) in coordNames[0]"
-      :key="`label-in-1-${coord}`"
-      class="label-in"
-      :transform="`translate(${scale(coordNames[1].length * (i + 0.5))}, ${scale(0.5)}) ${invTransformation}`"
+    <g
+      v-for="(coordNamesDim, i) in coordNames"
+      :key="`dim-group-${i}`"
+      :transform="`translate(0, ${scale(i)})`"
     >
-      {{ coord }}
-    </text>
+      <g
+        v-for="k in range(times[i])"
+        :key="`time-${i}-${k}`"
+        :transform="`translate(${scale(k * total / times[i])}, 0)`"
+      >
+        <rect
+          v-for="(coord, j) in coordNamesDim"
+          :key="`menu-tile-${i}-${coord}`"
+          class="menu-tile"
+          :x="scale(multipliers[i] * j)"
+          :y="scale(0)"
+          :width="multipliers[i] * size"
+          :height="size"
+        />
+        <text
+          v-for="(coord, j) in coordNamesDim"
+          :key="`coord-${i}-${coord}`"
+          class="coord"
+          :class="{selected: isSelected(k * total / times[i] + multipliers[i] * j, multipliers[i])}"
+          :transform="`translate(${scale(multipliers[i] * (j + 0.5))}, ${scale(0.5)}) ${invTransformation}`"
+        >
+          {{ coord }}
+        </text>
+      </g>
+    </g>
     <rect
-      v-for="(label, i) in labels"
-      :key="`menu-tile-out-2-${i}`"
-      class="menu-tile"
-      :x="scale(i)"
-      :y="scale(1)"
-      :width="size"
-      :height="size"
-    />
-    <text
-      v-for="(label, i) in labels"
-      :key="`label-in-2-${label}`"
-      class="label-in"
-      :transform="`translate(${scale(i + 0.5)}, ${scale(1.5)}) ${invTransformation}`"
-    >
-      {{ label[1] }}
-    </text>
-    <rect
-      v-for="(coord, i) in coordNames[0]"
-      :key="`menu-tile-out-1-${i}`"
-      class="menu-tile-head"
-      :x="scale(coordNames[1].length * i)"
+      class="menu-tile-outline"
+      :x="scale(0)"
       :y="scale(0)"
-      :width="coordNames[1].length * size"
-      :height="2 * size"
+      :width="size * total"
+      :height="size * coordNames.length"
     />
     <g
       v-if="dimensionNames"
@@ -68,6 +71,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { range } from '@/lib-components/utils';
 
 @Component({
   components: {},
@@ -127,31 +131,62 @@ export default class MatrixLabels extends Vue {
     }
   }
 
-  get labels(): string[] {
-    const [names1, names2] = this.coordNames;
-    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`));
+  get multipliers(): number[] {
+    const lengths = this.coordNames.map((coords) => coords.length);
+    lengths.reverse();
+
+    let m = 1;
+    const res: number[] = [];
+    lengths.forEach((x) => {
+      res.push(m);
+      m *= x;
+    });
+    res.reverse();
+    return res;
+  }
+
+  get times(): number[] {
+    const lengths = this.coordNames.map((coords) => coords.length);
+    let m = 1;
+    const res: number[] = [];
+    lengths.forEach((x) => {
+      res.push(m);
+      m *= x;
+    });
+    return res;
+  }
+
+  get total(): number {
+    return this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
   }
 
   get spatialLength(): number {
     return this.size * this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
   }
+
+  range(n: number): number[] {
+    return range(n);
+  }
+
+  isSelected(pos: number, span: number): boolean {
+    return this.selected
+      .map((x) => (pos <= x) && (x < pos + span))
+      .reduce((a, b) => a || b, false);
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.label-in,
-.label-out {
+text.coord {
   font-size: 16px;
   dominant-baseline: central;
   text-anchor: middle;
-  fill: white;
+  fill: rgba(255, 255, 255, 0.5);
   cursor: default;
   font-weight: 300;
-}
-
-.label-in.label-selected,
-.label-out.label-selected {
-  fill: white;
+  &.selected {
+    fill: rgba(255, 255, 255, 1);
+  }
 }
 
 .dimension-label {
@@ -187,7 +222,7 @@ export default class MatrixLabels extends Vue {
   stroke-width: 1px;
 }
 
-.menu-tile-head {
+.menu-tile-outline {
   fill: none;
   stroke: #fff;
   stroke-width: 1px;
