@@ -32,6 +32,7 @@
           v-for="(coord, j) in coordNamesDim"
           :key="`coord-${i}-${coord}`"
           class="coord"
+          :class="{selected: isSelected(k * total / times[i] + multipliers[i] * j, multipliers[i])}"
           :transform="`translate(${scale(multipliers[i] * (j + 0.5))}, ${scale(0.5)}) ${invTransformation}`"
         >
           {{ coord }}
@@ -166,6 +167,12 @@ export default class MatrixLabels extends Vue {
   range(n: number): number[] {
     return range(n);
   }
+
+  isSelected(pos: number, span: number): boolean {
+    return this.selected
+      .map((x) => (pos <= x) && (x < pos + span))
+      .reduce((a, b) => a || b, false);
+  }
 }
 </script>
 
@@ -174,11 +181,11 @@ text.coord {
   font-size: 16px;
   dominant-baseline: central;
   text-anchor: middle;
-  fill: white;
+  fill: rgba(255, 255, 255, 0.5);
   cursor: default;
   font-weight: 300;
   &.selected {
-    fill: rgb(248, 17, 17);
+    fill: rgba(255, 255, 255, 1);
   }
 }
 

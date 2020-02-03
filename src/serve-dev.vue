@@ -30,7 +30,7 @@ export default Vue.extend({
       state,
       operator: Elements.beamSplitter(45),
       operator2: Operator.identity([Dimension.spin()]),
-      operator3: Operator.identity([Dimension.spin(), Dimension.position(3, 'energy')]),
+      operator3: Operator.identity([Dimension.spin(), Dimension.position(3, 'energy'), Dimension.polarization()]),
     };
   },
 });

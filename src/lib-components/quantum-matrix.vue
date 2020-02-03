@@ -12,6 +12,7 @@
             axis-label="input"
             location="top"
             :coordNames="coordNamesIn"
+            :selected="selectedIn"
           />
         </g>
         <g :transform="`translate(${1 * size}, ${(coordNamesIn.length + 1) * size})`">
@@ -20,6 +21,7 @@
             axis-label="output"
             location="left"
             :coordNames="coordNamesOut"
+            :selected="selectedOut"
             :dimensionNames="dimensionNamesOut"
           />
         </g>
@@ -179,18 +181,14 @@ export default class QuantumMatrix extends Vue {
     i: -1, j: -1, re: 0, im: 0,
   }
 
-  // get selectedInLabelOne(): string {
-  //   if (this.selectedEntry.i < 0) {
-  //     return '';
-  //   }
-  //   return this.labelsIn[this.selectedEntry.i][0];
-  // }
+  get selectedIn(): number[] {
+    return [this.selectedEntry.i];
+  }
 
-  get selectedOutputLabels(): { ones: string[]; indices: number[] } {
-    const js = this.matrixElements.filter((d) => d.i === this.selectedEntry.i);
-    const indices = js.map((d) => d.j);
-    const ones = indices.map((j) => this.labelsOut[j][0]);
-    return { ones, indices };
+  get selectedOut(): number[] {
+    return this.matrixElements
+      .filter((d) => d.i === this.selectedEntry.i)
+      .map((d) => d.j);
   }
 
   /**
