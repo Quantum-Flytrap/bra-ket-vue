@@ -145,9 +145,9 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: true }) readonly showTable!: boolean
 
-  styles = ['polar', 'cartesian', 'color']
+  @Prop({ default: 'polar' }) readonly selectedStyle!: string
 
-  selectedStyle = 'polar'
+  styles = ['polar', 'cartesian', 'color']
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -259,6 +259,7 @@ export default class KetViewer extends Vue {
     max-width: 100%;
     margin-bottom: 5px;
     margin-bottom: 10px;
+    padding: 5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   }
   @media screen and (max-width: 1000px) {
@@ -266,7 +267,7 @@ export default class KetViewer extends Vue {
   }
 }
 .legend {
-  margin-top: 10px;
+  margin-top: 5px;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
