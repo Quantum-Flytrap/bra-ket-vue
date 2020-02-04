@@ -19,6 +19,7 @@
           <matrix-dimensions
             :dimensionNames="dimensionNamesOut"
             location="left"
+            @swapDimensions="swapDimensions($event)"
           />
         </g>
         <g :transform="`translate(${1 * size}, ${(coordNamesIn.length + 1) * size})`">
@@ -35,8 +36,8 @@
             v-for="d in allTileLocations"
             :key="`entry-tile-${d.i}-${d.j}`"
             class="entry-tile"
-            :x="scale(d.i)"
-            :y="scale(d.j)"
+            :x="scale(d.j)"
+            :y="scale(d.i)"
             :width="size"
             :height="size"
             @mouseover="tileMouseOver(d)"
@@ -49,19 +50,19 @@
             :height="rowSize"
           />
           <rect
-            v-if="selectedColumn > -1"
+            v-if="selectedEntry.j > -1"
             class="selected-column"
-            :x="scale(selectedColumn)"
+            :x="scale(selectedEntry.j)"
             :y="0"
             :width="size"
             :height="columnSize"
           />
           <circle
             v-for="d in matrixElements"
-            :key="`circle-${d.i}-${d.j}`"
+            :key="`circle-${d.i}-${d.j}-${d.re}-${d.im}`"
             class="tile-value"
-            :cx="scale(d.i + 0.5)"
-            :cy="scale(d.j + 0.5)"
+            :cx="scale(d.j + 0.5)"
+            :cy="scale(d.i + 0.5)"
             :r="rScale(d.re, d.im)"
             :style="{ fill: generateColor(d.re, d.im) }"
             @mouseover="tileMouseOver(d)"
@@ -125,7 +126,9 @@ interface IMatrixElement {
 export default class QuantumMatrix extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
-  @Prop({ default: () => [[]] }) private operator!: Operator
+  @Prop({ default: () => [[]] }) private operatorRaw!: Operator
+
+  operator = this.operatorRaw; // copy?
 
   /**
    * Temporary, to convert from operator.
@@ -153,28 +156,18 @@ export default class QuantumMatrix extends Vue {
     return this.operator.dimensionsOut.map((dim) => dim.name);
   }
 
-  selectedColumn = -1
-
   selectedEntry: IMatrixElement = {
     i: -1, j: -1, re: 0, im: 0,
   }
 
   get selectedIn(): number[] {
-    return [this.selectedEntry.i];
+    return [this.selectedEntry.j];
   }
 
   get selectedOut(): number[] {
     return this.matrixElements
-      .filter((d) => d.i === this.selectedEntry.i)
-      .map((d) => d.j);
-  }
-
-  /**
-   * @see {@link labelsIn}
-   */
-  get labelsOut(): string[] {
-    const [names1, names2] = this.coordNamesOut;
-    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`));
+      .filter((d) => d.j === this.selectedEntry.j)
+      .map((d) => d.i);
   }
 
   get columnSize(): number {
@@ -208,18 +201,26 @@ export default class QuantumMatrix extends Vue {
    * @todo Show directly on the legend.
    */
   tileMouseOver(tile: IMatrixElement): void {
-    this.selectedColumn = tile.i;
     this.selectedEntry = tile;
-    this.$emit('columnMouseover', tile.i);
+    this.$emit('columnMouseover', tile.j);
   }
 
   /**
    * @todo Make all dimension changes within this component.
    * (After using Operator rather than passed parameteres.)
    */
-  swapDimensions(): void {
-    this.selectedColumn = -1; // later we reassign
-    this.$emit('swapDimensions');
+  swapDimensions(i: number, both = true): void {
+    this.selectedEntry = {
+      i: -1, j: -1, re: 0, im: 0,
+    };
+    const newOrder = range(this.operator.dimensionsOut.length);
+    newOrder[i] += 1;
+    newOrder[i + 1] -= 1;
+    if (both) {
+      this.operator = this.operator.permute(newOrder);
+    } else {
+      this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
+    }
   }
 }
 </script>

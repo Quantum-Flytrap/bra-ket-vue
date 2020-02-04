@@ -16,7 +16,7 @@
       :key="`label-${i}`"
       class="dimension-swap"
       :transform="`translate(${scale(0.5)}, ${scale(i + 1)}) ${invTransformation}`"
-      @click="$emit('swapDimension', i)"
+      @click="$emit('swapDimensions', i)"
     >
       ⇄
     </text>
