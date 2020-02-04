@@ -130,16 +130,21 @@ export default class QuantumMatrix extends Vue {
 
   operator = this.operatorRaw; // copy?
 
+  endianness = range(this.operator.dimensionsOut.length).reverse(); // if small endian convention
+
   /**
    * Temporary, to convert from operator.
+   * Warning: permute only to solve endian issue of quantum-tensors 0.2.9 and below
    */
   get matrixElements(): IMatrixElement[] {
-    return this.operator.toIndexIndexValues().map((entry) => ({
-      i: entry.i,
-      j: entry.j,
-      re: entry.v.re,
-      im: entry.v.im,
-    }));
+    return this.operator
+      .permute(this.endianness)
+      .toIndexIndexValues().map((entry) => ({
+        i: entry.i,
+        j: entry.j,
+        re: entry.v.re,
+        im: entry.v.im,
+      }));
   }
 
   // ['→', '↑', '←', '↓'];
