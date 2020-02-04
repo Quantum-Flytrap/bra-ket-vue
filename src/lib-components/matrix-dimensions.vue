@@ -90,9 +90,10 @@ export default class MatrixDimensions extends Vue {
   font-size: 12px;
   text-anchor: end;
   dominant-baseline: central;
-  fill: white;
+  fill: rgba(255, 255, 255, 0.5);
   cursor: default;
   text-transform: uppercase;
+  font-weight: 300;
 }
 
 .dimension-swap {
