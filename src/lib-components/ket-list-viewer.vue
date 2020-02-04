@@ -23,29 +23,22 @@
           <td>{{ i }}</td>
           <td>{{ step.value }}</td>
           <td>
-            <!-- VIEWER -->
-            <div class="ket-viewer">
-              <ket-viewer
-                :photons="step.state"
-                :show-legend="false"
-                :show-table="false"
-                :selected-style="selectedStyle"
-              />
-            </div>
-          <!-- VIEWER END -->
+            <ket-viewer
+              class="ket-viewer"
+              :photons="step.state"
+              :show-legend="false"
+              :show-table="false"
+              :selected-style="selectedStyle"
+            />
           </td>
         </tr>
       </tbody>
     </table>
-    <!-- LEGEND -->
-    <div
+    <coordinate-legend
       v-if="showLegend"
       class="legend-list"
-    >
-      <coordinate-legend :selected-style="selectedStyle" />
-    </div>
-    <!-- LEGEND END -->
-    <!-- BUTTONS -->
+      :selected-style="selectedStyle"
+    />
     <div class="btn-legend-group">
       <span class="btn-legend">view</span>
       <span class="btn-legend">base change</span>
@@ -81,11 +74,8 @@ import KetViewer from '@/lib-components/ket-viewer.vue';
 })
 
 export default class KetList extends Vue {
-  // TODO: Currently kinda ugly
-  // TODO: Move logic to engine Helpers
   @Prop() readonly steps!: {value: number, state: Photons}[]
 
-  // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
   styles = ['polar', 'cartesian', 'color']

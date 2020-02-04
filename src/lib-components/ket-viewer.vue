@@ -9,7 +9,6 @@
     >
       <view-button-group @selected="selectedStyle = $event" />
     </div>
-    <!-- VIEWER -->
     <div class="quantum-state-viewer">
       <span
         v-for="(ketComponent, index) in ketComponents"
@@ -56,19 +55,6 @@
           ⟩
         </span>
       </span>
-      <!-- <div v-if="absorptions.length > 0" class="absorptions">
-        Absorptions:
-        <span
-          v-for="(absorption, index) in absorptions"
-          :key="`absorption-${index}`"
-          class="absorption"
-        >
-          {{ toPercent(absorption.probability) }}% in
-          {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
-          {{ absorption.coord.y }})
-        </span>
-      </div> -->
-      <!-- FIX - choosing color disc doesnt change the legend -->
     </div>
     <div v-if="showLegend && ketComponents.length > 0">
       <coordinate-legend
@@ -140,7 +126,6 @@ export default class KetViewer extends Vue {
   // TODO: Move logic to engine Helpers
   @Prop() readonly photons!: Photons
 
-  // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
   @Prop({ default: true }) readonly showTable!: boolean
@@ -152,10 +137,6 @@ export default class KetViewer extends Vue {
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
   }
-
-  //   elementName(x: number, y: number): string {
-  //     return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name
-  //   }
 
   renderComplexPolar(z: Complex, precision = 2): string {
     return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
@@ -181,10 +162,6 @@ export default class KetViewer extends Vue {
   renderPol(pol: number): string {
     return ['H', 'V'][pol];
   }
-
-  //   get absorptions(): IAbsorption[] {
-  //     return this.frame.absorptions
-  //   }
 
   get ketComponents(): IKetComponent[] {
     return ketComponents(this.photons);
