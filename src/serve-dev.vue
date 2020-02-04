@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Photons, Operator, Elements, Dimension,
+  Photons, Operator, Elements, Dimension, Cx,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
@@ -16,6 +16,28 @@ state.actOnSinglePhotons(operations);
 const state1 = state.copy();
 state.propagatePhotons();
 
+const operator = Elements.beamSplitter(45);
+const operator2 = Operator.fromSparseCoordNames([
+  ['u', 'u', Cx(1)],
+  ['d', 'd', Cx(-1)],
+], [Dimension.spin()]);
+
+const operator3 = Operator.outer([
+  Operator.fromSparseCoordNames([
+    ['u', 'd', Cx(0, 1)],
+    ['d', 'u', Cx(0, -1)],
+  ], [Dimension.spin()]),
+  Operator.fromSparseCoordNames([
+    ['0H', '0H', Cx(Math.SQRT1_2)],
+    ['1H', '0H', Cx(Math.SQRT1_2)],
+    ['1H', '1H', Cx(Math.SQRT1_2)],
+    ['2H', '1H', Cx(Math.SQRT1_2)],
+    ['2H', '2H', Cx(Math.SQRT1_2)],
+    ['0V', '0V', Cx(1)],
+    ['1V', '1V', Cx(1)],
+    ['2V', '2V', Cx(1)],
+  ], [Dimension.position(3, 'energy'), Dimension.polarization()]),
+]);
 
 export default Vue.extend({
   name: 'ServeDev',
@@ -27,9 +49,9 @@ export default Vue.extend({
   data() {
     return {
       state,
-      operator: Elements.beamSplitter(45),
-      operator2: Operator.identity([Dimension.spin()]),
-      operator3: Operator.identity([Dimension.spin(), Dimension.position(3, 'energy'), Dimension.polarization()]),
+      operator,
+      operator2,
+      operator3,
       steps: [
         { value: 1, state: state0 },
         { value: 0.5, state: state1 },
