@@ -21,11 +21,12 @@
           <td>0.104</td>
           <td>
             <!-- VIEWER -->
-            <div class="quantum-state-viewer">
+            <div class="ket-viewer">
               <ket-viewer
                 :photons="photons"
                 :show-legend="false"
                 :show-table="false"
+                :selected-style="selectedStyle"
               />
             </div>
           <!-- VIEWER END -->
@@ -36,11 +37,12 @@
           <td>0.302</td>
           <td>
             <!-- VIEWER -->
-            <div class="quantum-state-viewer">
+            <div class="ket-viewer">
               <ket-viewer
                 :photons="photons"
                 :show-legend="false"
                 :show-table="false"
+                :selected-style="selectedStyle"
               />
             </div>
           <!-- VIEWER END -->
@@ -140,7 +142,7 @@ td {
   & .hidebutton {
     font-size: 0.8rem;
   }
-  & .quantum-state-viewer {
+  & .ket-viewer {
     font-weight: 500;
     display: flex;
     flex-wrap: wrap;
