@@ -12,8 +12,11 @@ const sizeX = 8;
 const sizeY = 8;
 const state = new Photons(sizeX, sizeY);
 state.addPhotonIndicator(0, 2, '>', 'H');
+const state0 = state.copy();
 const operations: [number, number, Operator][] = [[0, 2, Elements.beamSplitter(135)]];
 state.actOnSinglePhotons(operations);
+const state1 = state.copy();
+state.propagatePhotons();
 
 
 export default Vue.extend({
@@ -31,6 +34,11 @@ export default Vue.extend({
       operator: Elements.beamSplitter(45),
       operator2: Operator.identity([Dimension.spin()]),
       operator3: Operator.identity([Dimension.spin(), Dimension.position(3, 'energy'), Dimension.polarization()]),
+      steps: [
+        { value: 1, state: state0 },
+        { value: 0.5, state: state1 },
+        { value: 0.25, state },
+      ],
     };
   },
 });
@@ -47,7 +55,7 @@ export default Vue.extend({
     <quantum-matrix :operator="operator" />
     <quantum-matrix :operator="operator2" />
     <quantum-matrix :operator="operator3" />
-    <ket-list :photons="state" />
+    <ket-list :steps="steps" />
     <div />
   </div>
 </template>

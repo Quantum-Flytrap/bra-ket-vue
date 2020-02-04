@@ -7,39 +7,26 @@
       <thead>
         <tr>
           <th class="w1">
-            no
+            step
           </th>
           <th class="w2">
-            value 01
+            value
           </th>
-          <th>value 02</th>
+          <th>state</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>0.104</td>
+        <tr
+          v-for="(step, i) in steps"
+          :key="`step-${i}`"
+        >
+          <td>{{ i }}</td>
+          <td>{{ step.value }}</td>
           <td>
             <!-- VIEWER -->
             <div class="ket-viewer">
               <ket-viewer
-                :photons="photons"
-                :show-legend="false"
-                :show-table="false"
-                :selected-style="selectedStyle"
-              />
-            </div>
-          <!-- VIEWER END -->
-          </td>
-        </tr>
-        <tr>
-          <td>02</td>
-          <td>0.302</td>
-          <td>
-            <!-- VIEWER -->
-            <div class="ket-viewer">
-              <ket-viewer
-                :photons="photons"
+                :photons="step.state"
                 :show-legend="false"
                 :show-table="false"
                 :selected-style="selectedStyle"
@@ -96,7 +83,7 @@ import KetViewer from '@/lib-components/ket-viewer.vue';
 export default class KetList extends Vue {
   // TODO: Currently kinda ugly
   // TODO: Move logic to engine Helpers
-  @Prop() readonly photons!: Photons
+  @Prop() readonly steps!: {value: number, state: Photons}[]
 
   // @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
