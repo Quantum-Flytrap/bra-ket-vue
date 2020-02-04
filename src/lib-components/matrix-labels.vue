@@ -46,26 +46,6 @@
       :width="size * total"
       :height="size * coordNames.length"
     />
-    <g
-      v-if="dimensionNames"
-      class="dimension-labels"
-      @click="$emit('swapDimension')"
-    >
-      <text
-        v-for="(dimensionName, j) in dimensionNames"
-        :key="`label-${dimensionName}`"
-        :transform="`translate(${spatialLength + scale(0.25)}, ${scale(j + 0.5)}) ${axisLabelTransformation}`"
-        class="dimension-label"
-      >
-        {{ dimensionName }}
-      </text>
-      <text
-        :transform="`translate(${spatialLength + scale(1.25)}, ${scale(1)}) ${invTransformation}`"
-        class="dimension-swap"
-      >
-        ⇄
-      </text>
-    </g>
   </g>
 </template>
 
@@ -87,8 +67,6 @@ export default class MatrixLabels extends Vue {
   @Prop({ required: true }) private coordNames!: string[][]
 
   @Prop({ default: () => [] }) private selected!: number[]
-
-  @Prop({ default: () => [] }) private dimensionNames!: number[]
 
   scale(i: number): number {
     return i * this.size;
@@ -187,24 +165,6 @@ text.coord {
   &.selected {
     fill: rgba(255, 255, 255, 1);
   }
-}
-
-.dimension-label {
-  font-size: 12px;
-  text-anchor: end;
-  dominant-baseline: central;
-  fill: white;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-.dimension-swap {
-  font-size: 18px;
-  text-anchor: middle;
-  dominant-baseline: central;
-  fill: white;
-  cursor: pointer;
-  text-transform: uppercase;
 }
 
 .label {

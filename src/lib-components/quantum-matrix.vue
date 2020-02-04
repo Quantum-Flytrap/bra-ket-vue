@@ -15,6 +15,12 @@
             :selected="selectedIn"
           />
         </g>
+        <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesOut.length) * size})`">
+          <matrix-dimensions
+            :dimensionNames="dimensionNamesOut"
+            location="left"
+          />
+        </g>
         <g :transform="`translate(${1 * size}, ${(coordNamesIn.length + 1) * size})`">
           <matrix-labels
             :size="size"
@@ -22,7 +28,6 @@
             location="left"
             :coordNames="coordNamesOut"
             :selected="selectedOut"
-            :dimensionNames="dimensionNamesOut"
           />
         </g>
         <g :transform="`translate(${(coordNamesOut.length + 1) * size}, ${(coordNamesIn.length + 1) * size})`">
@@ -66,35 +71,6 @@
     </div>
     <div class="legend-container">
       <div class="matrix-legend">
-        <svg
-          class="quantum-matrix"
-          :width="300"
-          :height="30"
-        >
-          <g
-            class="labels-out"
-            :transform="`translate(10, 20)`"
-          >
-            <g
-              class="dimension-labels"
-              @click="swapDimensions()"
-            >
-              <text
-                v-for="(dimensionName, j) in dimensionNamesOut"
-                :key="`label-${dimensionName}`"
-                :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
-                class="dimension-label"
-              >
-                {{ dimensionName }}
-              </text>
-              <text class="dimension-swap">
-                ⇅
-              </text>
-            </g>
-          </g>
-        </svg>
-      </div>
-      <div class="matrix-legend">
         <div class="legend-text">
           base change
         </div>
@@ -126,6 +102,7 @@ import { Operator } from 'quantum-tensors';
 import { colorComplex } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
+import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
 import ComplexLegend from '@/lib-components/complex-legend.vue';
 
@@ -139,6 +116,7 @@ interface IMatrixElement {
 @Component({
   components: {
     MatrixLabels,
+    MatrixDimensions,
     ViewerButton,
     ComplexLegend,
   },
