@@ -48,9 +48,9 @@ export default Vue.extend({
       :show-legend="false"
       :show-table="false"
     />
-    <quantum-matrix :operator="operator" />
-    <quantum-matrix :operator="operator2" />
-    <quantum-matrix :operator="operator3" />
+    <quantum-matrix :operator-raw="operator" />
+    <quantum-matrix :operator-raw="operator2" />
+    <quantum-matrix :operator-raw="operator3" />
     <ket-list :steps="steps" />
     <div />
   </div>
