@@ -4,8 +4,6 @@ import {
   Photons, Operator, Elements, Dimension,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
-// import CoordinateLegend from './lib-components/coordinate-legend.vue';
-// import ViewerButton from './lib-components/viewer-button.vue';
 import KetList from './lib-components/ket-list-viewer.vue';
 
 const sizeX = 8;
@@ -24,8 +22,6 @@ export default Vue.extend({
   components: {
     KetViewer,
     QuantumMatrix,
-    // CoordinateLegend,
-    // ViewerButton,
     KetList,
   },
   data() {
