@@ -236,13 +236,14 @@ export default class QuantumMatrix extends Vue {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 }
 .legend-container {
-  display: block;
+  //display: block;
+  margin-top: 40px;
 }
 .matrix-legend {
-  margin-top: 30px;
   padding-top: 10px;
+  padding-bottom: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.3);
-  width: 300px;
+  //width: 300px;
 }
 .legend-text {
   font-size: 12px;

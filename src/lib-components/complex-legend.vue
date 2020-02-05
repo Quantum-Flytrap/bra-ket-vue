@@ -1,7 +1,7 @@
 <template>
   <svg
     class="quantum-matrix"
-    :width="300"
+    :width="150"
     :height="100"
   >
     <g
@@ -37,7 +37,7 @@
           {{ Math.sqrt(re ** 2 + im ** 2 || 0).toFixed(3) }}
         </text>
       </g>
-      <g :transform="`translate(${scale(3)}, 0)`">
+      <g :transform="`translate(${scale(2.3)}, 0)`">
         <text
           class="label"
           :x="0"
