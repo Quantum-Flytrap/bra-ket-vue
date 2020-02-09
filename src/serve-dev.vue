@@ -39,6 +39,30 @@ const operator3 = Operator.outer([
   ], [Dimension.position(3, 'energy'), Dimension.polarization()]),
 ]);
 
+const opCNOT = Operator.fromSparseCoordNames(
+  [
+    ['00', '00', Cx(1)],
+    ['01', '01', Cx(1)],
+    ['10', '11', Cx(1)],
+    ['11', '10', Cx(1)],
+  ],
+  [Dimension.qubit(), Dimension.qubit()],
+);
+
+const opToffoli = Operator.fromSparseCoordNames(
+  [
+    ['000', '000', Cx(1)],
+    ['001', '001', Cx(1)],
+    ['010', '010', Cx(1)],
+    ['011', '011', Cx(1)],
+    ['100', '100', Cx(1)],
+    ['101', '101', Cx(1)],
+    ['111', '110', Cx(1)], // this and
+    ['110', '111', Cx(1)], // that differs from identity
+  ],
+  [Dimension.qubit(), Dimension.qubit(), Dimension.qubit()],
+);
+
 export default Vue.extend({
   name: 'ServeDev',
   components: {
@@ -52,6 +76,10 @@ export default Vue.extend({
       operator,
       operator2,
       operator3,
+      opSugar: Elements.sugarSolution(),
+      opMirror: Elements.mirror(0),
+      opCNOT,
+      opToffoli,
       steps: [
         { value: 1, state: state0 },
         { value: 0.5, state: state1 },
@@ -73,6 +101,10 @@ export default Vue.extend({
     <quantum-matrix :operator-raw="operator" />
     <quantum-matrix :operator-raw="operator2" />
     <quantum-matrix :operator-raw="operator3" />
+    <quantum-matrix :operator-raw="opSugar" />
+    <quantum-matrix :operator-raw="opMirror" />
+    <quantum-matrix :operator-raw="opCNOT" />
+    <quantum-matrix :operator-raw="opToffoli" />
     <ket-list :steps="steps" />
     <div />
   </div>
