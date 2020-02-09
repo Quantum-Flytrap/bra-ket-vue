@@ -29,6 +29,7 @@
               :show-legend="false"
               :show-table="false"
               :selected-style="selectedStyle"
+              :selected-pol-basis="selectedPolBasis"
             />
           </td>
         </tr>
@@ -48,9 +49,14 @@
         <view-button-group @selected="selectedStyle = $event" />
       </span>
       <span>
-        <viewer-button type="icon">→  ↑</viewer-button>
-        <viewer-button type="icon">↖ ↗</viewer-button>
-        <viewer-button type="icon">↺  ↻</viewer-button>
+        <span
+          v-for="basis in polBases"
+          :key="`${basis}`"
+          class="basis"
+          @click="selectedPolBasis = basis"
+        >
+          {{ basis }}
+        </span>
       </span>
     </div>
   </div>
@@ -81,6 +87,10 @@ export default class KetList extends Vue {
   styles = ['polar', 'cartesian', 'color']
 
   selectedStyle = 'polar'
+
+  selectedPolBasis = 'HV';
+
+  polBases = ['HV', 'DA', 'LR'];
 }
 </script>
 
@@ -200,5 +210,17 @@ td {
 
 h3 {
   font-size: 1rem;
+}
+
+.basis {
+  font-size: 12px;
+  text-anchor: middle;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: 5px;
+  margin: 5px;
 }
 </style>

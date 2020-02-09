@@ -168,7 +168,6 @@ export default class QuantumMatrix extends Vue {
     const rightU = Operator.outer(rightUs);
 
     this.operatorPolChanged = leftU.mulOp(this.operator).mulOp(rightU);
-    console.log('this.operatorPolChanged', this.operatorPolChanged.toString());
 
     return this.operatorPolChanged
       .permute(this.endianness)
