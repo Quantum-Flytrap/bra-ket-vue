@@ -53,6 +53,10 @@ export function colorComplex(re: number, im: number): string {
   return hslToHex(angleInDegrees, 100, 100 - 50 * r);
 }
 
+export function colorComplexPhaseToHue(re: number, im: number, saturation = 100, lightness = 50): string {
+  const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360;
+  return hslToHex(angleInDegrees, saturation, lightness);
+}
 /**
  * Convert angles to unicode arrow symbols
  * https://en.wikipedia.org/wiki/Template:Unicode_chart_Arrows

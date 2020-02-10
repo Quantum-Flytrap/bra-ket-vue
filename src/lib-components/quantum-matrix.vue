@@ -99,7 +99,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Operator, Ops } from 'quantum-tensors';
-import { colorComplex } from '@/lib-components/colors';
+import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
@@ -228,11 +228,11 @@ export default class QuantumMatrix extends Vue {
   }
 
   generateColor(re: number, im: number): string {
-    return colorComplex(re, im);
+    return colorComplexPhaseToHue(re, im, 100, 50);
   }
 
   rScale(re: number, im = 0): number {
-    return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2);
+    return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
   }
 
   /**
@@ -336,14 +336,19 @@ export default class QuantumMatrix extends Vue {
 }
 
 .basis {
-  font-size: 12px;
-  text-anchor: middle;
-  background-color: rgba(255, 255, 255, 0.25);
-  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
   text-transform: uppercase;
-  font-weight: 300;
-  padding: 5px;
-  margin: 5px;
+  font-size: 9px;
+  transition: 0.5s;
+  margin: 3px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 }
 </style>
