@@ -26,7 +26,10 @@
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife",
     "lint": "vue-cli-service lint",
-    "lint-fix": "vue-cli-service lint --fix"
+    "lint-fix": "vue-cli-service lint --fix",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "quantum-tensors": "^0.2.12",
