@@ -124,7 +124,7 @@ export default class ComplexLegend extends Vue {
   }
 
   rScale(re: number, im = 0): number {
-    return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2);
+    return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
   }
 }
 </script>

@@ -28,7 +28,7 @@
               :photons="step.state"
               :show-legend="false"
               :show-table="false"
-              :selected-style="selectedStyle"
+              :selected-option="selectedOption"
               :selected-pol-basis="selectedPolBasis"
             />
           </td>
@@ -38,7 +38,7 @@
     <coordinate-legend
       v-if="showLegend"
       class="legend-list"
-      :selected-style="selectedStyle"
+      :selected-option="selectedOption"
     />
     <div class="btn-legend-group">
       <span class="btn-legend">view</span>
@@ -46,7 +46,10 @@
     </div>
     <div class="btn-group">
       <span>
-        <view-button-group @selected="selectedStyle = $event" />
+        <view-button-group
+          :options="['polar', 'cartesian', 'color']"
+          @selected="selectedOption = $event"
+        />
       </span>
       <span>
         <span
@@ -84,9 +87,9 @@ export default class KetList extends Vue {
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
-  styles = ['polar', 'cartesian', 'color']
+  options = ['polar', 'cartesian', 'color']
 
-  selectedStyle = 'polar'
+  selectedOption = 'polar'
 
   selectedPolBasis = 'HV';
 
@@ -213,14 +216,19 @@ h3 {
 }
 
 .basis {
-  font-size: 12px;
-  text-anchor: middle;
-  background-color: rgba(255, 255, 255, 0.25);
-  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
   text-transform: uppercase;
-  font-weight: 300;
-  padding: 5px;
-  margin: 5px;
+  font-size: 9px;
+  transition: 0.5s;
+  margin: 3px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 }
 </style>
