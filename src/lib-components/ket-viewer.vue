@@ -7,7 +7,10 @@
       v-if="showTable"
       class="btn-group"
     >
-      <view-button-group @selected="selectedStyle = $event" />
+      <view-button-group
+        :options="['polar', 'cartesian', 'color']"
+        @selected="selectedOption = $event"
+      />
     </div>
     <div class="quantum-state-viewer">
       <span
@@ -16,19 +19,19 @@
         class="ket-component"
       >
         <span
-          v-if="selectedStyle === 'polar'"
+          v-if="selectedOption === 'polar'"
           class="ket-complex"
         >
           {{ renderComplexPolar(ketComponent.amplitude) }}
         </span>
         <span
-          v-if="selectedStyle === 'cartesian'"
+          v-if="selectedOption === 'cartesian'"
           class="ket-complex"
         >
           {{ renderComplexCartesian(ketComponent.amplitude) }}
         </span>
         <svg
-          v-if="selectedStyle === 'color'"
+          v-if="selectedOption === 'color'"
           height="16"
           width="16"
           class="ket-disk"
@@ -59,7 +62,7 @@
     <div v-if="showLegend && ketComponents.length > 0">
       <coordinate-legend
         class="legend"
-        :selected-style="selectedStyle"
+        :selected-option="selectedOption"
       />
     </div>
   </div>
@@ -143,11 +146,11 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: true }) readonly showTable!: boolean
 
-  @Prop({ default: 'polar' }) readonly selectedStyle!: string
+  @Prop({ default: 'polar' }) readonly selectedOption!: string
 
   @Prop({ default: 'HV' }) readonly selectedPolBasis!: string
 
-  styles = ['polar', 'cartesian', 'color']
+  options = ['polar', 'cartesian', 'color']
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -191,7 +194,6 @@ export default class KetViewer extends Vue {
   display: flex;
   flex-direction: column;
   width: 100%;
-  text-align: center;
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;
@@ -203,7 +205,6 @@ export default class KetViewer extends Vue {
     font-weight: 500;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     & .controls {
       font-size: 12px;
       color: white;
@@ -247,7 +248,6 @@ export default class KetViewer extends Vue {
   & .btn-group {
     text-align: center;
     display: flex;
-    justify-content: center;
     max-width: 100%;
     margin-bottom: 5px;
     margin-bottom: 10px;

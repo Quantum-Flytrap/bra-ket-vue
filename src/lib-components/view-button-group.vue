@@ -5,13 +5,13 @@
   >
     <div class="btn-group">
       <span
-        v-for="(style, index) in styles"
-        :key="`style-${index}`"
+        v-for="(option, index) in options"
+        :key="`option-${index}`"
         class="button"
-        :class="{ selected: style === selectedStyle }"
-        @click="$emit('selected', style)"
+        :class="{ selected: option === selectedOption }"
+        @click="$emit('selected', option)"
       >
-        {{ style }}
+        {{ option }}
       </span>
     </div>
   </div>
@@ -22,9 +22,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class ViewButtonGroup extends Vue {
-  @Prop({ default: 'polar' }) readonly selectedStyle!: string
+  @Prop({ default: 'polar' }) readonly selectedOption!: string
 
-  styles = ['polar', 'cartesian', 'color']
+  @Prop({ default: () => ['polar', 'cartesian', 'color'] }) readonly options!: string[]
 }
 </script>
 
