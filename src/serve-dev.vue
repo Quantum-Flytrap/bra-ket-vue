@@ -92,20 +92,30 @@ export default Vue.extend({
 
 <template>
   <div id="app">
-    <ket-viewer :photons="state" />
+    <h1>Ket Viewer</h1>
     <ket-viewer
       :photons="state"
       :show-legend="false"
       :show-table="false"
     />
-    <quantum-matrix :operator-raw="operator" />
-    <quantum-matrix :operator-raw="operator2" />
-    <quantum-matrix :operator-raw="operator3" />
-    <quantum-matrix :operator-raw="opSugar" />
-    <quantum-matrix :operator-raw="opMirror" />
-    <quantum-matrix :operator-raw="opCNOT" />
-    <quantum-matrix :operator-raw="opToffoli" />
+    <h1>Ket Viewer + controls + legend</h1>
+    <ket-viewer :photons="state" />
+    <h1>Ket List</h1>
     <ket-list :steps="steps" />
+    <h1>beamSplitter 50/50</h1>
+    <quantum-matrix :operator-raw="operator" />
+    <h1>Pauli Z operator for spin</h1>
+    <quantum-matrix :operator-raw="operator2" />
+    <h1>Another example</h1>
+    <quantum-matrix :operator-raw="operator3" />
+    <h1>Sugar Solution</h1>
+    <quantum-matrix :operator-raw="opSugar" />
+    <h1>Mirror</h1>
+    <quantum-matrix :operator-raw="opMirror" />
+    <h1>CNOT gate</h1>
+    <quantum-matrix :operator-raw="opCNOT" />
+    <h1>Toffoli gate</h1>
+    <quantum-matrix :operator-raw="opToffoli" />
     <div />
   </div>
 </template>
@@ -115,16 +125,32 @@ export default Vue.extend({
   background-color: #242424; //GREY
   // background-color: #210235; //QG DARK PURPLE
   // background-color: #2e006a; //QG BRIGHT PURPLE
+  padding-left: 80px;
+  padding-top: 30px;
 }
 .ket-viewer{
   max-width: 500px;
   padding: 30px;
 }
 .quantum-matrix{
-  margin: 30px;
+  max-width: 500px;
+  //padding: 30px;
 }
 .ket-list{
   max-width: 700px;
   padding: 30px;
+}
+h1 {
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  padding-top: 10px;
+  margin-top: 30px;
+  max-width: 1000px;
 }
 </style>
