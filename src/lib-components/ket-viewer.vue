@@ -67,7 +67,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Complex, Photons, VectorEntry } from 'quantum-tensors';
+import {
+  Complex, Photons, VectorEntry, Vector, Ops,
+} from 'quantum-tensors';
 import { range } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
@@ -88,10 +90,22 @@ interface IKetComponent {
   particleCoords: IParticleCoord[]
 }
 
+function changePolBasisAll(basis: string, vec: Vector): Vector {
+  let newVec = vec.copy();
+  vec.dimensions.forEach((dimension, i) => {
+    if (dimension.name === 'polarization' && basis === 'DA') {
+      newVec = Ops.basisToDA.mulVecPartial([i], newVec);
+    } else if (dimension.name === 'polarization' && basis === 'LR') {
+      newVec = Ops.basisToLR.mulVecPartial([i], newVec);
+    }
+  });
+  return newVec;
+}
+
 // from QuantumFrame.ts
-const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] => {
+const ketComponents = (photons: Photons, basis = 'HV', probThreshold = 1e-4): IKetComponent[] => {
   const ns = range(photons.nPhotons);
-  return photons.vector.entries
+  return changePolBasisAll(basis, photons.vector).entries
     .map(
       (entry: VectorEntry): IKetComponent => {
         const particleCoords = ns.map(
@@ -113,7 +127,6 @@ const ketComponents = (photons: Photons, probThreshold = 1e-4): IKetComponent[] 
     );
 };
 
-
 @Component({
   components: {
     CoordinateLegend,
@@ -131,6 +144,8 @@ export default class KetViewer extends Vue {
   @Prop({ default: true }) readonly showTable!: boolean
 
   @Prop({ default: 'polar' }) readonly selectedStyle!: string
+
+  @Prop({ default: 'HV' }) readonly selectedPolBasis!: string
 
   styles = ['polar', 'cartesian', 'color']
 
@@ -160,11 +175,11 @@ export default class KetViewer extends Vue {
   }
 
   renderPol(pol: number): string {
-    return ['H', 'V'][pol];
+    return this.selectedPolBasis[pol];
   }
 
   get ketComponents(): IKetComponent[] {
-    return ketComponents(this.photons);
+    return ketComponents(this.photons, this.selectedPolBasis);
   }
 }
 </script>

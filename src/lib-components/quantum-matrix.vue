@@ -76,15 +76,14 @@
           base change
         </div>
         <div>
-          <viewer-button type="icon">
-            →  ↑
-          </viewer-button>
-          <viewer-button type="icon">
-            ↖ ↗
-          </viewer-button>
-          <viewer-button type="icon">
-            ↺  ↻
-          </viewer-button>
+          <span
+            v-for="basis in polBases"
+            :key="`${basis}`"
+            class="basis"
+            @click="selectedPolBasis = basis"
+          >
+            {{ basis }}
+          </span>
         </div>
       </div>
       <div class="matrix-legend">
@@ -99,7 +98,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Operator } from 'quantum-tensors';
+import { Operator, Ops } from 'quantum-tensors';
 import { colorComplex } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
@@ -130,16 +129,50 @@ export default class QuantumMatrix extends Vue {
 
   operator = this.operatorRaw; // copy?
 
+  operatorPolChanged = this.operator; // this is even dirtier
+
+  selectedPolBasis = 'HV';
+
+  polBases = ['HV', 'DA', 'LR'];
+
+
   endianness = range(this.operator.dimensionsOut.length).reverse(); // if small endian convention
 
   /**
    * Temporary, to convert from operator.
    * Warning: permute only to solve endian issue of quantum-tensors 0.2.9 and below
+   * Got even dirtier....
    */
   get matrixElements(): IMatrixElement[] {
-    return this.operator
+    const leftUs: Operator[] = this.operator.dimensionsOut.map((dimension) => {
+      if (dimension.name === 'polarization' && this.selectedPolBasis === 'DA') {
+        return Ops.basisToDA;
+      }
+      if (dimension.name === 'polarization' && this.selectedPolBasis === 'LR') {
+        return Ops.basisToLR;
+      }
+      return Operator.identity([dimension]);
+    });
+
+    const rightUs: Operator[] = this.operator.dimensionsIn.map((dimension) => {
+      if (dimension.name === 'polarization' && this.selectedPolBasis === 'DA') {
+        return Ops.basisToDA.dag();
+      }
+      if (dimension.name === 'polarization' && this.selectedPolBasis === 'LR') {
+        return Ops.basisToLR.dag();
+      }
+      return Operator.identity([dimension]);
+    });
+
+    const leftU = Operator.outer(leftUs);
+    const rightU = Operator.outer(rightUs);
+
+    this.operatorPolChanged = leftU.mulOp(this.operator).mulOp(rightU);
+
+    return this.operatorPolChanged
       .permute(this.endianness)
-      .toIndexIndexValues().map((entry) => ({
+      .toIndexIndexValues()
+      .map((entry) => ({
         i: entry.i,
         j: entry.j,
         re: entry.v.re,
@@ -150,11 +183,11 @@ export default class QuantumMatrix extends Vue {
   // ['→', '↑', '←', '↓'];
 
   get coordNamesIn(): string[][] {
-    return this.operator.coordNamesIn;
+    return this.operatorPolChanged.coordNamesIn;
   }
 
   get coordNamesOut(): string[][] {
-    return this.operator.coordNamesOut;
+    return this.operatorPolChanged.coordNamesOut;
   }
 
   get dimensionNamesOut(): string[] {
@@ -300,5 +333,17 @@ export default class QuantumMatrix extends Vue {
   cursor: default;
   text-transform: uppercase;
   font-weight: 300;
+}
+
+.basis {
+  font-size: 12px;
+  text-anchor: middle;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: 5px;
+  margin: 5px;
 }
 </style>

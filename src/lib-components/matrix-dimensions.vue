@@ -5,7 +5,7 @@
   >
     <text
       v-for="(dimensionName, i) in dimensionNames"
-      :key="`label-${dimensionName}`"
+      :key="`label-${dimensionName}-${i}`"
       class="dimension-label"
       :transform="`translate(${scale(0.25)}, ${scale(i + 0.5)}) ${axisLabelTransformation}`"
     >
