@@ -1,6 +1,6 @@
 <template>
   <div class="legend">
-    <span v-if="selectedStyle === 'color'">
+    <span v-if="selectedOption === 'color'">
       <span class="legend-coord-xy"> x,y coordinates</span>
       <span class="legend-dir">direction</span>
       <span class="legend-pol">polarization</span>
@@ -28,9 +28,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
   components: {},
 })
 export default class CoordinateLegend extends Vue {
-  @Prop({ default: 'polar' }) readonly selectedStyle!: string
+  @Prop({ default: 'polar' }) readonly selectedOption!: string
 
-  styles = ['polar', 'cartesian', 'color']
+  options = ['polar', 'cartesian', 'color']
 
   dimensions = [
     { name: 'amplitude (complex number)' },
