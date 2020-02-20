@@ -75,16 +75,39 @@
         <div class="legend-text">
           base change
         </div>
-        <div>
+        <p v-if="dimensionNamesOut.indexOf('polarization') > -1">
           <span
             v-for="basis in polBases"
             :key="`${basis}`"
             class="basis"
+            :class="{ selected: selectedPolBasis === basis }"
             @click="selectedPolBasis = basis"
           >
             {{ basis }}
           </span>
-        </div>
+        </p>
+        <p v-if="dimensionNamesOut.indexOf('spin') > -1">
+          <span
+            v-for="basis in spinBases"
+            :key="`${basis}`"
+            class="basis"
+            :class="{ selected: selectedSpinBasis === basis }"
+            @click="selectedSpinBasis = basis"
+          >
+            {{ basis }}
+          </span>
+        </p>
+        <p v-if="dimensionNamesOut.indexOf('qubit') > -1">
+          <span
+            v-for="basis in qubitBases"
+            :key="`${basis}`"
+            class="basis"
+            :class="{ selected: selectedQubitBasis === basis }"
+            @click="selectedQubitBasis = basis"
+          >
+            {{ basis }}
+          </span>
+        </p>
       </div>
       <div class="matrix-legend">
         <complex-legend
@@ -133,9 +156,23 @@ export default class QuantumMatrix extends Vue {
 
   polBases = ['HV', 'DA', 'LR'];
 
+  selectedSpinBasis = 'spin-z';
+
+  spinBases = ['spin-x', 'spin-y', 'spin-z'];
+
+  selectedQubitBasis = '01';
+
+  qubitBases = ['01', '+-', '+i-i'];
+
   get matrixElements(): IMatrixElement[] {
-    const basis = Basis.polarization(this.selectedPolBasis);
-    return basis.changeAllDimsOfOperator(this.operator)
+    const basisPol = Basis.polarization(this.selectedPolBasis);
+    const basisSpin = Basis.spin(this.selectedSpinBasis);
+    const basisQubit = Basis.qubit(this.selectedQubitBasis);
+    this.operator = basisQubit.changeAllDimsOfOperator(
+      basisSpin.changeAllDimsOfOperator(basisPol.changeAllDimsOfOperator(this.operator)),
+    );
+    // maybe also syntax op.toBasis({ polarization: 'HV', qubit: '+-' })
+    return this.operator
       .toIndexIndexValues()
       .map((entry) => ({
         i: entry.i,
@@ -311,6 +348,9 @@ export default class QuantumMatrix extends Vue {
   transition: 0.5s;
   margin: 3px;
   &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  &.selected {
     background: rgba(255, 255, 255, 0.3);
   }
 }
