@@ -35,7 +35,7 @@
           :class="{selected: isSelected(k * total / times[i] + multipliers[i] * j, multipliers[i])}"
           :transform="`translate(${scale(multipliers[i] * (j + 0.5))}, ${scale(0.5)}) ${invTransformation}`"
         >
-          {{ coord }}
+          {{ coordPrettier(coord) }}
         </text>
       </g>
     </g>
@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { range } from '@/lib-components/utils';
+import { range, coordPrettier } from '@/lib-components/utils';
 
 @Component({
   components: {},
@@ -150,6 +150,10 @@ export default class MatrixLabels extends Vue {
     return this.selected
       .map((x) => (pos <= x) && (x < pos + span))
       .reduce((a, b) => a || b, false);
+  }
+
+  coordPrettier(coord: string): string {
+    return coordPrettier(coord);
   }
 }
 </script>

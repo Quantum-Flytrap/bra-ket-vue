@@ -147,7 +147,6 @@ export default class QuantumMatrix extends Vue {
 
   get coordNamesIn(): string[][] {
     return this.operator.coordNamesIn;
-    // ['→', '↑', '←', '↓']
   }
 
   get coordNamesOut(): string[][] {
