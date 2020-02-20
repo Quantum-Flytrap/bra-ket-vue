@@ -4,7 +4,7 @@
     :transform="transformation"
   >
     <text
-      v-for="(dimensionName, i) in dimensionNames"
+      v-for="(dimensionName, i) in dimensionNamesNumbered"
       :key="`label-${dimensionName}-${i}`"
       class="dimension-label"
       :transform="`translate(${scale(0.25)}, ${scale(i + 0.5)}) ${axisLabelTransformation}`"
@@ -44,6 +44,21 @@ export default class MatrixDimensions extends Vue {
 
   get swaps(): number[] {
     return range(this.dimensionNames.length - 1);
+  }
+
+  /**
+   * When there are more dimensions with the same name, adding numbers to them,
+   * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
+   */
+  get dimensionNamesNumbered(): string[] {
+    const counter = new Map<string, number>();
+    return this.dimensionNames
+      .map((name): [string, number] => {
+        const count = 1 + (counter.get(name) || 0);
+        counter.set(name, count);
+        return [name, count];
+      })
+      .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
   }
 
   /**
