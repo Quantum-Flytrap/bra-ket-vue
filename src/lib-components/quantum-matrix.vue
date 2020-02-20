@@ -75,39 +75,22 @@
         <div class="legend-text">
           base change
         </div>
-        <p v-if="dimensionNamesOut.indexOf('polarization') > -1">
-          <span
-            v-for="basis in polBases"
-            :key="`${basis}`"
-            class="basis"
-            :class="{ selected: selectedPolBasis === basis }"
-            @click="selectedPolBasis = basis"
-          >
-            {{ basis }}
-          </span>
-        </p>
-        <p v-if="dimensionNamesOut.indexOf('spin') > -1">
-          <span
-            v-for="basis in spinBases"
-            :key="`${basis}`"
-            class="basis"
-            :class="{ selected: selectedSpinBasis === basis }"
-            @click="selectedSpinBasis = basis"
-          >
-            {{ basis }}
-          </span>
-        </p>
-        <p v-if="dimensionNamesOut.indexOf('qubit') > -1">
-          <span
-            v-for="basis in qubitBases"
-            :key="`${basis}`"
-            class="basis"
-            :class="{ selected: selectedQubitBasis === basis }"
-            @click="selectedQubitBasis = basis"
-          >
-            {{ basis }}
-          </span>
-        </p>
+        <div
+          v-for="bases in allBases"
+          :key="`basis-${bases.name}`"
+        >
+          <p v-if="dimensionNamesOut.indexOf(bases.name) > -1">
+            <span
+              v-for="basis in bases.availableBases"
+              :key="`${basis}`"
+              class="basis"
+              :class="{ selected: bases.selected === basis }"
+              @click="bases.selected = basis"
+            >
+              {{ basis }}
+            </span>
+          </p>
+        </div>
       </div>
       <div class="matrix-legend">
         <complex-legend
@@ -152,22 +135,16 @@ export default class QuantumMatrix extends Vue {
 
   operator = this.operatorRaw; // copy?
 
-  selectedPolBasis = 'HV';
-
-  polBases = ['HV', 'DA', 'LR'];
-
-  selectedSpinBasis = 'spin-z';
-
-  spinBases = ['spin-x', 'spin-y', 'spin-z'];
-
-  selectedQubitBasis = '01';
-
-  qubitBases = ['01', '+-', '+i-i'];
+  allBases = [
+    { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+    { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+    { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+  ]
 
   get matrixElements(): IMatrixElement[] {
-    const basisPol = Basis.polarization(this.selectedPolBasis);
-    const basisSpin = Basis.spin(this.selectedSpinBasis);
-    const basisQubit = Basis.qubit(this.selectedQubitBasis);
+    const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
+    const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
+    const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
     this.operator = basisQubit.changeAllDimsOfOperator(
       basisSpin.changeAllDimsOfOperator(basisPol.changeAllDimsOfOperator(this.operator)),
     );
