@@ -71,7 +71,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
-  Complex, Photons, VectorEntry, Vector, Ops,
+  Complex, Photons, VectorEntry, Basis,
 } from 'quantum-tensors';
 import { range } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
@@ -93,22 +93,11 @@ interface IKetComponent {
   particleCoords: IParticleCoord[]
 }
 
-function changePolBasisAll(basis: string, vec: Vector): Vector {
-  let newVec = vec.copy();
-  vec.dimensions.forEach((dimension, i) => {
-    if (dimension.name === 'polarization' && basis === 'DA') {
-      newVec = Ops.basisToDA.mulVecPartial([i], newVec);
-    } else if (dimension.name === 'polarization' && basis === 'LR') {
-      newVec = Ops.basisToLR.mulVecPartial([i], newVec);
-    }
-  });
-  return newVec;
-}
-
 // from QuantumFrame.ts
-const ketComponents = (photons: Photons, basis = 'HV', probThreshold = 1e-4): IKetComponent[] => {
+const ketComponents = (photons: Photons, basisStr = 'HV', probThreshold = 1e-4): IKetComponent[] => {
   const ns = range(photons.nPhotons);
-  return changePolBasisAll(basis, photons.vector).entries
+  const basis = Basis.polarization(basisStr);
+  return basis.changeAllDimsOfVector(photons.vector).entries
     .map(
       (entry: VectorEntry): IKetComponent => {
         const particleCoords = ns.map(

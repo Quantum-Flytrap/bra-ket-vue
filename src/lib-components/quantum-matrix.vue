@@ -98,7 +98,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Operator, Ops } from 'quantum-tensors';
+import { Operator, Basis } from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
@@ -129,48 +129,13 @@ export default class QuantumMatrix extends Vue {
 
   operator = this.operatorRaw; // copy?
 
-  operatorPolChanged = this.operator; // this is even dirtier
-
   selectedPolBasis = 'HV';
 
   polBases = ['HV', 'DA', 'LR'];
 
-
-  endianness = range(this.operator.dimensionsOut.length).reverse(); // if small endian convention
-
-  /**
-   * Temporary, to convert from operator.
-   * Warning: permute only to solve endian issue of quantum-tensors 0.2.9 and below
-   * Got even dirtier....
-   */
   get matrixElements(): IMatrixElement[] {
-    const leftUs: Operator[] = this.operator.dimensionsOut.map((dimension) => {
-      if (dimension.name === 'polarization' && this.selectedPolBasis === 'DA') {
-        return Ops.basisToDA;
-      }
-      if (dimension.name === 'polarization' && this.selectedPolBasis === 'LR') {
-        return Ops.basisToLR;
-      }
-      return Operator.identity([dimension]);
-    });
-
-    const rightUs: Operator[] = this.operator.dimensionsIn.map((dimension) => {
-      if (dimension.name === 'polarization' && this.selectedPolBasis === 'DA') {
-        return Ops.basisToDA.dag();
-      }
-      if (dimension.name === 'polarization' && this.selectedPolBasis === 'LR') {
-        return Ops.basisToLR.dag();
-      }
-      return Operator.identity([dimension]);
-    });
-
-    const leftU = Operator.outer(leftUs);
-    const rightU = Operator.outer(rightUs);
-
-    this.operatorPolChanged = leftU.mulOp(this.operator).mulOp(rightU);
-
-    return this.operatorPolChanged
-      .permute(this.endianness)
+    const basis = Basis.polarization(this.selectedPolBasis);
+    return basis.changeAllDimsOfOperator(this.operator)
       .toIndexIndexValues()
       .map((entry) => ({
         i: entry.i,
@@ -180,14 +145,13 @@ export default class QuantumMatrix extends Vue {
       }));
   }
 
-  // ['→', '↑', '←', '↓'];
-
   get coordNamesIn(): string[][] {
-    return this.operatorPolChanged.coordNamesIn;
+    return this.operator.coordNamesIn;
+    // ['→', '↑', '←', '↓']
   }
 
   get coordNamesOut(): string[][] {
-    return this.operatorPolChanged.coordNamesOut;
+    return this.operator.coordNamesOut;
   }
 
   get dimensionNamesOut(): string[] {
