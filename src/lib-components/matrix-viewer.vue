@@ -104,7 +104,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Operator, Basis } from 'quantum-tensors';
+import { Dimension, Operator, Basis } from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
@@ -131,7 +131,7 @@ interface IMatrixElement {
 export default class MatrixViewer extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
-  @Prop({ default: () => [[]] }) private operatorRaw!: Operator
+  @Prop({ default: () => Operator.identity([Dimension.qubit()]) }) private operatorRaw!: Operator
 
   operator = this.operatorRaw; // copy?
 
