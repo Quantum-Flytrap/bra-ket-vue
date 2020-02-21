@@ -53,6 +53,8 @@ const external = [
   // list external dependencies, exactly the way it is written in the import statement.
   // eg. 'jquery'
   'vue',
+  'vue-property-decorator',
+  'quantum-tensors',
 ];
 
 // UMD/IIFE shared settings: output.globals
@@ -61,6 +63,8 @@ const globals = {
   // Provide global variable names to replace your external imports
   // eg. jquery: '$'
   vue: 'Vue',
+  'vue-property-decorator': 'vuePropertyDecorator',
+  'quantum-tensors': 'quantumTensors',
 };
 
 // Customize configs for individual targets
