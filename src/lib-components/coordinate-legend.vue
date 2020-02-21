@@ -1,43 +1,44 @@
 <template>
   <div class="legend">
-    <span v-if="selectedOption === 'color'">
-      <span class="legend-coord-xy"> x,y coordinates</span>
-      <span class="legend-dir">direction</span>
-      <span class="legend-pol">polarization</span>
-    </span>
-    <span v-else>
+    <span v-if="complexStyle !== 'color'">
       <span class="legend-complex">amplitude (complex number)</span>
-      <span class="legend-coord-xy"> x,y coordinates</span>
-      <span class="legend-dir">direction</span>
-      <span class="legend-pol">polarization</span>
     </span>
-    <!-- <span
-      v-for="dim in dimensions"
-      :key="`dim-label-${dim.name}`"
-      class="dim-label">
-      {{ dim.name }}
-    </span> -->
+    <span>
+      <span
+        v-for="(dimName, i) in dimensionNames"
+        :key="`legend-dimension-${dimName}-${i}`"
+        class="legend-dimension"
+        :style="{ color: dimensionNameToColor(dimName) }"
+      >
+        {{ dimName }}
+      </span>
+    </span>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
-
 @Component({
   components: {},
 })
 export default class CoordinateLegend extends Vue {
-  @Prop({ default: 'polar' }) readonly selectedOption!: string
+  @Prop({ default: 'polar' }) readonly complexStyle!: string
 
-  options = ['polar', 'cartesian', 'color']
+  @Prop({ default: [] }) readonly dimensionNames!: string[]
 
-  dimensions = [
-    { name: 'amplitude (complex number)' },
-    { name: 'x,y coordinates' },
-    { name: 'direction' },
-    { name: 'polarization' },
-  ]
+  dimensionNameToColor(dimName: string): string {
+    switch (dimName) {
+      case 'direction':
+        return '#ff0055';
+      case 'polarization':
+        return '#ff9100';
+      case 'spin':
+        return '#0091ff';
+      default:
+        return '#ffffff';
+    }
+  }
 }
 </script>
 
@@ -57,17 +58,9 @@ export default class CoordinateLegend extends Vue {
     color: #9d40ff;
     margin-right: 5px;
   }
-  & .legend-coord-xy {
+  & .legend-dimension {
     color: #fff;
     margin: 5px;
-  }
-  & .legend-dir {
-    color: #ff0055;
-    margin: 5px;
-  }
-  & .legend-pol {
-    color: #ff9100;
-    margin-left: 5px;
   }
 }
 </style>
