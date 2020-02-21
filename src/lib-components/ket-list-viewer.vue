@@ -29,7 +29,7 @@
               :show-legend="false"
               :show-table="false"
               :selected-option="selectedOption"
-              :selected-pol-basis="selectedPolBasis"
+              :all-bases="allBases"
             />
           </td>
         </tr>
@@ -53,14 +53,22 @@
         />
       </span>
       <span>
-        <span
-          v-for="basis in polBases"
-          :key="`${basis}`"
-          class="basis"
-          @click="selectedPolBasis = basis"
+        <div
+          v-for="bases in allBases"
+          :key="`basis-${bases.name}`"
         >
-          {{ basis }}
-        </span>
+          <span v-if="dimensionNames.indexOf(bases.name) > -1">
+            <span
+              v-for="basis in bases.availableBases"
+              :key="`${basis}`"
+              class="basis"
+              :class="{ selected: bases.selected === basis }"
+              @click="bases.selected = basis"
+            >
+              {{ basis }}
+            </span>
+          </span>
+        </div>
       </span>
     </div>
   </div>
@@ -92,9 +100,11 @@ export default class KetList extends Vue {
 
   selectedOption = 'polar'
 
-  selectedPolBasis = 'HV';
-
-  polBases = ['HV', 'DA', 'LR'];
+  allBases = [
+    { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+    { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+    { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+  ]
 
   get dimensionNames(): string[] {
     if (this.steps.length === 0) {
@@ -236,6 +246,9 @@ h3 {
   transition: 0.5s;
   margin: 3px;
   &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  &.selected {
     background: rgba(255, 255, 255, 0.3);
   }
 }
