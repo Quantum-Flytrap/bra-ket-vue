@@ -128,7 +128,7 @@ interface IMatrixElement {
   },
 })
 
-export default class QuantumMatrix extends Vue {
+export default class MatrixViewer extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
   @Prop({ default: () => [[]] }) private operatorRaw!: Operator

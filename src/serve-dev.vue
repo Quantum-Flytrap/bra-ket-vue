@@ -3,7 +3,7 @@ import Vue from 'vue';
 import {
   Photons, Vector, Operator, Elements, Dimension, Cx, Gates,
 } from 'quantum-tensors';
-import { KetViewer, QuantumMatrix } from '@/entry';
+import { KetViewer, MatrixViewer } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
 
 const sizeX = 8;
@@ -56,7 +56,7 @@ export default Vue.extend({
   name: 'ServeDev',
   components: {
     KetViewer,
-    QuantumMatrix,
+    MatrixViewer,
     KetList,
   },
   data() {
@@ -103,19 +103,19 @@ export default Vue.extend({
     <h1>Ket List Quantum Computing</h1>
     <ket-list :steps="stepsQuantumComputing" />
     <h1>beamSplitter 50/50</h1>
-    <quantum-matrix :operator-raw="operator" />
+    <matrix-viewer :operator-raw="operator" />
     <h1>Pauli Z operator for spin</h1>
-    <quantum-matrix :operator-raw="operator2" />
+    <matrix-viewer :operator-raw="operator2" />
     <h1>Another example</h1>
-    <quantum-matrix :operator-raw="operator3" />
+    <matrix-viewer :operator-raw="operator3" />
     <h1>Sugar Solution</h1>
-    <quantum-matrix :operator-raw="opSugar" />
+    <matrix-viewer :operator-raw="opSugar" />
     <h1>Mirror</h1>
-    <quantum-matrix :operator-raw="opMirror" />
+    <matrix-viewer :operator-raw="opMirror" />
     <h1>CNOT gate</h1>
-    <quantum-matrix :operator-raw="opCNOT" />
+    <matrix-viewer :operator-raw="opCNOT" />
     <h1>Toffoli gate</h1>
-    <quantum-matrix :operator-raw="opToffoli" />
+    <matrix-viewer :operator-raw="opToffoli" />
     <div />
   </div>
 </template>
