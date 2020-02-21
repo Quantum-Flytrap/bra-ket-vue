@@ -76,10 +76,10 @@ export default Vue.extend({
         { value: 0.25, vector: state.vector },
       ],
       stepsQuantumComputing: [
-        { value: 1, vector: qc0 },
-        { value: 1, vector: qc1 },
-        { value: 1, vector: qc2 },
-        { value: 1, vector: qc3 },
+        { value: 'initial state', vector: qc0 },
+        { value: 'Haadamard on 1st qubit', vector: qc1 },
+        { value: 'CNOT on 1st and 2nd qubit', vector: qc2 },
+        { value: 'Toffoli gate on all qubits', vector: qc3 },
       ],
     };
   },
