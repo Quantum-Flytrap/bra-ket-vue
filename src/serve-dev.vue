@@ -90,7 +90,7 @@ export default Vue.extend({
   <div id="app">
     <h1>Ket Viewer</h1>
     <ket-viewer
-      :photons="state"
+      :vector="state.vector"
       :show-legend="false"
       :show-table="false"
     />

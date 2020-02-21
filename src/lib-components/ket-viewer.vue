@@ -74,6 +74,18 @@ interface IKetComponent {
   coordStrs: string[];
 }
 
+interface IBasisSelector {
+    name: string;
+    availableBases: string[];
+    selected: string;
+}
+
+const allBasesDefault: IBasisSelector[] = [
+  { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+  { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+  { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+];
+
 @Component({
   components: {
     CoordinateLegend,
@@ -90,7 +102,7 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: 'polar' }) readonly selectedOption!: string
 
-  @Prop({ default: 'HV' }) readonly selectedPolBasis!: string
+  @Prop({ default: () => allBasesDefault }) readonly allBases!: IBasisSelector[]
 
   options = ['polar', 'polarTau', 'cartesian', 'color']
 
@@ -129,12 +141,20 @@ export default class KetViewer extends Vue {
   }
 
   get ketComponents(): IKetComponent[] {
+    if (!this.vector) {
+      return [];
+    }
     const probThreshold = 1e-4;
-    const basis = Basis.polarization(this.selectedPolBasis);
-    return basis.changeAllDimsOfVector(this.vector).entries
+    const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
+    const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
+    const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
+    const rotatedVector = basisQubit.changeAllDimsOfVector(
+      basisSpin.changeAllDimsOfVector(basisPol.changeAllDimsOfVector(this.vector)),
+    );
+    return rotatedVector.entries
       .map((entry: VectorEntry): IKetComponent => ({
         amplitude: entry.value,
-        coordStrs: entry.coord.map((c: number, dim: number) => this.vector.coordNames[dim][c]),
+        coordStrs: entry.coord.map((c: number, dim: number) => rotatedVector.coordNames[dim][c]),
       }))
       .filter((d) => d.amplitude.r ** 2 > probThreshold);
   }
