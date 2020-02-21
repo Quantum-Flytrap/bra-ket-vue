@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Photons, Operator, Elements, Dimension, Cx, Gates,
+  Photons, Vector, Operator, Elements, Dimension, Cx, Gates,
 } from 'quantum-tensors';
 import { KetViewer, QuantumMatrix } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
@@ -39,6 +39,19 @@ const operator3 = Operator.outer([
   ], [Dimension.position(3, 'energy'), Dimension.polarization()]),
 ]);
 
+const singlet = Vector.fromSparseCoordNames([
+  ['ud', Cx(1)],
+  ['du', Cx(-1)],
+], [Dimension.spin(), Dimension.spin()]).normalize();
+
+const qc0 = Vector.fromSparseCoordNames([
+  ['000', Cx(1)],
+], [Dimension.qubit(), Dimension.qubit(), Dimension.qubit()]);
+
+const qc1 = Gates.H().mulVecPartial([0], qc0);
+const qc2 = Gates.CX().mulVecPartial([0, 1], qc1);
+const qc3 = Gates.CCX().mulVec(qc2);
+
 export default Vue.extend({
   name: 'ServeDev',
   components: {
@@ -49,6 +62,7 @@ export default Vue.extend({
   data() {
     return {
       state,
+      singlet,
       operator,
       operator2,
       operator3,
@@ -60,6 +74,12 @@ export default Vue.extend({
         { value: 1, vector: state0.vector },
         { value: 0.5, vector: state1.vector },
         { value: 0.25, vector: state.vector },
+      ],
+      stepsQuantumComputing: [
+        { value: 1, vector: qc0 },
+        { value: 1, vector: qc1 },
+        { value: 1, vector: qc2 },
+        { value: 1, vector: qc3 },
       ],
     };
   },
@@ -76,8 +96,12 @@ export default Vue.extend({
     />
     <h1>Ket Viewer + controls + legend</h1>
     <ket-viewer :vector="state.vector" />
+    <h1>Ket Viewer for a singlet state</h1>
+    <ket-viewer :vector="singlet" />
     <h1>Ket List</h1>
     <ket-list :steps="steps" />
+    <h1>Ket List Quantum Computing</h1>
+    <ket-list :steps="stepsQuantumComputing" />
     <h1>beamSplitter 50/50</h1>
     <quantum-matrix :operator-raw="operator" />
     <h1>Pauli Z operator for spin</h1>

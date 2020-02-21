@@ -38,7 +38,8 @@
     <coordinate-legend
       v-if="showLegend"
       class="legend-list"
-      :selected-option="selectedOption"
+      :complex-style="selectedOption"
+      :dimension-names="dimensionNames"
     />
     <div class="btn-legend-group">
       <span class="btn-legend">view</span>
@@ -47,7 +48,7 @@
     <div class="btn-group">
       <span>
         <view-button-group
-          :options="['polar', 'cartesian', 'color']"
+          :options="options"
           @selected="selectedOption = $event"
         />
       </span>
@@ -83,17 +84,24 @@ import KetViewer from '@/lib-components/ket-viewer.vue';
 })
 
 export default class KetList extends Vue {
-  @Prop() readonly steps!: {value: number, vector: Vector}[]
+  @Prop({ default: () => [] }) readonly steps!: {value: number, vector: Vector}[]
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
-  options = ['polar', 'cartesian', 'color']
+  options = ['polar', 'polarTau', 'cartesian', 'color']
 
   selectedOption = 'polar'
 
   selectedPolBasis = 'HV';
 
   polBases = ['HV', 'DA', 'LR'];
+
+  get dimensionNames(): string[] {
+    if (this.steps.length === 0) {
+      return [];
+    }
+    return this.steps[0].vector.names;
+  }
 }
 </script>
 

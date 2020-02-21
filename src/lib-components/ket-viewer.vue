@@ -44,7 +44,7 @@
             :key="`ket-component-${i}-${coordStr}`"
             class="ket-coord"
             :style="{ color: dimensionNameToColor(dimensionNames[i]) }"
-          >{{ coordStr }}</span>
+          >{{ coordPrettier(coordStr) }}</span>
           <span class="ket-parenthesis">⟩</span>
         </span>
       </span>
@@ -52,7 +52,8 @@
     <div v-if="showLegend">
       <coordinate-legend
         class="legend"
-        :selected-option="selectedOption"
+        :complex-style="selectedOption"
+        :dimension-names="dimensionNames"
       />
     </div>
   </div>
@@ -63,6 +64,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
   Complex, Vector, VectorEntry, Basis,
 } from 'quantum-tensors';
+import { coordPrettier } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
@@ -107,6 +109,10 @@ export default class KetViewer extends Vue {
   complexToColor(z: Complex): string {
     const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
     return hslToHex(angleInDegrees, 100, 50);
+  }
+
+  coordPrettier(coord: string): string {
+    return coordPrettier(coord);
   }
 
   dimensionNameToColor(dimName: string): string {
