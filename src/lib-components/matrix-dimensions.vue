@@ -34,7 +34,7 @@ import { range } from '@/lib-components/utils';
 export default class MatrixDimensions extends Vue {
   @Prop({ default: () => 40 }) private size!: number
 
-  @Prop({ required: true }) private location!: string
+  @Prop({ required: true, default: 'top' }) private location!: string
 
   @Prop({ default: () => [] }) private dimensionNames!: string[]
 

@@ -62,9 +62,9 @@ export default class MatrixLabels extends Vue {
 
   @Prop({ default: () => '' }) private axisLabel!: string
 
-  @Prop({ required: true }) private location!: string
+  @Prop({ required: true, default: 'top' }) private location!: string
 
-  @Prop({ required: true }) private coordNames!: string[][]
+  @Prop({ required: true, default: [[]] }) private coordNames!: string[][]
 
   @Prop({ default: () => [] }) private selected!: number[]
 

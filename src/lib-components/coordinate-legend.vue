@@ -25,7 +25,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class CoordinateLegend extends Vue {
   @Prop({ default: 'polar' }) readonly complexStyle!: string
 
-  @Prop({ default: [] }) readonly dimensionNames!: string[]
+  @Prop({ default: () => [] }) readonly dimensionNames!: string[]
 
   dimensionNameToColor(dimName: string): string {
     switch (dimName) {

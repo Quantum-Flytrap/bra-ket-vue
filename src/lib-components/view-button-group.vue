@@ -24,7 +24,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export default class ViewButtonGroup extends Vue {
   @Prop({ default: 'polar' }) readonly selectedOption!: string
 
-  @Prop({ default: () => ['polar', 'cartesian', 'color'] }) readonly options!: string[]
+  @Prop({ default: () => ['a', 'b', 'c'] }) readonly options!: string[]
 }
 </script>
 

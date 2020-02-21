@@ -62,7 +62,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
-  Complex, Vector, VectorEntry, Basis,
+  Dimension, Complex, Vector, VectorEntry, Basis,
 } from 'quantum-tensors';
 import { coordPrettier } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
@@ -94,7 +94,7 @@ const allBasesDefault: IBasisSelector[] = [
 })
 
 export default class KetViewer extends Vue {
-  @Prop() readonly vector!: Vector
+  @Prop({ default: Vector.indicator([Dimension.qubit()], '0') }) readonly vector!: Vector
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
