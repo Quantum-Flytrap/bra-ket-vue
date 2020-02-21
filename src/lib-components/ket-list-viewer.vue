@@ -84,7 +84,7 @@ import KetViewer from '@/lib-components/ket-viewer.vue';
 })
 
 export default class KetList extends Vue {
-  @Prop({ default: () => [] }) readonly steps!: {value: number, vector: Vector}[]
+  @Prop({ default: () => [] }) readonly steps!: {value: number | string, vector: Vector}[]
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
