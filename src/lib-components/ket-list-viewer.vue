@@ -25,7 +25,7 @@
           <td>
             <ket-viewer
               class="ket-viewer"
-              :photons="step.state"
+              :vector="step.vector"
               :show-legend="false"
               :show-table="false"
               :selected-option="selectedOption"
@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Photons } from 'quantum-tensors';
+import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewerButton from '@/lib-components/viewer-button.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
@@ -83,7 +83,7 @@ import KetViewer from '@/lib-components/ket-viewer.vue';
 })
 
 export default class KetList extends Vue {
-  @Prop() readonly steps!: {value: number, state: Photons}[]
+  @Prop() readonly steps!: {value: number, vector: Vector}[]
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
