@@ -43,23 +43,19 @@
             :fill="complexToColor(ketComponent.amplitude)"
           />
         </svg>
-        <span
-          v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
-          :key="`ket-component-${pIndex}`"
-          class="ket-coord"
-        >
-          | {{ particleCoord.x }},{{ particleCoord.y }}
-          <span class="ket-dir">
-            {{ renderDir(particleCoord.dir) }}
-          </span>
-          <span class="ket-pol">
-            {{ renderPol(particleCoord.pol) }}
-          </span>
-          ⟩
+        <span class="ket-ket">
+          <span class="ket-parenthesis">|</span>
+          <span
+            v-for="(coordStr, i) in ketComponent.coordStrs"
+            :key="`ket-component-${i}-${coordStr}`"
+            class="ket-coord"
+            :style="{ color: dimensionNameToColor(dimensionNames[i]) }"
+          >{{ coordStr }}</span>
+          <span class="ket-parenthesis">⟩</span>
         </span>
       </span>
     </div>
-    <div v-if="showLegend && ketComponents.length > 0">
+    <div v-if="showLegend">
       <coordinate-legend
         class="legend"
         :selected-option="selectedOption"
@@ -71,53 +67,16 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 import {
-  Complex, Photons, VectorEntry, Basis,
+  Complex, Vector, VectorEntry, Basis,
 } from 'quantum-tensors';
-import { range } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
 
-// from interfaces.ts
-interface IParticleCoord {
-  kind: string // for now only 'photon'
-  x: number
-  y: number
-  dir: number // 0: > 1: ^, 2: <. 3: v
-  pol: number // 0: H, 1: V
-}
-
-// from QuantumFrame.ts
 interface IKetComponent {
-  amplitude: Complex
-  particleCoords: IParticleCoord[]
+  amplitude: Complex;
+  coordStrs: string[];
 }
-
-// from QuantumFrame.ts
-const ketComponents = (photons: Photons, basisStr = 'HV', probThreshold = 1e-4): IKetComponent[] => {
-  const ns = range(photons.nPhotons);
-  const basis = Basis.polarization(basisStr);
-  return basis.changeAllDimsOfVector(photons.vector).entries
-    .map(
-      (entry: VectorEntry): IKetComponent => {
-        const particleCoords = ns.map(
-          (i: number): IParticleCoord => {
-            const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
-            return {
-              kind: 'photon', x, y, dir, pol,
-            };
-          },
-        );
-        return {
-          amplitude: entry.value,
-          particleCoords,
-        };
-      },
-    )
-    .filter(
-      (ketComponent: IKetComponent): boolean => ketComponent.amplitude.r ** 2 > probThreshold,
-    );
-};
 
 @Component({
   components: {
@@ -127,9 +86,7 @@ const ketComponents = (photons: Photons, basisStr = 'HV', probThreshold = 1e-4):
 })
 
 export default class KetViewer extends Vue {
-  // TODO: Currently kinda ugly
-  // TODO: Move logic to engine Helpers
-  @Prop() readonly photons!: Photons
+  @Prop() readonly vector!: Vector
 
   @Prop({ default: true }) readonly showLegend!: boolean
 
@@ -140,6 +97,10 @@ export default class KetViewer extends Vue {
   @Prop({ default: 'HV' }) readonly selectedPolBasis!: string
 
   options = ['polar', 'cartesian', 'color']
+
+  get dimensionNames(): string[] {
+    return this.vector.names;
+  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -162,16 +123,28 @@ export default class KetViewer extends Vue {
     return hslToHex(angleInDegrees, 100, 50);
   }
 
-  renderDir(dir: number): string {
-    return ['→', '↑', '←', '↓'][dir];
-  }
-
-  renderPol(pol: number): string {
-    return this.selectedPolBasis[pol];
+  dimensionNameToColor(dimName: string): string {
+    switch (dimName) {
+      case 'direction':
+        return '#ff0055';
+      case 'polarization':
+        return '#ff9100';
+      case 'spin':
+        return '#0091ff';
+      default:
+        return '#ffffff';
+    }
   }
 
   get ketComponents(): IKetComponent[] {
-    return ketComponents(this.photons, this.selectedPolBasis);
+    const probThreshold = 1e-4;
+    const basis = Basis.polarization(this.selectedPolBasis);
+    return basis.changeAllDimsOfVector(this.vector).entries
+      .map((entry: VectorEntry): IKetComponent => ({
+        amplitude: entry.value,
+        coordStrs: entry.coord.map((c: number, dim: number) => this.vector.coordNames[dim][c]),
+      }))
+      .filter((d) => d.amplitude.r ** 2 > probThreshold);
   }
 }
 </script>
@@ -221,15 +194,15 @@ export default class KetViewer extends Vue {
       & .ket-disk {
         margin-left: 5px;
       }
-      & .ket-coord {
+      & .ket-ket {
         color: #fff;
         padding: 0px 6px;
         margin: 2px;
-        & .ket-dir {
-          color: #ff0055;
+        & .ket-parenthesis {
+          padding: 0px;
         }
-        & .ket-pol {
-          color: #ff9100;
+        & .ket-coord {
+          padding: 2px;
         }
       }
     }

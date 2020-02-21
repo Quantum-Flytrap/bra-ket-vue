@@ -57,9 +57,9 @@ export default Vue.extend({
       opCNOT: Gates.CX(),
       opToffoli: Gates.CCX(),
       steps: [
-        { value: 1, state: state0 },
-        { value: 0.5, state: state1 },
-        { value: 0.25, state },
+        { value: 1, vector: state0.vector },
+        { value: 0.5, vector: state1.vector },
+        { value: 0.25, vector: state.vector },
       ],
     };
   },
@@ -75,7 +75,7 @@ export default Vue.extend({
       :show-table="false"
     />
     <h1>Ket Viewer + controls + legend</h1>
-    <ket-viewer :photons="state" />
+    <ket-viewer :vector="state.vector" />
     <h1>Ket List</h1>
     <ket-list :steps="steps" />
     <h1>beamSplitter 50/50</h1>
