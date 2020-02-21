@@ -8,7 +8,7 @@
       class="btn-group"
     >
       <view-button-group
-        :options="['polar', 'cartesian', 'color']"
+        :options="options"
         @selected="selectedOption = $event"
       />
     </div>
@@ -19,16 +19,10 @@
         class="ket-component"
       >
         <span
-          v-if="selectedOption === 'polar'"
+          v-if="selectedOption !== 'color'"
           class="ket-complex"
         >
-          {{ renderComplexPolar(ketComponent.amplitude) }}
-        </span>
-        <span
-          v-if="selectedOption === 'cartesian'"
-          class="ket-complex"
-        >
-          {{ renderComplexCartesian(ketComponent.amplitude) }}
+          {{ ketComponent.amplitude.toString(selectedOption) }}
         </span>
         <svg
           v-if="selectedOption === 'color'"
@@ -96,7 +90,7 @@ export default class KetViewer extends Vue {
 
   @Prop({ default: 'HV' }) readonly selectedPolBasis!: string
 
-  options = ['polar', 'cartesian', 'color']
+  options = ['polar', 'polarTau', 'cartesian', 'color']
 
   get dimensionNames(): string[] {
     return this.vector.names;
@@ -104,14 +98,6 @@ export default class KetViewer extends Vue {
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
-  }
-
-  renderComplexPolar(z: Complex, precision = 2): string {
-    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
-  }
-
-  renderComplexCartesian(z: Complex, precision = 2): string {
-    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
   }
 
   discScale(r: number): number {
