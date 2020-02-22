@@ -18,14 +18,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component
-export default class ViewButtonGroup extends Vue {
-  @Prop({ default: 'polar' }) readonly selectedOption!: string
-
-  @Prop({ default: () => ['a', 'b', 'c'] }) readonly options!: string[]
-}
+export default Vue.extend({
+  props: {
+    selectedOption: {
+      type: String,
+      default: 'polar',
+    },
+    options: {
+      type: Array as () => string[],
+      default: () => ['a', 'b', 'c'],
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
