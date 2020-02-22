@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 import {
   Dimension, Complex, Vector, VectorEntry, Basis,
 } from 'quantum-tensors';
@@ -86,79 +86,96 @@ const allBasesDefault: IBasisSelector[] = [
   { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
 ];
 
-@Component({
+export default Vue.extend({
   components: {
     CoordinateLegend,
     ViewButtonGroup,
   },
-})
+  props: {
+    vector: {
+      type: Object as () => Vector,
+      default: () => Vector.indicator([Dimension.qubit()], '0'),
+    },
+    showLegend: {
+      type: Boolean,
+      default: true,
+    },
+    showTable: {
+      type: Boolean,
+      default: true,
+    },
+    selectedOption: {
+      type: String,
+      default: 'polar',
+    },
+    allBases: {
+      type: Array as () => IBasisSelector[],
+      default: () => allBasesDefault,
+    },
+  },
+  data() {
+    return {
+      options: ['polar', 'polarTau', 'cartesian', 'color'],
+    };
+  },
+  computed: {
 
-export default class KetViewer extends Vue {
-  @Prop({ default: Vector.indicator([Dimension.qubit()], '0') }) readonly vector!: Vector
+    dimensionNames(): string[] {
+      return this.vector.names;
+    },
 
-  @Prop({ default: true }) readonly showLegend!: boolean
+    ketComponents(): IKetComponent[] {
+      if (!this.vector) {
+        return [];
+      }
+      const probThreshold = 1e-4;
+      const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
+      const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
+      const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
+      const rotatedVector = basisQubit.changeAllDimsOfVector(
+        basisSpin.changeAllDimsOfVector(basisPol.changeAllDimsOfVector(this.vector)),
+      );
+      return rotatedVector.entries
+        .map((entry: VectorEntry): IKetComponent => ({
+          amplitude: entry.value,
+          coordStrs: entry.coord.map((c: number, dim: number) => rotatedVector.coordNames[dim][c]),
+        }))
+        .filter((d) => d.amplitude.r ** 2 > probThreshold);
+    },
+  },
+  methods: {
 
-  @Prop({ default: true }) readonly showTable!: boolean
+    toPercent(x: number, precision = 1): string {
+      return (100 * x).toFixed(precision);
+    },
 
-  @Prop({ default: 'polar' }) readonly selectedOption!: string
+    discScale(r: number): number {
+      return 8 * r;
+    },
 
-  @Prop({ default: () => allBasesDefault }) readonly allBases!: IBasisSelector[]
+    complexToColor(z: Complex): string {
+      const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
+      return hslToHex(angleInDegrees, 100, 50);
+    },
 
-  options = ['polar', 'polarTau', 'cartesian', 'color']
+    coordPrettier(coord: string): string {
+      return coordPrettier(coord);
+    },
 
-  get dimensionNames(): string[] {
-    return this.vector.names;
-  }
-
-  toPercent(x: number, precision = 1): string {
-    return (100 * x).toFixed(precision);
-  }
-
-  discScale(r: number): number {
-    return 8 * r;
-  }
-
-  complexToColor(z: Complex): string {
-    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
-    return hslToHex(angleInDegrees, 100, 50);
-  }
-
-  coordPrettier(coord: string): string {
-    return coordPrettier(coord);
-  }
-
-  dimensionNameToColor(dimName: string): string {
-    switch (dimName) {
-      case 'direction':
-        return '#ff0055';
-      case 'polarization':
-        return '#ff9100';
-      case 'spin':
-        return '#0091ff';
-      default:
-        return '#ffffff';
-    }
-  }
-
-  get ketComponents(): IKetComponent[] {
-    if (!this.vector) {
-      return [];
-    }
-    const probThreshold = 1e-4;
-    const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
-    const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
-    const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
-    const rotatedVector = basisQubit.changeAllDimsOfVector(
-      basisSpin.changeAllDimsOfVector(basisPol.changeAllDimsOfVector(this.vector)),
-    );
-    return rotatedVector.entries
-      .map((entry: VectorEntry): IKetComponent => ({
-        amplitude: entry.value,
-        coordStrs: entry.coord.map((c: number, dim: number) => rotatedVector.coordNames[dim][c]),
-      }))
-      .filter((d) => d.amplitude.r ** 2 > probThreshold);
-  }
-}
+    dimensionNameToColor(dimName: string): string {
+      switch (dimName) {
+        case 'direction':
+          return '#ff0055';
+        case 'polarization':
+          return '#ff9100';
+        case 'spin':
+          return '#0091ff';
+        default:
+          return '#ffffff';
+      }
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
