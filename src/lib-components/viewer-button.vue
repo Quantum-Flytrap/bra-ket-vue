@@ -5,15 +5,21 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-@Component
-export default class ViewerButton extends Vue {
-  @Prop({ default: 'basic' }) readonly type!: string
+import Vue from 'vue';
 
-  get computeClass(): string[] {
-    return [this.type];
-  }
-}
+export default Vue.extend({
+  props: {
+    type: {
+      type: String,
+      default: 'basic',
+    },
+  },
+  computed: {
+    computeClass(): string[] {
+      return [this.type];
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

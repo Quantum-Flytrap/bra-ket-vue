@@ -50,112 +50,125 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import { range, coordPrettier } from '@/lib-components/utils';
 
-@Component({
-  components: {},
-})
+export default Vue.extend({
+  props: {
+    size: {
+      type: Number,
+      default: 40,
+    },
+    axisLabel: {
+      type: String,
+      default: '',
+    },
+    location: {
+      type: String,
+      required: true,
+      default: 'top',
+    },
+    coordNames: {
+      type: Array as () => string[][],
+      required: true,
+      default: () => [[]],
+    },
+    selected: {
+      type: Array as () => number[],
+      default: () => [],
+    },
+  },
+  computed: {
+    /**
+     * Global transformation.
+     * @todo 'right' and 'bottom'
+     */
+    transformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1) rotate(90)';
+        default:
+          return '';
+      }
+    },
 
-export default class MatrixLabels extends Vue {
-  @Prop({ default: () => 40 }) private size!: number
+    axisLabelTransformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1)';
+        default:
+          return '';
+      }
+    },
 
-  @Prop({ default: () => '' }) private axisLabel!: string
+    invTransformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1) rotate(90)';
+        default:
+          return '';
+      }
+    },
 
-  @Prop({ required: true, default: 'top' }) private location!: string
+    multipliers(): number[] {
+      const lengths = this.coordNames.map((coords) => coords.length);
+      lengths.reverse();
 
-  @Prop({ required: true, default: [[]] }) private coordNames!: string[][]
+      let m = 1;
+      const res: number[] = [];
+      lengths.forEach((x) => {
+        res.push(m);
+        m *= x;
+      });
+      res.reverse();
+      return res;
+    },
 
-  @Prop({ default: () => [] }) private selected!: number[]
+    times(): number[] {
+      const lengths = this.coordNames.map((coords) => coords.length);
+      let m = 1;
+      const res: number[] = [];
+      lengths.forEach((x) => {
+        res.push(m);
+        m *= x;
+      });
+      return res;
+    },
 
-  scale(i: number): number {
-    return i * this.size;
-  }
+    total(): number {
+      return this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
+    },
 
-  /**
-   * Global transformation.
-   * @todo 'right' and 'bottom'
-   */
-  get transformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1) rotate(90)';
-      default:
-        return '';
-    }
-  }
+    spatialLength(): number {
+      return this.size * this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
+    },
+  },
+  methods: {
+    scale(i: number): number {
+      return i * this.size;
+    },
 
-  get axisLabelTransformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1)';
-      default:
-        return '';
-    }
-  }
+    range(n: number): number[] {
+      return range(n);
+    },
 
-  get invTransformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1) rotate(90)';
-      default:
-        return '';
-    }
-  }
+    isSelected(pos: number, span: number): boolean {
+      return this.selected
+        .map((x) => (pos <= x) && (x < pos + span))
+        .reduce((a, b) => a || b, false);
+    },
 
-  get multipliers(): number[] {
-    const lengths = this.coordNames.map((coords) => coords.length);
-    lengths.reverse();
-
-    let m = 1;
-    const res: number[] = [];
-    lengths.forEach((x) => {
-      res.push(m);
-      m *= x;
-    });
-    res.reverse();
-    return res;
-  }
-
-  get times(): number[] {
-    const lengths = this.coordNames.map((coords) => coords.length);
-    let m = 1;
-    const res: number[] = [];
-    lengths.forEach((x) => {
-      res.push(m);
-      m *= x;
-    });
-    return res;
-  }
-
-  get total(): number {
-    return this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
-  }
-
-  get spatialLength(): number {
-    return this.size * this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
-  }
-
-  range(n: number): number[] {
-    return range(n);
-  }
-
-  isSelected(pos: number, span: number): boolean {
-    return this.selected
-      .map((x) => (pos <= x) && (x < pos + span))
-      .reduce((a, b) => a || b, false);
-  }
-
-  coordPrettier(coord: string): string {
-    return coordPrettier(coord);
-  }
-}
+    coordPrettier(coord: string): string {
+      return coordPrettier(coord);
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

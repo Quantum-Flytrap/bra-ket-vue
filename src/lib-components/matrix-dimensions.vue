@@ -24,80 +24,87 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import { range } from '@/lib-components/utils';
 
-@Component({
-  components: {},
-})
+export default Vue.extend({
+  props: {
+    size: {
+      type: Number,
+      default: 40,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    dimensionNames: {
+      type: Array as () => string[],
+      default: () => [],
+    },
+  },
+  computed: {
+    swaps(): number[] {
+      return range(this.dimensionNames.length - 1);
+    },
 
-export default class MatrixDimensions extends Vue {
-  @Prop({ default: () => 40 }) private size!: number
+    /**
+     * When there are more dimensions with the same name, adding numbers to them,
+     * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
+     */
+    dimensionNamesNumbered(): string[] {
+      const counter = new Map<string, number>();
+      return this.dimensionNames
+        .map((name): [string, number] => {
+          const count = 1 + (counter.get(name) || 0);
+          counter.set(name, count);
+          return [name, count];
+        })
+        .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
+    },
 
-  @Prop({ required: true, default: 'top' }) private location!: string
+    /**
+     * Global transformation.
+     * @todo 'right' and 'bottom'
+     */
+    transformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1) rotate(90)';
+        default:
+          return '';
+      }
+    },
 
-  @Prop({ default: () => [] }) private dimensionNames!: string[]
+    axisLabelTransformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1)';
+        default:
+          return '';
+      }
+    },
 
-  scale(i: number): number {
-    return i * this.size;
-  }
-
-  get swaps(): number[] {
-    return range(this.dimensionNames.length - 1);
-  }
-
-  /**
-   * When there are more dimensions with the same name, adding numbers to them,
-   * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
-   */
-  get dimensionNamesNumbered(): string[] {
-    const counter = new Map<string, number>();
-    return this.dimensionNames
-      .map((name): [string, number] => {
-        const count = 1 + (counter.get(name) || 0);
-        counter.set(name, count);
-        return [name, count];
-      })
-      .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
-  }
-
-  /**
-   * Global transformation.
-   * @todo 'right' and 'bottom'
-   */
-  get transformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1) rotate(90)';
-      default:
-        return '';
-    }
-  }
-
-  get axisLabelTransformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1)';
-      default:
-        return '';
-    }
-  }
-
-  get invTransformation(): string {
-    switch (this.location) {
-      case 'top':
-        return '';
-      case 'left':
-        return 'scale(-1, 1) rotate(90)';
-      default:
-        return '';
-    }
-  }
-}
+    invTransformation(): string {
+      switch (this.location) {
+        case 'top':
+          return '';
+        case 'left':
+          return 'scale(-1, 1) rotate(90)';
+        default:
+          return '';
+      }
+    },
+  },
+  methods: {
+    scale(i: number): number {
+      return i * this.size;
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

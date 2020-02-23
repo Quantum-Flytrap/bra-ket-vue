@@ -17,29 +17,34 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 
-@Component({
-  components: {},
-})
-export default class CoordinateLegend extends Vue {
-  @Prop({ default: 'polar' }) readonly complexStyle!: string
-
-  @Prop({ default: () => [] }) readonly dimensionNames!: string[]
-
-  dimensionNameToColor(dimName: string): string {
-    switch (dimName) {
-      case 'direction':
-        return '#ff0055';
-      case 'polarization':
-        return '#ff9100';
-      case 'spin':
-        return '#0091ff';
-      default:
-        return '#ffffff';
-    }
-  }
-}
+export default Vue.extend({
+  props: {
+    complexStyle: {
+      type: String,
+      default: 'polar',
+    },
+    dimensionNames: {
+      type: Array as () => string[],
+      default: () => [],
+    },
+  },
+  methods: {
+    dimensionNameToColor(dimName: string): string {
+      switch (dimName) {
+        case 'direction':
+          return '#ff0055';
+        case 'polarization':
+          return '#ff9100';
+        case 'spin':
+          return '#0091ff';
+        default:
+          return '#ffffff';
+      }
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
