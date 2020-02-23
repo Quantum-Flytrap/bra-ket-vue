@@ -16,5 +16,4 @@ export { default as MatrixDimensions } from './matrix-dimensions.vue';
 export { default as MatrixLabels } from './matrix-labels.vue';
 
 // subcomponents, mixed
-export { default as ViewerButton } from './viewer-button.vue';
-export { default as ViewButtonGroup } from './view-button-group.vue';
+export { default as OptionsGroup } from './options-group.vue';

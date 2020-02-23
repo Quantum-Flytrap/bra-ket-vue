@@ -47,8 +47,9 @@
     </div>
     <div class="btn-group">
       <span>
-        <view-button-group
+        <options-group
           :options="options"
+          :selected-option="selectedOption"
           @selected="selectedOption = $event"
         />
       </span>
@@ -78,13 +79,13 @@
 import Vue from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
-import ViewButtonGroup from '@/lib-components/view-button-group.vue';
+import OptionsGroup from '@/lib-components/options-group.vue';
 import KetViewer from '@/lib-components/ket-viewer.vue';
 
 export default Vue.extend({
   components: {
     CoordinateLegend,
-    ViewButtonGroup,
+    OptionsGroup,
     KetViewer,
   },
   props: {

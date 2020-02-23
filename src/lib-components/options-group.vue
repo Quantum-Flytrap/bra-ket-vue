@@ -24,7 +24,7 @@ export default Vue.extend({
   props: {
     selectedOption: {
       type: String,
-      default: 'polar',
+      default: '',
     },
     options: {
       type: Array as () => string[],
@@ -55,6 +55,9 @@ export default Vue.extend({
   transition: 0.5s;
   margin: 3px;
   &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  &.selected {
     background: rgba(255, 255, 255, 0.3);
   }
 }
