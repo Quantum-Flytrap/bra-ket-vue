@@ -75,44 +75,48 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
-import ViewerButton from '@/lib-components/viewer-button.vue';
 import ViewButtonGroup from '@/lib-components/view-button-group.vue';
 import KetViewer from '@/lib-components/ket-viewer.vue';
 
-@Component({
+export default Vue.extend({
   components: {
     CoordinateLegend,
-    ViewerButton,
     ViewButtonGroup,
     KetViewer,
   },
-})
-
-export default class KetList extends Vue {
-  @Prop({ default: () => [] }) readonly steps!: {value: number | string, vector: Vector}[]
-
-  @Prop({ default: true }) readonly showLegend!: boolean
-
-  options = ['polar', 'polarTau', 'cartesian', 'color']
-
-  selectedOption = 'polar'
-
-  allBases = [
-    { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
-    { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
-    { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
-  ]
-
-  get dimensionNames(): string[] {
-    if (this.steps.length === 0) {
-      return [];
-    }
-    return this.steps[0].vector.names;
-  }
-}
+  props: {
+    steps: {
+      type: Array as () => {value: number | string, vector: Vector}[],
+      default: () => [],
+    },
+    showLegend: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data(): any {
+    return {
+      options: ['polar', 'polarTau', 'cartesian', 'color'],
+      selectedOption: 'polar',
+      allBases: [
+        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+        { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+        { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+      ],
+    };
+  },
+  computed: {
+    dimensionNames(): string[] {
+      if (this.steps.length === 0) {
+        return [];
+      }
+      return this.steps[0].vector.names;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

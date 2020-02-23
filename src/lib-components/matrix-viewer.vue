@@ -85,7 +85,7 @@
               :key="`${basis}`"
               class="basis"
               :class="{ selected: bases.selected === basis }"
-              @click="bases.selected = basis"
+              @click="changeBasis(bases, basis)"
             >
               {{ basis }}
             </span>
@@ -103,13 +103,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Dimension, Operator, Basis } from 'quantum-tensors';
+import Vue from 'vue';
+import { Operator, Basis } from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
-import ViewerButton from '@/lib-components/viewer-button.vue';
 import ComplexLegend from '@/lib-components/complex-legend.vue';
 
 interface IMatrixElement {
@@ -119,125 +118,143 @@ interface IMatrixElement {
   im: number
 }
 
-@Component({
+interface IBases {
+  name: string
+  availableBases: string[]
+  selected: string
+}
+
+export default Vue.extend({
   components: {
     MatrixLabels,
     MatrixDimensions,
-    ViewerButton,
     ComplexLegend,
   },
-})
-
-export default class MatrixViewer extends Vue {
-  @Prop({ default: () => 40 }) private size!: number
-
-  @Prop({ default: () => Operator.identity([Dimension.qubit()]) }) private operatorRaw!: Operator
-
-  operator = this.operatorRaw; // copy?
-
-  allBases = [
-    { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
-    { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
-    { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
-  ]
-
-  get matrixElements(): IMatrixElement[] {
-    const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
-    const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
-    const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
-    this.operator = basisQubit.changeAllDimsOfOperator(
-      basisSpin.changeAllDimsOfOperator(basisPol.changeAllDimsOfOperator(this.operator)),
-    );
-    // maybe also syntax op.toBasis({ polarization: 'HV', qubit: '+-' })
-    return this.operator
-      .toIndexIndexValues()
-      .map((entry) => ({
-        i: entry.i,
-        j: entry.j,
-        re: entry.v.re,
-        im: entry.v.im,
-      }));
-  }
-
-  get coordNamesIn(): string[][] {
-    return this.operator.coordNamesIn;
-  }
-
-  get coordNamesOut(): string[][] {
-    return this.operator.coordNamesOut;
-  }
-
-  get dimensionNamesOut(): string[] {
-    return this.operator.dimensionsOut.map((dim) => dim.name);
-  }
-
-  selectedEntry: IMatrixElement = {
-    i: -1, j: -1, re: 0, im: 0,
-  }
-
-  get selectedIn(): number[] {
-    return [this.selectedEntry.j];
-  }
-
-  get selectedOut(): number[] {
-    return this.matrixElements
-      .filter((d) => d.j === this.selectedEntry.j)
-      .map((d) => d.i);
-  }
-
-  get columnSize(): number {
-    return this.size * this.operator.totalSizeIn;
-  }
-
-  get rowSize(): number {
-    return this.size * this.operator.totalSizeOut;
-  }
-
-  get allTileLocations(): { i: number; j: number }[] {
-    return range(this.operator.totalSizeOut)
-      .flatMap((j) => range(this.operator.totalSizeIn).map((i) => ({
-        i, j, re: 0, im: 0,
-      })));
-  }
-
-  scale(i: number): number {
-    return i * this.size;
-  }
-
-  generateColor(re: number, im: number): string {
-    return colorComplexPhaseToHue(re, im, 100, 50);
-  }
-
-  rScale(re: number, im = 0): number {
-    return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
-  }
-
-  /**
-   * @todo Show directly on the legend.
-   */
-  tileMouseOver(tile: IMatrixElement): void {
-    this.selectedEntry = tile;
-    this.$emit('columnMouseover', tile.j);
-  }
-
-  /**
-   * @todo Make all dimension changes within this component.
-   * (After using Operator rather than passed parameteres.)
-   */
-  swapDimensions(i: number, both = true): void {
-    this.selectedEntry = {
-      i: -1, j: -1, re: 0, im: 0,
+  props: {
+    size: {
+      type: Number,
+      default: 40,
+    },
+    operatorRaw: {
+      type: Object as () => Operator,
+      required: true,
+    },
+  },
+  data(): { operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement} {
+    return {
+      operator: this.operatorRaw,
+      allBases: [
+        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+        { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+        { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+      ],
+      selectedEntry: {
+        i: -1, j: -1, re: 0, im: 0,
+      },
     };
-    const newOrder = range(this.operator.dimensionsOut.length);
-    newOrder[i] += 1;
-    newOrder[i + 1] -= 1;
-    if (both) {
-      this.operator = this.operator.permute(newOrder);
-    } else {
-      this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
-    }
-  }
-}
+  },
+  computed: {
+    matrixElements(): IMatrixElement[] {
+      return this.operator
+        .toIndexIndexValues()
+        .map((entry) => ({
+          i: entry.i,
+          j: entry.j,
+          re: entry.v.re,
+          im: entry.v.im,
+        }));
+    },
+
+    coordNamesIn(): string[][] {
+      return this.operator.coordNamesIn;
+    },
+
+    coordNamesOut(): string[][] {
+      return this.operator.coordNamesOut;
+    },
+
+    dimensionNamesOut(): string[] {
+      return this.operator.dimensionsOut.map((dim) => dim.name);
+    },
+
+    selectedIn(): number[] {
+      return [this.selectedEntry.j];
+    },
+
+    selectedOut(): number[] {
+      return this.matrixElements
+        .filter((d) => d.j === this.selectedEntry.j)
+        .map((d) => d.i);
+    },
+
+    columnSize(): number {
+      return this.size * this.operator.totalSizeIn;
+    },
+
+    rowSize(): number {
+      return this.size * this.operator.totalSizeOut;
+    },
+
+    allTileLocations(): { i: number; j: number }[] {
+      return range(this.operator.totalSizeOut)
+        .flatMap((j) => range(this.operator.totalSizeIn).map((i) => ({
+          i, j, re: 0, im: 0,
+        })));
+    },
+
+  },
+  methods: {
+    scale(i: number): number {
+      return i * this.size;
+    },
+
+    generateColor(re: number, im: number): string {
+      return colorComplexPhaseToHue(re, im, 100, 50);
+    },
+
+    rScale(re: number, im = 0): number {
+      return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
+    },
+
+    /**
+     * @todo Show directly on the legend.
+     */
+    tileMouseOver(tile: IMatrixElement): void {
+      this.selectedEntry = tile;
+      this.$emit('columnMouseover', tile.j);
+    },
+
+    /**
+     * @todo Make all dimension changes within this component.
+     * (After using Operator rather than passed parameteres.)
+     */
+    swapDimensions(i: number, both = true): void {
+      this.selectedEntry = {
+        i: -1, j: -1, re: 0, im: 0,
+      };
+      const newOrder = range(this.operator.dimensionsOut.length);
+      newOrder[i] += 1;
+      newOrder[i + 1] -= 1;
+      if (both) {
+        this.operator = this.operator.permute(newOrder);
+      } else {
+        this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
+      }
+    },
+
+    changeBasis(bases: IBases, basis: string) {
+      // eslint-disable-next-line no-param-reassign
+      bases.selected = basis;
+      const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
+      const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
+      const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
+      this.operator = basisQubit.changeAllDimsOfOperator(
+        basisSpin.changeAllDimsOfOperator(basisPol.changeAllDimsOfOperator(this.operator)),
+      );
+      // maybe also syntax op.toBasis({ polarization: 'HV', qubit: '+-' })
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">

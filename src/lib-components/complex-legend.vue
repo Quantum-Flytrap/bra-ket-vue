@@ -71,62 +71,71 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import Vue from 'vue';
 import { range } from '@/lib-components/utils';
 import { colorComplex } from '@/lib-components/colors';
 
+export default Vue.extend({
+  props: {
+    size: {
+      type: Number,
+      default: 40,
+    },
+    re: {
+      type: Number,
+      default: 0,
+    },
+    im: {
+      type: Number,
+      default: 0,
+    },
+  },
+  computed: {
 
-@Component({
-  components: {},
-})
+    arcs(): any[] {
+      return range(8).map((i) => {
+        const r = this.rScale(1);
+        const alpha = (2 * Math.PI * i) / 8;
+        const beta = Math.PI / 8;
+        return {
+          x0: r * Math.cos(alpha - beta),
+          y0: r * Math.sin(alpha - beta),
+          x1: r * Math.cos(alpha + beta),
+          y1: r * Math.sin(alpha + beta),
+          re: Math.cos(alpha),
+          im: Math.sin(alpha),
+        };
+      });
+    },
 
-export default class ComplexLegend extends Vue {
-  @Prop({ default: () => 40 }) private size!: number
+    selectedNonzero(): boolean {
+      return this.re !== 0 || this.im !== 0;
+    },
 
-  @Prop({ default: () => 0 }) private re!: number
+    selectedEntryPhaseId(): number {
+      const phi = Math.atan2(this.im, this.re);
+      return (Math.round((8 * phi) / (2 * Math.PI)) + 8) % 8;
+    },
 
-  @Prop({ default: () => 0 }) private im!: number
+    selectedPhaseTau(): number {
+      const phi = Math.atan2(this.im, this.re);
+      return phi / (2 * Math.PI);
+    },
+  },
+  methods: {
+    scale(i: number): number {
+      return i * this.size;
+    },
 
-  arcs = range(8).map((i) => {
-    const r = this.rScale(1);
-    const alpha = (2 * Math.PI * i) / 8;
-    const beta = Math.PI / 8;
-    return {
-      x0: r * Math.cos(alpha - beta),
-      y0: r * Math.sin(alpha - beta),
-      x1: r * Math.cos(alpha + beta),
-      y1: r * Math.sin(alpha + beta),
-      re: Math.cos(alpha),
-      im: Math.sin(alpha),
-    };
-  })
+    generateColor(re: number, im: number): string {
+      return colorComplex(re, im);
+    },
 
-  get selectedNonzero(): boolean {
-    return this.re !== 0 || this.im !== 0;
-  }
-
-  get selectedEntryPhaseId(): number {
-    const phi = Math.atan2(this.im, this.re);
-    return (Math.round((8 * phi) / (2 * Math.PI)) + 8) % 8;
-  }
-
-  get selectedPhaseTau(): number {
-    const phi = Math.atan2(this.im, this.re);
-    return phi / (2 * Math.PI);
-  }
-
-  scale(i: number): number {
-    return i * this.size;
-  }
-
-  generateColor(re: number, im: number): string {
-    return colorComplex(re, im);
-  }
-
-  rScale(re: number, im = 0): number {
-    return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
-  }
-}
+    rScale(re: number, im = 0): number {
+      return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
