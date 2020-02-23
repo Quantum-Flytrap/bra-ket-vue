@@ -9,8 +9,8 @@
     >
       <options-group
         :options="options"
-        :selected-option="selectedOption"
-        @selected="selectedOption = $event"
+        :selected-option="selectedOptionFlexible"
+        @selected="selectedOptionFlexible = $event"
       />
     </div>
     <div class="quantum-state-viewer">
@@ -20,13 +20,13 @@
         class="ket-component"
       >
         <span
-          v-if="selectedOption !== 'color'"
+          v-if="selectedOptionFlexible !== 'color'"
           class="ket-complex"
         >
-          {{ ketComponent.amplitude.toString(selectedOption) }}
+          {{ ketComponent.amplitude.toString(selectedOptionFlexible) }}
         </span>
         <svg
-          v-if="selectedOption === 'color'"
+          v-if="selectedOptionFlexible === 'color'"
           height="16"
           width="16"
           class="ket-disk"
@@ -117,6 +117,7 @@ export default Vue.extend({
   data() {
     return {
       options: ['polar', 'polarTau', 'cartesian', 'color'],
+      selectedOptionFlexible: this.selectedOption,
     };
   },
   computed: {
