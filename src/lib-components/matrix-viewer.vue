@@ -79,17 +79,13 @@
           v-for="bases in allBases"
           :key="`basis-${bases.name}`"
         >
-          <p v-if="dimensionNamesOut.indexOf(bases.name) > -1">
-            <span
-              v-for="basis in bases.availableBases"
-              :key="`${basis}`"
-              class="basis"
-              :class="{ selected: bases.selected === basis }"
-              @click="changeBasis(bases, basis)"
-            >
-              {{ basis }}
-            </span>
-          </p>
+          <options-group
+            v-if="dimensionNamesOut.indexOf(bases.name) > -1"
+            :key="`options-group-basis-${bases.name}`"
+            :options="bases.availableBases"
+            :selected-option="bases.selected"
+            @selected="changeBasis(bases, $event)"
+          />
         </div>
       </div>
       <div class="matrix-legend">
@@ -109,6 +105,7 @@ import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
+import OptionsGroup from '@/lib-components/options-group.vue';
 import ComplexLegend from '@/lib-components/complex-legend.vue';
 
 interface IMatrixElement {
@@ -128,6 +125,7 @@ export default Vue.extend({
   components: {
     MatrixLabels,
     MatrixDimensions,
+    OptionsGroup,
     ComplexLegend,
   },
   props: {
@@ -327,25 +325,5 @@ export default Vue.extend({
   cursor: default;
   text-transform: uppercase;
   font-weight: 300;
-}
-
-.basis {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  background-color: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  color: white;
-  padding: 4px 12px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 9px;
-  transition: 0.5s;
-  margin: 3px;
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-  &.selected {
-    background: rgba(255, 255, 255, 0.3);
-  }
 }
 </style>

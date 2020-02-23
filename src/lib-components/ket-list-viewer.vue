@@ -48,6 +48,7 @@
     <div class="btn-group">
       <span>
         <options-group
+          key="options-group-complex"
           :options="options"
           :selected-option="selectedOption"
           @selected="selectedOption = $event"
@@ -58,17 +59,13 @@
           v-for="bases in allBases"
           :key="`basis-${bases.name}`"
         >
-          <span v-if="dimensionNames.indexOf(bases.name) > -1">
-            <span
-              v-for="basis in bases.availableBases"
-              :key="`${basis}`"
-              class="basis"
-              :class="{ selected: bases.selected === basis }"
-              @click="bases.selected = basis"
-            >
-              {{ basis }}
-            </span>
-          </span>
+          <options-group
+            v-if="dimensionNames.indexOf(bases.name) > -1"
+            :key="`options-group-basis-${bases.name}`"
+            :options="bases.availableBases"
+            :selected-option="bases.selected"
+            @selected="bases.selected = $event"
+          />
         </div>
       </span>
     </div>
@@ -236,25 +233,5 @@ td {
 
 h3 {
   font-size: 1rem;
-}
-
-.basis {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  background-color: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  color: white;
-  padding: 4px 12px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 9px;
-  transition: 0.5s;
-  margin: 3px;
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-  &.selected {
-    background: rgba(255, 255, 255, 0.3);
-  }
 }
 </style>
