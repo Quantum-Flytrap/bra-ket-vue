@@ -7,8 +7,9 @@
       v-if="showTable"
       class="btn-group"
     >
-      <view-button-group
+      <options-group
         :options="options"
+        :selected-option="selectedOption"
         @selected="selectedOption = $event"
       />
     </div>
@@ -67,7 +68,7 @@ import {
 import { coordPrettier } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
-import ViewButtonGroup from '@/lib-components/view-button-group.vue';
+import OptionsGroup from './options-group.vue';
 
 interface IKetComponent {
   amplitude: Complex;
@@ -89,7 +90,7 @@ const allBasesDefault: IBasisSelector[] = [
 export default Vue.extend({
   components: {
     CoordinateLegend,
-    ViewButtonGroup,
+    OptionsGroup,
   },
   props: {
     vector: {
