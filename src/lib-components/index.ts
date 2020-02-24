@@ -1,4 +1,5 @@
 // core
+export { default as Ket } from './ket.vue';
 export { default as KetViewer } from './ket-viewer.vue';
 export { default as MatrixViewer } from './matrix-viewer.vue';
 
