@@ -23,11 +23,9 @@
           <td>{{ i }}</td>
           <td>{{ step.value }}</td>
           <td>
-            <ket-viewer
-              class="ket-viewer"
+            <ket
+              class="ket"
               :vector="step.vector"
-              :show-legend="false"
-              :show-table="false"
               :selected-option="selectedOption"
               :all-bases="allBases"
             />
@@ -77,13 +75,13 @@ import Vue from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
-import KetViewer from '@/lib-components/ket-viewer.vue';
+import Ket from '@/lib-components/ket.vue';
 
 export default Vue.extend({
   components: {
     CoordinateLegend,
     OptionsGroup,
-    KetViewer,
+    Ket,
   },
   props: {
     steps: {
@@ -152,7 +150,7 @@ td {
   & .hidebutton {
     font-size: 0.8rem;
   }
-  & .ket-viewer {
+  & .ket {
     font-weight: 500;
     display: flex;
     flex-wrap: wrap;
