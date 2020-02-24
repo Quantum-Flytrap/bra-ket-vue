@@ -10,13 +10,13 @@
         class="ket-component"
       >
         <span
-          v-if="selectedOptionFlexible !== 'color'"
+          v-if="selectedOption !== 'color'"
           class="ket-complex"
         >
-          {{ ketComponent.amplitude.toString(selectedOptionFlexible) }}
+          {{ ketComponent.amplitude.toString(selectedOption) }}
         </span>
         <svg
-          v-if="selectedOptionFlexible === 'color'"
+          v-if="selectedOption === 'color'"
           height="16"
           width="16"
           class="ket-disk"
@@ -83,12 +83,6 @@ export default Vue.extend({
       default: () => allBasesDefault,
     },
   },
-  data() {
-    return {
-      options: ['polar', 'polarTau', 'cartesian', 'color'],
-      selectedOptionFlexible: this.selectedOption,
-    };
-  },
   computed: {
 
     dimensionNames(): string[] {
@@ -151,11 +145,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .ket {
-  padding-top: 10px;
-  width: 100%;
   display: flex;
-  flex-direction: column;
-  width: 100%;
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;

@@ -213,7 +213,7 @@ td {
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
-    margin: 0px 10px;
+    margin: 0px 4px;
   }
   & .legend-list {
     margin: 0px 10px;
