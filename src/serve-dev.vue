@@ -5,6 +5,7 @@ import {
 } from 'quantum-tensors';
 import { KetViewer, MatrixViewer } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
+import Ket from './lib-components/ket.vue';
 
 const sizeX = 8;
 const sizeY = 8;
@@ -58,6 +59,7 @@ export default Vue.extend({
     KetViewer,
     MatrixViewer,
     KetList,
+    Ket,
   },
   data() {
     return {
@@ -98,6 +100,8 @@ export default Vue.extend({
     <ket-viewer :vector="state.vector" />
     <h1>Ket Viewer for a singlet state</h1>
     <ket-viewer :vector="singlet" />
+    <h1>Ket</h1>
+    <ket :vector="singlet" />
     <h1>Ket List</h1>
     <ket-list :steps="steps" />
     <h1>Ket List Quantum Computing</h1>
