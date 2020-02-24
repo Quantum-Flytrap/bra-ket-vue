@@ -1,19 +1,17 @@
 <template>
   <div
     ref="wrapper"
-    class="view-button-group"
+    class="btn-group"
   >
-    <div class="btn-group">
-      <span
-        v-for="(option, index) in options"
-        :key="`option-${index}`"
-        class="button"
-        :class="{ selected: option === selectedOption }"
-        @click="$emit('selected', option)"
-      >
-        {{ option }}
-      </span>
-    </div>
+    <span
+      v-for="(option, index) in options"
+      :key="`option-${index}`"
+      class="button"
+      :class="{ selected: option === selectedOption }"
+      @click="$emit('selected', option)"
+    >
+      {{ option }}
+    </span>
   </div>
 </template>
 
@@ -37,9 +35,10 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .btn-group {
   display: flex;
-  justify-content: center;
-  max-width: 100%;
   margin-bottom: 5px;
+  overflow: hidden;
+  align-content: space-between;
+  flex-wrap: wrap;
 }
 
 .button {

@@ -3,178 +3,63 @@
     ref="wrapper"
     class="ket-viewer"
   >
-    <div
-      v-if="showTable"
-      class="btn-group"
-    >
-      <options-group
-        :options="options"
-        :selected-option="selectedOptionFlexible"
-        @selected="selectedOptionFlexible = $event"
-      />
-    </div>
-    <div class="quantum-state-viewer">
-      <span
-        v-for="(ketComponent, index) in ketComponents"
-        :key="`ket-component-${index}`"
-        class="ket-component"
-      >
-        <span
-          v-if="selectedOptionFlexible !== 'color'"
-          class="ket-complex"
-        >
-          {{ ketComponent.amplitude.toString(selectedOptionFlexible) }}
-        </span>
-        <svg
-          v-if="selectedOptionFlexible === 'color'"
-          height="16"
-          width="16"
-          class="ket-disk"
-        >
-          <circle
-            cx="8"
-            cy="8"
-            :r="discScale(ketComponent.amplitude.r)"
-            :fill="complexToColor(ketComponent.amplitude)"
-          />
-        </svg>
-        <span class="ket-ket">
-          <span class="ket-parenthesis">|</span>
-          <span
-            v-for="(coordStr, i) in ketComponent.coordStrs"
-            :key="`ket-component-${i}-${coordStr}`"
-            class="ket-coord"
-            :style="{ color: dimensionNameToColor(dimensionNames[i]) }"
-          >{{ coordPrettier(coordStr) }}</span>
-          <span class="ket-parenthesis">⟩</span>
-        </span>
-      </span>
-    </div>
-    <div v-if="showLegend">
-      <coordinate-legend
-        class="legend"
-        :complex-style="selectedOption"
-        :dimension-names="dimensionNames"
-      />
-    </div>
+    <options-group
+      class="options"
+      :options="options"
+      :selected-option="selectedOption"
+      @selected="selectedOption = $event"
+    />
+    <ket
+      class="ket"
+      :vector="vector"
+      :selected-option="selectedOption"
+      :all-bases="allBases"
+    />
+    <coordinate-legend
+      class="legend"
+      :complex-style="selectedOption"
+      :dimension-names="dimensionNames"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {
-  Dimension, Complex, Vector, VectorEntry, Basis,
-} from 'quantum-tensors';
-import { coordPrettier } from '@/lib-components/utils';
-import { hslToHex, TAU } from '@/lib-components/colors';
+import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
-import OptionsGroup from './options-group.vue';
-
-interface IKetComponent {
-  amplitude: Complex;
-  coordStrs: string[];
-}
-
-interface IBasisSelector {
-    name: string;
-    availableBases: string[];
-    selected: string;
-}
-
-const allBasesDefault: IBasisSelector[] = [
-  { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
-  { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
-  { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
-];
+import OptionsGroup from '@/lib-components/options-group.vue';
+import Ket from '@/lib-components/ket.vue';
 
 export default Vue.extend({
   components: {
     CoordinateLegend,
     OptionsGroup,
+    Ket,
   },
   props: {
     vector: {
       type: Object as () => Vector,
-      default: () => Vector.indicator([Dimension.qubit()], '0'),
+      required: true,
     },
     showLegend: {
       type: Boolean,
       default: true,
     },
-    showTable: {
-      type: Boolean,
-      default: true,
-    },
-    selectedOption: {
-      type: String,
-      default: 'polar',
-    },
-    allBases: {
-      type: Array as () => IBasisSelector[],
-      default: () => allBasesDefault,
-    },
   },
-  data() {
+  data(): any {
     return {
       options: ['polar', 'polarTau', 'cartesian', 'color'],
-      selectedOptionFlexible: this.selectedOption,
+      selectedOption: 'polar',
+      allBases: [
+        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+        { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+        { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+      ],
     };
   },
   computed: {
-
     dimensionNames(): string[] {
       return this.vector.names;
-    },
-
-    ketComponents(): IKetComponent[] {
-      if (!this.vector) {
-        return [];
-      }
-      const probThreshold = 1e-4;
-      const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
-      const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
-      const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
-      const rotatedVector = basisQubit.changeAllDimsOfVector(
-        basisSpin.changeAllDimsOfVector(basisPol.changeAllDimsOfVector(this.vector)),
-      );
-      return rotatedVector.entries
-        .map((entry: VectorEntry): IKetComponent => ({
-          amplitude: entry.value,
-          coordStrs: entry.coord.map((c: number, dim: number) => rotatedVector.coordNames[dim][c]),
-        }))
-        .filter((d) => d.amplitude.r ** 2 > probThreshold);
-    },
-  },
-  methods: {
-
-    toPercent(x: number, precision = 1): string {
-      return (100 * x).toFixed(precision);
-    },
-
-    discScale(r: number): number {
-      return 8 * r;
-    },
-
-    complexToColor(z: Complex): string {
-      const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
-      return hslToHex(angleInDegrees, 100, 50);
-    },
-
-    coordPrettier(coord: string): string {
-      return coordPrettier(coord);
-    },
-
-    dimensionNameToColor(dimName: string): string {
-      switch (dimName) {
-        case 'direction':
-          return '#ff0055';
-        case 'polarization':
-          return '#ff9100';
-        case 'spin':
-          return '#0091ff';
-        default:
-          return '#ffffff';
-      }
     },
   },
 });
@@ -182,87 +67,27 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .ket-viewer {
-  padding-top: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   transition: height 0.5s;
   overflow: hidden;
-  align-content: space-between;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  & .hidebutton {
-    font-size: 12px;
-  }
-  & .quantum-state-viewer {
-    font-weight: 500;
-    display: flex;
-    flex-wrap: wrap;
-    & .controls {
-      font-size: 12px;
-      color: white;
-      padding: 10px;
-    }
-    & .absorptions {
-      font-size: 12px;
-      color: white;
-      padding: 10;
-      margin: 10px;
-    }
-    & .ket-component {
-      background-color: rgba(0, 0, 0, 0.3);
-      margin: 5px;
-      line-height: 1.4rem;
-      font-size: 14px;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      display: flex;
-      align-items: center;
-      & .ket-complex {
-        color: #d28fff;
-        padding: 0px 0px 0px 6px;
-      }
-      & .ket-disk {
-        margin-left: 5px;
-      }
-      & .ket-ket {
-        color: #fff;
-        padding: 0px 6px;
-        margin: 2px;
-        & .ket-parenthesis {
-          padding: 0px;
-        }
-        & .ket-coord {
-          padding: 2px;
-        }
-      }
-    }
-  }
-  & .btn-group {
-    text-align: center;
-    display: flex;
-    max-width: 100%;
-    margin-bottom: 5px;
-    margin-bottom: 10px;
-    padding: 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  }
   @media screen and (max-width: 1000px) {
     border: none;
   }
 }
+.ket {
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 5px 0px;
+  width: 100%;
+  align-self: center;
+}
 .legend {
   margin-top: 5px;
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
-
-.step {
-  font-size: 12px;
-  line-height: 150%;
-}
-
-h3 {
-  font-size: 1rem;
-}
-
 </style>
