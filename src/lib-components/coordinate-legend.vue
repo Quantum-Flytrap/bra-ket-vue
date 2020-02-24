@@ -60,7 +60,7 @@ export default Vue.extend({
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   & .legend-complex {
-    color: #9d40ff;
+    color: #d28fff;
     margin-right: 5px;
   }
   & .legend-dimension {

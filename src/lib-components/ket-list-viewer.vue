@@ -178,7 +178,7 @@ td {
       display: flex;
       align-items: center;
       & .ket-complex {
-        color: #9d40ff;
+        color: #d28fff;
         padding: 0px 0px 0px 6px;
       }
       & .ket-disk {
