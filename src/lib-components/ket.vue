@@ -151,14 +151,15 @@ export default Vue.extend({
   align-content: space-between;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   & .quantum-state-viewer {
-    font-weight: 500;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     & .ket-component {
       background-color: rgba(0, 0, 0, 0.3);
       margin: 5px;
-      line-height: 1.4rem;
-      font-size: 14px;
+      padding: 4px 0px;
+      line-height: 1rem;
+      font-size: 12px;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
