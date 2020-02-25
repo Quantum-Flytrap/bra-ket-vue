@@ -100,7 +100,9 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Operator, Basis } from 'quantum-tensors';
+import {
+  Vector, VectorEntry, Operator, Basis, helpers, Cx,
+} from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
@@ -215,11 +217,13 @@ export default Vue.extend({
     },
 
     /**
-     * @todo Show directly on the legend.
+     * Emit unit vector for input
      */
     tileMouseOver(tile: IMatrixElement): void {
       this.selectedEntry = tile;
-      this.$emit('columnMouseover', tile.j);
+      const coords = helpers.coordsFromIndex(tile.j, this.operator.sizeIn);
+      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsOut]);
+      this.$emit('columnMouseover', vec);
     },
 
     /**
