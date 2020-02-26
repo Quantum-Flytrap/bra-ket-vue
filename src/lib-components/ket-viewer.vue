@@ -3,22 +3,24 @@
     ref="wrapper"
     class="ket-viewer"
   >
-    <options-group
-      class="options"
-      :options="options"
-      :selected-option="selectedOption"
-      @selected="selectedOption = $event"
-    />
     <ket
       class="ket"
       :vector="vector"
       :selected-option="selectedOption"
       :all-bases="allBases"
     />
+    <hr>
     <coordinate-legend
       class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
+    />
+    <hr>
+    <options-group
+      class="options"
+      :options="options"
+      :selected-option="selectedOption"
+      @selected="selectedOption = $event"
     />
   </div>
 </template>
@@ -72,7 +74,6 @@ export default Vue.extend({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   transition: height 0.5s;
   overflow: hidden;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
@@ -82,5 +83,15 @@ export default Vue.extend({
 }
 .ket {
   padding: 5px 0px;
+}
+.options {
+  margin-top: 5px;
+}
+hr {
+  border: 0;
+  height: 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  width:100%
 }
 </style>
