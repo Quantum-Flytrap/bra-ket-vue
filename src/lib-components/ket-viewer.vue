@@ -81,13 +81,6 @@ export default Vue.extend({
   }
 }
 .ket {
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   padding: 5px 0px;
-  width: 100%;
-  align-self: center;
-}
-.legend {
-  margin-top: 5px;
 }
 </style>
