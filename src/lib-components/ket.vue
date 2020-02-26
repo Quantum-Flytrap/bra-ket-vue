@@ -156,7 +156,7 @@ export default Vue.extend({
     font-size: 12px;
     & .ket-component {
       background-color: rgba(0, 0, 0, 0.3);
-      margin: 5px;
+      margin: 5px 5px 5px 0px;
       padding: 4px 0px;
       line-height: 1rem;
       flex-wrap: nowrap;
