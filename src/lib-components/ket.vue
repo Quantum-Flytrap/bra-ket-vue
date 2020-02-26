@@ -157,7 +157,8 @@ export default Vue.extend({
     & .ket-component {
       background-color: rgba(0, 0, 0, 0.3);
       margin: 5px;
-      line-height: 1.4rem;
+      padding: 4px 0px;
+      line-height: 1rem;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
@@ -171,7 +172,7 @@ export default Vue.extend({
       }
       & .ket-ket {
         color: #fff;
-        padding: 0px 6px;
+        padding: 0px 3px;
         margin: 2px;
         & .ket-parenthesis {
           padding: 0px;
