@@ -55,7 +55,7 @@ export default Vue.extend({
 
 .legend {
   padding-top: 10px;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   font-size: 10px;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
