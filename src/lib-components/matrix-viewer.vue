@@ -79,13 +79,28 @@
           v-for="bases in allBases"
           :key="`basis-${bases.name}`"
         >
-          <options-group
-            v-if="dimensionNamesOut.indexOf(bases.name) > -1"
-            :key="`options-group-basis-${bases.name}`"
-            :options="bases.availableBases"
-            :selected-option="bases.selected"
-            @selected="changeBasis(bases, $event)"
-          />
+          <span
+            v-if="bases.name == 'polarization'"
+          >
+            <options-group-svg
+              v-if="dimensionNamesOut.indexOf(bases.name) > -1"
+              :key="`options-group-basis-${bases.name}`"
+              :options="bases.availableBases"
+              :selected-option="bases.selected"
+              @selected="changeBasis(bases, $event)"
+            />
+          </span>
+          <span
+            v-else
+          >
+            <options-group
+              v-if="dimensionNamesOut.indexOf(bases.name) > -1"
+              :key="`options-group-basis-${bases.name}`"
+              :options="bases.availableBases"
+              :selected-option="bases.selected"
+              @selected="changeBasis(bases, $event)"
+            />
+          </span>
         </div>
       </div>
       <div class="matrix-legend">
@@ -108,6 +123,7 @@ import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
+import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import ComplexLegend from '@/lib-components/complex-legend.vue';
 
 interface IMatrixElement {
@@ -128,6 +144,7 @@ export default Vue.extend({
     MatrixLabels,
     MatrixDimensions,
     OptionsGroup,
+    OptionsGroupSvg,
     ComplexLegend,
   },
   props: {
