@@ -1,7 +1,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Photons, Vector, Operator, Elements, Dimension, Cx, Gates,
+  Photons, Vector, Operator, Elements, Dimension, Cx, Gates, Circuit,
 } from 'quantum-tensors';
 import { KetViewer, MatrixViewer } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
@@ -9,11 +9,11 @@ import Ket from './lib-components/ket.vue';
 
 const sizeX = 8;
 const sizeY = 8;
-const state = new Photons(sizeX, sizeY);
-state.addPhotonIndicator(0, 2, '>', 'H');
+const state = Photons.emptySpace(sizeX, sizeY);
+
+state.addPhotonFromIndicator(0, 2, '>', 'H');
 const state0 = state.copy();
-const operations: [number, number, Operator][] = [[0, 2, Elements.beamSplitter(135)]];
-state.actOnSinglePhotons(operations);
+state.actOnSinglePhotons([{ x: 0, y: 2, op: Elements.beamSplitter(135) }]);
 const state1 = state.copy();
 state.propagatePhotons();
 
@@ -45,13 +45,16 @@ const singlet = Vector.fromSparseCoordNames([
   ['du', Cx(-1)],
 ], [Dimension.spin(), Dimension.spin()]).normalize();
 
-const qc0 = Vector.fromSparseCoordNames([
-  ['000', Cx(1)],
-], [Dimension.qubit(), Dimension.qubit(), Dimension.qubit()]);
 
-const qc1 = Gates.H().mulVecPartial([0], qc0);
-const qc2 = Gates.CX().mulVecPartial([0, 1], qc1);
-const qc3 = Gates.CCX().mulVec(qc2);
+const circuitHistory: Circuit[] = [];
+Circuit.qubits(3)
+  .saveTo(circuitHistory)
+  .H(0)
+  .saveTo(circuitHistory)
+  .CNOT(0, 1)
+  .saveTo(circuitHistory)
+  .TOFFOLI(0, 1, 2)
+  .saveTo(circuitHistory);
 
 export default Vue.extend({
   name: 'ServeDev',
@@ -78,10 +81,10 @@ export default Vue.extend({
         { value: 0.25, vector: state.vector },
       ],
       stepsQuantumComputing: [
-        { value: 'initial state', vector: qc0 },
-        { value: 'Haadamard on 1st qubit', vector: qc1 },
-        { value: 'CNOT on 1st and 2nd qubit', vector: qc2 },
-        { value: 'Toffoli gate on all qubits', vector: qc3 },
+        { value: 'initial state', vector: circuitHistory[0].vector },
+        { value: 'Haadamard on 1st qubit', vector: circuitHistory[1].vector },
+        { value: 'CNOT on 1st and 2nd qubit', vector: circuitHistory[2].vector },
+        { value: 'Toffoli gate on all qubits', vector: circuitHistory[3].vector },
       ],
     };
   },
