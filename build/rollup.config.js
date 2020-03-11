@@ -62,7 +62,7 @@ const globals = {
   // Provide global variable names to replace your external imports
   // eg. jquery: '$'
   vue: 'Vue',
-  'quantum-tensors': 'quantumTensors',
+  'quantum-tensors': 'QuantumTensors',
 };
 
 // Customize configs for individual targets
