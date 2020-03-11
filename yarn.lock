@@ -7271,10 +7271,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.3.tgz#d089eaab41b461422120dfa387e722334366fae7"
-  integrity sha512-B1t9UOAguNRjVuAZewnGW3y01mVfxnLx5NLpBXLhDF244NSIHgQ93ryR1DhgyAWAVITC24JbG0Rh/xSkzZmI6w==
+quantum-tensors@^0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.5.tgz#5e1927a980acc765b63cb83715eadc1394d36f9d"
+  integrity sha512-S4Lln5Ej9KAXMngLVwDraDsohMOfhev4TBPllw/425dB7PtLQWjIHNMkq1sDJ84ecVX00rfzxXaj0QQcisNCxA==
   dependencies:
     "@rollup/plugin-commonjs" "^11.0.2"
     "@rollup/plugin-node-resolve" "^7.1.1"
