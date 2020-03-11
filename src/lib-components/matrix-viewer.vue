@@ -116,7 +116,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Vector, VectorEntry, Operator, Basis, helpers, Cx,
+  Vector, VectorEntry, Operator, helpers, Cx,
 } from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
@@ -262,15 +262,7 @@ export default Vue.extend({
     },
 
     changeBasis(bases: IBases, basis: string) {
-      // eslint-disable-next-line no-param-reassign
-      bases.selected = basis;
-      const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
-      const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
-      const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
-      this.operator = basisQubit.changeAllDimsOfOperator(
-        basisSpin.changeAllDimsOfOperator(basisPol.changeAllDimsOfOperator(this.operator)),
-      );
-      // maybe also syntax op.toBasis({ polarization: 'HV', qubit: '+-' })
+      this.operator = this.operator.toBasisAll(bases.name, basis);
     },
   },
 });

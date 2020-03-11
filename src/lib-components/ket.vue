@@ -46,7 +46,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Dimension, Complex, Vector, VectorEntry, Basis,
+  Dimension, Complex, Vector, VectorEntry,
 } from 'quantum-tensors';
 import { coordPrettier } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
@@ -94,16 +94,19 @@ export default Vue.extend({
         return [];
       }
       const probThreshold = 1e-4;
-      const basisPol = Basis.polarization(this.allBases.filter((d) => d.name === 'polarization')[0].selected);
-      const basisSpin = Basis.spin(this.allBases.filter((d) => d.name === 'spin')[0].selected);
-      const basisQubit = Basis.qubit(this.allBases.filter((d) => d.name === 'qubit')[0].selected);
-      const rotatedVector = basisQubit.changeAllDimsOfVector(
-        basisSpin.changeAllDimsOfVector(basisPol.changeAllDimsOfVector(this.vector)),
-      );
-      return rotatedVector.entries
+      const selectedBasis: Record<string, string> = {};
+      this.allBases.forEach((basis) => {
+        selectedBasis[basis.name] = basis.selected;
+      });
+
+      return this.vector
+        .toBasisAll('polarization', selectedBasis.polarization)
+        .toBasisAll('spin', selectedBasis.spin)
+        .toBasisAll('qubit', selectedBasis.qubit)
+        .entries
         .map((entry: VectorEntry): IKetComponent => ({
           amplitude: entry.value,
-          coordStrs: entry.coord.map((c: number, dim: number) => rotatedVector.coordNames[dim][c]),
+          coordStrs: entry.coord.map((c: number, dim: number) => this.vector.coordNames[dim][c]),
         }))
         .filter((d) => d.amplitude.r ** 2 > probThreshold);
     },
