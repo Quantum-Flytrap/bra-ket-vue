@@ -17,6 +17,7 @@
     "dist/*",
     "bra-ket-vue.d.ts",
     "src/**/*.vue",
+    "imgs/*",
     "!src/serve-dev.*"
   ],
   "scripts": {

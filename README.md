@@ -24,22 +24,28 @@ npm install bra-ket-vue
 Warning: it is an early alpha version. Everything can change (including core component names) at no prior notice.
 
 
-## Example usage
+## Examples
+
+### States (vectors)
+
+![](imgs/quantum_computing.png)
+
+![](imgs/ket_list.png)
+
+### Operators (matrices)
+
+![](imgs/beam_splitter.png)
+
+![](imgs/cnot_gate.png)
 
 ### TODO
 
 * A NPM example in https://codesandbox.io/
-* A frontent JavaScript example in https://jsfiddle.net/ or https://codepen.io/
+* A frontend JavaScript example in https://jsfiddle.net/ or https://codepen.io/
 
 
 ## Notes
 
-This repo was created using a script [vue-sfc-rollup](https://www.npmjs.com/package/vue-sfc-rollup) that build a Vue component library template, in JavaScript or TypeScript.
+This repo was created using a script [vue-sfc-rollup](https://www.npmjs.com/package/vue-sfc-rollup)  (a Vue component library generator, for JavaScript and TypeScript).
 
 For more, see [packaging Vue v2 Components for npm](https://vuejs.org/v2/cookbook/packaging-sfc-for-npm.html) in the official Vue documentation.
-
-
-## To consider
-
-* module styles
-* https://bili.egoist.sh/
