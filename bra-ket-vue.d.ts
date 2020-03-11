@@ -17,3 +17,4 @@ export const CoordinateLegend: VueConstructor<Vue>;
 export const MatrixDimensions: VueConstructor<Vue>;
 export const MatrixLabels: VueConstructor<Vue>;
 export const OptionsGroup: VueConstructor<Vue>;
+export const OptionsGroupSvg: VueConstructor<Vue>;

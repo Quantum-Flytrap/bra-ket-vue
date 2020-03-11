@@ -18,3 +18,4 @@ export { default as MatrixLabels } from './matrix-labels.vue';
 
 // subcomponents, mixed
 export { default as OptionsGroup } from './options-group.vue';
+export { default as OptionsGroupSvg } from './options-group-svg.vue';
