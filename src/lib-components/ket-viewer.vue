@@ -8,17 +8,34 @@
       :vector="vector"
       :selected-option="selectedOption"
       :all-bases="allBases"
+      :dark-mode="darkMode"
     />
-    <hr>
+    <hr
+      v-if="darkMode === true"
+      class="hr-dark"
+    >
+    <hr
+      v-if="darkMode === false"
+      class="hr-bright"
+    >
     <coordinate-legend
       class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
+      :dark-mode="darkMode"
     />
-    <hr>
+    <hr
+      v-if="darkMode === true"
+      class="hr-dark"
+    >
+    <hr
+      v-if="darkMode === false"
+      class="hr-bright"
+    >
     <options-group
       class="options"
       :options="options"
+      :dark-mode="darkMode"
       :selected-option="selectedOption"
       @selected="selectedOption = $event"
     />
@@ -44,6 +61,10 @@ export default Vue.extend({
       required: true,
     },
     showLegend: {
+      type: Boolean,
+      default: true,
+    },
+    darkMode: {
       type: Boolean,
       default: true,
     },
@@ -87,11 +108,18 @@ export default Vue.extend({
 .options {
   margin-top: 5px;
 }
-hr {
+.hr-dark {
   border: 0;
   height: 0;
   margin: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  width:100%
+}
+.hr-bright {
+  border: 0;
+  height: 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.6);
   width:100%
 }
 </style>

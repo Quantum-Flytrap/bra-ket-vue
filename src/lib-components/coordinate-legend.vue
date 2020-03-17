@@ -1,18 +1,41 @@
 <template>
-  <div class="legend">
-    <span v-if="complexStyle !== 'color'">
-      <span class="legend-complex">amplitude (complex number)</span>
-    </span>
-    <span>
-      <span
-        v-for="(dimName, i) in dimensionNames"
-        :key="`legend-dimension-${dimName}-${i}`"
-        class="legend-dimension"
-        :style="{ color: dimensionNameToColor(dimName) }"
-      >
-        {{ dimName }}
+  <div>
+    <div
+      v-if="darkMode === true"
+      class="legend-dark"
+    >
+      <span v-if="complexStyle !== 'color'">
+        <span class="legend-complex">amplitude (complex number)</span>
       </span>
-    </span>
+      <span>
+        <span
+          v-for="(dimName, i) in dimensionNames"
+          :key="`legend-dimension-${dimName}-${i}`"
+          class="legend-dimension"
+          :style="{ color: dimensionNameToColor(dimName, true) }"
+        >
+          {{ dimName }}
+        </span>
+      </span>
+    </div>
+    <div
+      v-if="darkMode === false"
+      class="legend-bright"
+    >
+      <span v-if="complexStyle !== 'color'">
+        <span class="legend-complex">amplitude (complex number)</span>
+      </span>
+      <span>
+        <span
+          v-for="(dimName, i) in dimensionNames"
+          :key="`legend-dimension-${dimName}-${i}`"
+          class="legend-dimension"
+          :style="{ color: dimensionNameToColor(dimName, false) }"
+        >
+          {{ dimName }}
+        </span>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -29,18 +52,47 @@ export default Vue.extend({
       type: Array as () => string[],
       default: () => [],
     },
+    darkMode: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
-    dimensionNameToColor(dimName: string): string {
-      switch (dimName) {
-        case 'direction':
-          return '#ff0055';
-        case 'polarization':
-          return '#ff9100';
-        case 'spin':
-          return '#0091ff';
-        default:
-          return '#ffffff';
+    // dimensionNameToColor(dimName: string): string {
+    //   switch (dimName) {
+    //     case 'direction':
+    //       return '#ff0055';
+    //     case 'polarization':
+    //       return '#ff9100';
+    //     case 'spin':
+    //       return '#0091ff';
+    //     default:
+    //       return '#ffffff';
+    //   }
+    // },
+    dimensionNameToColor(dimName: string, darkStyle = false): string {
+      if (darkStyle) {
+        switch (dimName) {
+          case 'direction':
+            return '#ff0055';
+          case 'polarization':
+            return '#ff9100';
+          case 'spin':
+            return '#0091ff';
+          default:
+            return '#ffffff';
+        }
+      } else {
+        switch (dimName) {
+          case 'direction':
+            return '#ff0055';
+          case 'polarization':
+            return '#ff9100';
+          case 'spin':
+            return '#0091ff';
+          default:
+            return '#242424';
+        }
       }
     },
   },
@@ -53,7 +105,7 @@ export default Vue.extend({
   padding: 5px;
 }
 
-.legend {
+.legend-dark {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 10px;
@@ -65,6 +117,21 @@ export default Vue.extend({
   }
   & .legend-dimension {
     color: #fff;
+    margin: 5px;
+  }
+}
+.legend-bright {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 10px;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  & .legend-complex {
+    color: #7a06c7;
+    margin-right: 5px;
+  }
+  & .legend-dimension {
+    color: #000;
     margin: 5px;
   }
 }
