@@ -94,9 +94,24 @@ export default Vue.extend({
 <template>
   <div id="app">
     <h1>Ket</h1>
-    <ket :vector="singlet" />
-    <h1>Ket Viewer</h1>
-    <ket-viewer :vector="state.vector" />
+    <ket
+      :vector="singlet"
+      :dark-mode="true"
+    />
+    <div class="bright">
+      <h1>Ket Viewer</h1>
+      <ket-viewer
+        :vector="state.vector"
+        :dark-mode="false"
+      />
+    </div>
+    <div class="bright2">
+      <h1>Ket Viewer</h1>
+      <ket-viewer
+        :vector="state.vector"
+        :dark-mode="false"
+      />
+    </div>
     <h1>Ket Viewer for a singlet state</h1>
     <ket-viewer :vector="singlet" />
     <h1>Ket List</h1>
@@ -123,11 +138,30 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 #app {
+  // background-color: rgb(255, 255, 255);
   background-color: #242424; //GREY
   // background-color: #210235; //QG DARK PURPLE
   // background-color: #2e006a; //QG BRIGHT PURPLE
   padding-left: 80px;
   padding-top: 30px;
+}
+.bright {
+  padding: 30px;
+  max-width: 600px;
+  background-color: rgb(240, 240, 240);
+  & h1{
+    color:black;
+    border-top: 1px solid rgba(0, 0, 0, 0.6);
+  }
+}
+.bright2 {
+  padding: 30px;
+  max-width: 600px;
+  background-color: rgb(255, 255, 255);
+  & h1{
+    color:rgb(24, 24, 24);
+    border-top: 1px solid rgba(0, 0, 0, 0.6);
+  }
 }
 .ket-viewer{
   max-width: 500px;

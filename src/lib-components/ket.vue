@@ -3,7 +3,11 @@
     ref="wrapper"
     class="ket"
   >
-    <div class="quantum-state-viewer">
+    <!-- DARK MODE -->
+    <div
+      v-if="darkMode === true"
+      class="quantum-state-viewer"
+    >
       <span
         v-for="(ketComponent, index) in ketComponents"
         :key="`ket-component-${index}`"
@@ -34,7 +38,48 @@
             v-for="(coordStr, i) in ketComponent.coordStrs"
             :key="`ket-component-${i}-${coordStr}`"
             class="ket-coord"
-            :style="{ color: dimensionNameToColor(dimensionNames[i]) }"
+            :style="{ color: dimensionNameToColor(dimensionNames[i], true) }"
+          >{{ coordPrettier(coordStr) }}</span>
+          <span class="ket-parenthesis">⟩</span>
+        </span>
+      </span>
+    </div>
+    <!-- BRIGHT MODE -->
+    <div
+      v-if="darkMode === false"
+      class="quantum-state-viewer"
+    >
+      <span
+        v-for="(ketComponent, index) in ketComponents"
+        :key="`ket-component-${index}`"
+        class="ket-component-bright"
+      >
+        <span
+          v-if="selectedOption !== 'color'"
+          class="ket-complex-bright"
+        >
+          {{ ketComponent.amplitude.toString(selectedOption) }}
+        </span>
+        <svg
+          v-if="selectedOption === 'color'"
+          height="16"
+          width="16"
+          class="ket-disk"
+        >
+          <circle
+            cx="8"
+            cy="8"
+            :r="discScale(ketComponent.amplitude.r)"
+            :fill="complexToColor(ketComponent.amplitude)"
+          />
+        </svg>
+        <span class="ket-ket-bright">
+          <span class="ket-parenthesis">|</span>
+          <span
+            v-for="(coordStr, i) in ketComponent.coordStrs"
+            :key="`ket-component-${i}-${coordStr}`"
+            class="ket-coord"
+            :style="{ color: dimensionNameToColor(dimensionNames[i], false) }"
           >{{ coordPrettier(coordStr) }}</span>
           <span class="ket-parenthesis">⟩</span>
         </span>
@@ -81,6 +126,10 @@ export default Vue.extend({
     allBases: {
       type: Array as () => IBasisSelector[],
       default: () => allBasesDefault,
+    },
+    darkMode: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
@@ -130,16 +179,29 @@ export default Vue.extend({
       return coordPrettier(coord);
     },
 
-    dimensionNameToColor(dimName: string): string {
-      switch (dimName) {
-        case 'direction':
-          return '#ff0055';
-        case 'polarization':
-          return '#ff9100';
-        case 'spin':
-          return '#0091ff';
-        default:
-          return '#ffffff';
+    dimensionNameToColor(dimName: string, darkStyle = false): string {
+      if (darkStyle) {
+        switch (dimName) {
+          case 'direction':
+            return '#ff0055';
+          case 'polarization':
+            return '#ff9100';
+          case 'spin':
+            return '#0091ff';
+          default:
+            return '#ffffff';
+        }
+      } else {
+        switch (dimName) {
+          case 'direction':
+            return '#ff0055';
+          case 'polarization':
+            return '#ff9100';
+          case 'spin':
+            return '#0091ff';
+          default:
+            return '#242424';
+        }
       }
     },
   },
@@ -177,13 +239,39 @@ export default Vue.extend({
         color: #fff;
         padding: 0px 3px;
         margin: 2px;
-        & .ket-parenthesis {
-          padding: 0px;
-        }
-        & .ket-coord {
-          padding: 2px;
-        }
       }
+    }
+    & .ket-component-bright {
+      // background-color: rgba(105, 56, 129, 0.315);
+      border-width: 1px;
+      border-style: solid;
+      border-color: rgba(228, 228, 228, 1);
+      background-color: white;
+      margin: 5px 5px 5px 0px;
+      padding: 4px 0px;
+      line-height: 1rem;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      display: flex;
+      align-items: center;
+      & .ket-complex-bright {
+        color: #7a06c7;
+        padding: 0px 0px 0px 6px;
+      }
+      & .ket-ket-bright {
+        color: #242424;
+        padding: 0px 3px;
+        margin: 2px;
+      }
+    }
+    & .ket-disk {
+      margin-left: 5px;
+    }
+    & .ket-parenthesis {
+      padding: 0px;
+    }
+    & .ket-coord {
+      padding: 2px;
     }
   }
 }
