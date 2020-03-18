@@ -76,7 +76,7 @@ export default Vue.extend({
 }
 .button-bright {
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
-  background-color: rgba(168, 168, 168, 0.1);
+  background-color: rgba(168, 168, 168, 0.2);
   cursor: pointer;
   color: #242424;
   padding: 4px 12px;
@@ -87,10 +87,10 @@ export default Vue.extend({
   transition: 0.5s;
   margin: 3px;
   &:hover {
-    background: rgba(168, 168, 168, 0.3);
+    background: rgba(168, 168, 168, 0.4);
   }
   &.selected {
-    background: rgba(168, 168, 168, 0.3);
+    background: rgba(168, 168, 168, 0.4);
   }
 }
 </style>
