@@ -3,15 +3,13 @@
     ref="wrapper"
     class="ket"
   >
-    <!-- DARK MODE -->
     <div
-      v-if="darkMode === true"
       class="quantum-state-viewer"
     >
       <span
         v-for="(ketComponent, index) in ketComponents"
         :key="`ket-component-${index}`"
-        class="ket-component"
+        :class="ketComponentClass(darkMode)"
       >
         <span
           v-if="selectedOption !== 'color'"
@@ -38,48 +36,7 @@
             v-for="(coordStr, i) in ketComponent.coordStrs"
             :key="`ket-component-${i}-${coordStr}`"
             class="ket-coord"
-            :style="{ color: dimensionNameToColor(dimensionNames[i], true) }"
-          >{{ coordPrettier(coordStr) }}</span>
-          <span class="ket-parenthesis">⟩</span>
-        </span>
-      </span>
-    </div>
-    <!-- BRIGHT MODE -->
-    <div
-      v-if="darkMode === false"
-      class="quantum-state-viewer"
-    >
-      <span
-        v-for="(ketComponent, index) in ketComponents"
-        :key="`ket-component-${index}`"
-        class="ket-component-bright"
-      >
-        <span
-          v-if="selectedOption !== 'color'"
-          class="ket-complex-bright"
-        >
-          {{ ketComponent.amplitude.toString(selectedOption) }}
-        </span>
-        <svg
-          v-if="selectedOption === 'color'"
-          height="16"
-          width="16"
-          class="ket-disk"
-        >
-          <circle
-            cx="8"
-            cy="8"
-            :r="discScale(ketComponent.amplitude.r)"
-            :fill="complexToColor(ketComponent.amplitude)"
-          />
-        </svg>
-        <span class="ket-ket-bright">
-          <span class="ket-parenthesis">|</span>
-          <span
-            v-for="(coordStr, i) in ketComponent.coordStrs"
-            :key="`ket-component-${i}-${coordStr}`"
-            class="ket-coord"
-            :style="{ color: dimensionNameToColor(dimensionNames[i], false) }"
+            :style="{ color: dimensionNameToColor(dimensionNames[i], darkMode) }"
           >{{ coordPrettier(coordStr) }}</span>
           <span class="ket-parenthesis">⟩</span>
         </span>
@@ -176,6 +133,13 @@ export default Vue.extend({
       return coordPrettier(coord);
     },
 
+    ketComponentClass(darkStyle = true): string {
+      if (darkStyle) {
+        return 'ket-component-dark';
+      }
+      return 'ket-component-bright';
+    },
+
     dimensionNameToColor(dimName: string, darkStyle = false): string {
       if (darkStyle) {
         switch (dimName) {
@@ -216,7 +180,7 @@ export default Vue.extend({
     display: flex;
     flex-wrap: wrap;
     font-size: 12px;
-    & .ket-component {
+    & .ket-component-dark {
       background-color: rgba(0, 0, 0, 0.3);
       margin: 5px 5px 5px 0px;
       padding: 4px 0px;
@@ -237,9 +201,11 @@ export default Vue.extend({
         padding: 0px 3px;
         margin: 2px;
       }
+      & .ket-coord {
+        padding: 2px;
+      }
     }
     & .ket-component-bright {
-      // background-color: rgba(105, 56, 129, 0.315);
       border-width: 1px;
       border-style: solid;
       border-color: rgb(240, 240, 240);
@@ -251,14 +217,18 @@ export default Vue.extend({
       flex-direction: row;
       display: flex;
       align-items: center;
-      & .ket-complex-bright {
+      & .ket-complex {
         color: #7a06c7;
         padding: 0px 0px 0px 6px;
       }
-      & .ket-ket-bright {
+      & .ket-ket {
         color: #242424;
         padding: 0px 3px;
         margin: 2px;
+      }
+      & .ket-coord {
+        padding: 2px;
+        color: #242424;
       }
     }
     & .ket-disk {
@@ -266,9 +236,6 @@ export default Vue.extend({
     }
     & .ket-parenthesis {
       padding: 0px;
-    }
-    & .ket-coord {
-      padding: 2px;
     }
   }
 }
