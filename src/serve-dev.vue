@@ -116,6 +116,13 @@ export default Vue.extend({
     <ket-viewer :vector="singlet" />
     <h1>Ket List</h1>
     <ket-list :steps="steps" />
+    <div class="bright">
+      <h1>Ket List</h1>
+      <ket-list
+        :steps="steps"
+        :dark-mode="false"
+      />
+    </div>
     <h1>Ket List Quantum Computing</h1>
     <ket-list :steps="stepsQuantumComputing" />
     <h1>beamSplitter 50/50</h1>
@@ -147,8 +154,8 @@ export default Vue.extend({
 }
 .bright {
   padding: 30px;
-  max-width: 600px;
-  background-color: rgb(240, 240, 240);
+  max-width: 700px;
+  background-color: rgb(243, 243, 243);
   & h1{
     color:black;
     border-top: 1px solid rgba(0, 0, 0, 0.6);
@@ -156,7 +163,7 @@ export default Vue.extend({
 }
 .bright2 {
   padding: 30px;
-  max-width: 600px;
+  max-width: 700px;
   background-color: rgb(255, 255, 255);
   & h1{
     color:rgb(24, 24, 24);

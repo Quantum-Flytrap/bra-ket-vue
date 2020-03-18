@@ -3,7 +3,10 @@
     ref="wrapper"
     class="ket-list"
   >
-    <table>
+    <table
+      v-if="darkMode === true"
+      class="table-dark"
+    >
       <thead>
         <tr>
           <th class="w1">
@@ -20,12 +23,17 @@
           v-for="(step, i) in steps"
           :key="`step-${i}`"
         >
-          <td>{{ i }}</td>
-          <td>{{ step.value }}</td>
-          <td>
+          <td class="td-dark">
+            {{ i }}
+          </td>
+          <td class="td-dark">
+            {{ step.value }}
+          </td>
+          <td class="td-dark">
             <ket
               class="ket"
               :vector="step.vector"
+              :dark-mode="darkMode"
               :selected-option="selectedOption"
               :all-bases="allBases"
             />
@@ -33,20 +41,82 @@
         </tr>
       </tbody>
     </table>
-    <coordinate-legend
-      v-if="showLegend"
-      class="legend-list"
-      :complex-style="selectedOption"
-      :dimension-names="dimensionNames"
-    />
-    <div class="btn-legend-group">
-      <span class="btn-legend">view</span>
-      <span class="btn-legend">base change</span>
+    <!-- BRIGHT MODE -->
+    <table
+      v-if="darkMode === false"
+      class="table-bright"
+    >
+      <thead>
+        <tr>
+          <th class="w1">
+            step
+          </th>
+          <th class="w2">
+            value
+          </th>
+          <th>state</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(step, i) in steps"
+          :key="`step-${i}`"
+        >
+          <td class="td-bright">
+            {{ i }}
+          </td>
+          <td class="td-bright">
+            {{ step.value }}
+          </td>
+          <td class="td-bright">
+            <ket
+              class="ket"
+              :vector="step.vector"
+              :dark-mode="darkMode"
+              :selected-option="selectedOption"
+              :all-bases="allBases"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- DARK -->
+    <div
+      v-if="darkMode === true"
+    >
+      <coordinate-legend
+        v-if="showLegend"
+        class="legend-list-dark"
+        :dark-mode="darkMode"
+        :complex-style="selectedOption"
+        :dimension-names="dimensionNames"
+      />
+      <div class="btn-legend-group-dark">
+        <span class="btn-legend-dark">view</span>
+        <span class="btn-legend-dark">base change</span>
+      </div>
+    </div>
+    <!-- BRIGHT -->
+    <div
+      v-if="darkMode === false"
+    >
+      <coordinate-legend
+        v-if="showLegend"
+        class="legend-list-bright"
+        :dark-mode="darkMode"
+        :complex-style="selectedOption"
+        :dimension-names="dimensionNames"
+      />
+      <div class="btn-legend-group-bright">
+        <span class="btn-legend-bright">view</span>
+        <span class="btn-legend-bright">base change</span>
+      </div>
     </div>
     <div class="btn-group">
       <span>
         <options-group
           key="options-group-complex"
+          :dark-mode="darkMode"
           :options="options"
           :selected-option="selectedOption"
           @selected="selectedOption = $event"
@@ -63,6 +133,7 @@
             <options-group-svg
               v-if="dimensionNames.indexOf(bases.name) > -1"
               :key="`options-group-basis-${bases.name}`"
+              :dark-mode="darkMode"
               :options="bases.availableBases"
               :selected-option="bases.selected"
               @selected="bases.selected = $event"
@@ -74,6 +145,7 @@
             <options-group
               v-if="dimensionNames.indexOf(bases.name) > -1"
               :key="`options-group-basis-${bases.name}`"
+              :dark-mode="darkMode"
               :options="bases.availableBases"
               :selected-option="bases.selected"
               @selected="bases.selected = $event"
@@ -109,6 +181,10 @@ export default Vue.extend({
       type: Boolean,
       default: true,
     },
+    darkMode: {
+      type: Boolean,
+      default: true,
+    },
   },
   data(): any {
     return {
@@ -133,20 +209,31 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-table {
+.table-dark {
   font-size: 12px;
   font-weight: 300;
   text-align: left;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   border-collapse: separate;
   border-spacing: 10px;
+  & .td-dark {
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  }
+}
+.table-bright {
+  font-size: 12px;
+  font-weight: 300;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.6);
+  border-collapse: separate;
+  border-spacing: 10px;
+  & .td-bright {
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+  }
 }
 th {
   font-weight: 300;
   text-transform: uppercase;
-}
-td {
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 .w1 {
   width: 40px;
@@ -183,46 +270,31 @@ td {
       padding: 10;
       margin: 10px;
     }
-    & .ket-component {
-      background-color: rgba(0, 0, 0, 0.3);
-      margin: 5px;
-      line-height: 1.4rem;
-      font-size: 14px;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      display: flex;
-      align-items: center;
-      & .ket-complex {
-        color: #d28fff;
-        padding: 0px 0px 0px 6px;
-      }
-      & .ket-disk {
-        margin-left: 5px;
-      }
-      & .ket-coord {
-        color: #fff;
-        padding: 1px;
-        margin: 2px;
-        & .ket-dir {
-          color: #ff0055;
-        }
-        & .ket-pol {
-          color: #ff9100;
-        }
-      }
-    }
   }
-  & .btn-legend-group {
+  & .btn-legend-group-dark {
     display: flex;
     justify-content: space-between;
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 1);
     margin: 0px 10px;
   }
-  & .btn-legend {
+  & .btn-legend-group-bright {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.8);
+    margin: 0px 10px;
+  }
+  & .btn-legend-dark {
     font-size: 12px;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+  }
+  & .btn-legend-bright {
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.6);
     text-transform: uppercase;
   }
   & .btn-group {
@@ -232,9 +304,13 @@ td {
     padding-top: 10px;
     margin: 0px 4px;
   }
-  & .legend-list {
+  & .legend-list-dark {
     margin: 0px 10px;
     border-top: 1px solid rgba(255, 255, 255, 1);
+  }
+  & .legend-list-bright {
+    margin: 0px 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.8);
   }
   @media screen and (max-width: 1000px) {
     border: none;
