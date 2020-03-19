@@ -11,7 +11,7 @@
           v-for="(dimName, i) in dimensionNames"
           :key="`legend-dimension-${dimName}-${i}`"
           class="legend-dimension"
-          :style="{ color: dimensionNameToColor(dimName, true) }"
+          :style="{ color: dimensionNameToColor(dimName, darkMode) }"
         >
           {{ dimName }}
         </span>
