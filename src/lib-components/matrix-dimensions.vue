@@ -1,6 +1,6 @@
 <template>
   <g
-    class="dimension-labels"
+    :class="dimensionLabels(darkMode)"
     :transform="transformation"
   >
     <text
@@ -40,6 +40,10 @@ export default Vue.extend({
     dimensionNames: {
       type: Array as () => string[],
       default: () => [],
+    },
+    darkMode: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
@@ -103,27 +107,53 @@ export default Vue.extend({
     scale(i: number): number {
       return i * this.size;
     },
+    dimensionLabels(darkStyle = true): string {
+      if (darkStyle) {
+        return 'dimension-labels-dark';
+      }
+      return 'dimension-labels-bright';
+    },
   },
 });
 </script>
 
 <style scoped lang="scss">
-.dimension-label {
-  font-size: 12px;
-  text-anchor: end;
-  dominant-baseline: central;
-  fill: rgba(255, 255, 255, 0.5);
-  cursor: default;
-  text-transform: uppercase;
-  font-weight: 300;
+.dimension-labels-dark {
+  & .dimension-label {
+    font-size: 12px;
+    text-anchor: end;
+    dominant-baseline: central;
+    fill: rgba(255, 255, 255, 0.5);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  & .dimension-swap {
+    font-size: 18px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: white;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
 }
-
-.dimension-swap {
-  font-size: 18px;
-  text-anchor: middle;
-  dominant-baseline: central;
-  fill: white;
-  cursor: pointer;
-  text-transform: uppercase;
+.dimension-labels-bright {
+  & .dimension-label {
+    font-size: 12px;
+    text-anchor: end;
+    dominant-baseline: central;
+    fill: rgba(0, 0, 0, 0.6);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  & .dimension-swap {
+    font-size: 18px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: rgb(0, 0, 0);
+    cursor: pointer;
+    text-transform: uppercase;
+  }
 }
 </style>
