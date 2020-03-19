@@ -2,7 +2,7 @@
   <div class="matrix-viewer">
     <div>
       <svg
-        class="quantum-matrix"
+        :class="quantumMatrixClass(darkMode)"
         :width="columnSize + (1.5 + coordNamesIn.length) * size"
         :height="rowSize + (4.5 + coordNamesOut.length) * size"
       >
@@ -11,6 +11,7 @@
             :size="size"
             axis-label="input"
             location="top"
+            :dark-mode="darkMode"
             :coordNames="coordNamesIn"
             :selected="selectedIn"
           />
@@ -18,6 +19,7 @@
         <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesOut.length) * size})`">
           <matrix-dimensions
             :dimensionNames="dimensionNamesOut"
+            :dark-mode="darkMode"
             location="left"
             @swapDimensions="swapDimensions($event)"
           />
@@ -27,6 +29,7 @@
             :size="size"
             axis-label="output"
             location="left"
+            :dark-mode="darkMode"
             :coordNames="coordNamesOut"
             :selected="selectedOut"
           />
@@ -70,7 +73,7 @@
         </g>
       </svg>
     </div>
-    <div class="legend-container">
+    <div :class="legendContainer(darkMode)">
       <div class="matrix-legend">
         <div class="legend-text">
           base change
@@ -86,6 +89,7 @@
               v-if="dimensionNamesOut.indexOf(bases.name) > -1"
               :key="`options-group-basis-${bases.name}`"
               :options="bases.availableBases"
+              :dark-mode="darkMode"
               :selected-option="bases.selected"
               @selected="changeBasis(bases, $event)"
             />
@@ -97,6 +101,7 @@
               v-if="dimensionNamesOut.indexOf(bases.name) > -1"
               :key="`options-group-basis-${bases.name}`"
               :options="bases.availableBases"
+              :dark-mode="darkMode"
               :selected-option="bases.selected"
               @selected="changeBasis(bases, $event)"
             />
@@ -107,6 +112,7 @@
         <complex-legend
           :re="selectedEntry.re"
           :im="selectedEntry.im"
+          :dark-mode="darkMode"
         />
       </div>
     </div>
@@ -155,6 +161,10 @@ export default Vue.extend({
     operatorRaw: {
       type: Object as () => Operator,
       required: true,
+    },
+    darkMode: {
+      type: Boolean,
+      default: true,
     },
   },
   data(): { operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement} {
@@ -272,6 +282,18 @@ export default Vue.extend({
       );
       // maybe also syntax op.toBasis({ polarization: 'HV', qubit: '+-' })
     },
+    legendContainer(darkStyle = true): string {
+      if (darkStyle) {
+        return 'legend-container-dark';
+      }
+      return 'legend-container-bright';
+    },
+    quantumMatrixClass(darkStyle = true): string {
+      if (darkStyle) {
+        return 'quantum-matrix-dark';
+      }
+      return 'quantum-matrix-bright';
+    },
   },
 });
 </script>
@@ -281,70 +303,135 @@ export default Vue.extend({
   display: flex;
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 }
-.legend-container {
+.legend-container-dark {
   //display: block;
   margin-top: 40px;
+    & .matrix-legend {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    //width: 300px;
+    & .legend-text {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      font-weight: 300;
+      padding-bottom: 10px;
+    }
+  }
 }
-.matrix-legend {
-  padding-top: 10px;
-  padding-bottom: 30px;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  //width: 300px;
+.legend-container-bright {
+  //display: block;
+  margin-top: 40px;
+    & .matrix-legend {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    //width: 300px;
+    & .legend-text {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      text-transform: uppercase;
+      font-weight: 300;
+      padding-bottom: 10px;
+    }
+  }
 }
-.legend-text {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  font-weight: 300;
-  padding-bottom: 10px;
-}
-.quantum-matrix {
+.quantum-matrix-dark {
   display: inline-block;
+  & .label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(255, 255, 255, 0.5);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  & .selected-column {
+    fill: rgba(255, 255, 255, 0.1);
+    stroke: #ffffff;
+    stroke-width: 1px;
+  }
+
+  & .entry-tile {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1px;
+  }
+
+  & .entry-boarder {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1px;
+  }
+
+  & .tile-value {
+    cursor: pointer;
+  }
+
+  & .tile-value:hover {
+    stroke: rgb(255, 255, 255);
+    stroke-width: 2px;
+  }
+
+  & .swap-label,
+  & .dimension-label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(255, 255, 255, 0.5);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+}
+.quantum-matrix-bright {
+  display: inline-block;
+  & .label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(0, 0, 0, 0.6);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  & .selected-column {
+    fill: rgba(0, 0, 0, 0.1);
+    stroke: #000;
+    stroke-width: 1px;
+  }
+
+  & .entry-tile {
+    fill: rgba(255, 255, 255, 0);
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 1px;
+  }
+
+  & .entry-boarder {
+    fill: none;
+    stroke: rgb(0, 0, 0);
+    stroke-width: 1px;
+  }
+
+  & .tile-value {
+    cursor: pointer;
+  }
+
+  & .tile-value:hover {
+    stroke: rgb(255, 255, 255);
+    stroke-width: 2px;
+  }
+
+  & .swap-label,
+  & .dimension-label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(0, 0, 0, 0.6);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
 }
 
-.label {
-  font-size: 12px;
-  text-anchor: middle;
-  fill: rgba(255, 255, 255, 0.5);
-  cursor: default;
-  text-transform: uppercase;
-  font-weight: 300;
-}
-
-.selected-column {
-  fill: rgba(255, 255, 255, 0.1);
-  stroke: #ffffff;
-  stroke-width: 1px;
-}
-
-.entry-tile {
-  fill: rgba(0, 0, 0, 0);
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 1px;
-}
-
-.entry-boarder {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 1px;
-}
-
-.tile-value {
-  cursor: pointer;
-}
-
-.tile-value:hover {
-  stroke: rgb(255, 255, 255);
-  stroke-width: 2px;
-}
-
-.swap-label,
-.dimension-label {
-  font-size: 12px;
-  text-anchor: middle;
-  fill: rgba(255, 255, 255, 0.5);
-  cursor: default;
-  text-transform: uppercase;
-  font-weight: 300;
-}
 </style>
