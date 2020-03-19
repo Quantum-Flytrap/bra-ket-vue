@@ -1,8 +1,7 @@
 <template>
   <div>
     <div
-      v-if="darkMode === true"
-      class="legend-dark"
+      :class="coordLegendClass(darkMode)"
     >
       <span v-if="complexStyle !== 'color'">
         <span class="legend-complex">amplitude (complex number)</span>
@@ -13,24 +12,6 @@
           :key="`legend-dimension-${dimName}-${i}`"
           class="legend-dimension"
           :style="{ color: dimensionNameToColor(dimName, true) }"
-        >
-          {{ dimName }}
-        </span>
-      </span>
-    </div>
-    <div
-      v-if="darkMode === false"
-      class="legend-bright"
-    >
-      <span v-if="complexStyle !== 'color'">
-        <span class="legend-complex">amplitude (complex number)</span>
-      </span>
-      <span>
-        <span
-          v-for="(dimName, i) in dimensionNames"
-          :key="`legend-dimension-${dimName}-${i}`"
-          class="legend-dimension"
-          :style="{ color: dimensionNameToColor(dimName, false) }"
         >
           {{ dimName }}
         </span>
@@ -58,18 +39,12 @@ export default Vue.extend({
     },
   },
   methods: {
-    // dimensionNameToColor(dimName: string): string {
-    //   switch (dimName) {
-    //     case 'direction':
-    //       return '#ff0055';
-    //     case 'polarization':
-    //       return '#ff9100';
-    //     case 'spin':
-    //       return '#0091ff';
-    //     default:
-    //       return '#ffffff';
-    //   }
-    // },
+    coordLegendClass(darkStyle = true): string {
+      if (darkStyle) {
+        return 'legend-dark';
+      }
+      return 'legend-bright';
+    },
     dimensionNameToColor(dimName: string, darkStyle = false): string {
       if (darkStyle) {
         switch (dimName) {
