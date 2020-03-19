@@ -1,6 +1,6 @@
 <template>
   <g
-    class="matrix-labels"
+    :class="matrixLabels(darkMode)"
     :transform="transformation"
   >
     <text
@@ -76,6 +76,10 @@ export default Vue.extend({
     selected: {
       type: Array as () => number[],
       default: () => [],
+    },
+    darkMode: {
+      type: Boolean,
+      default: true,
     },
   },
   computed: {
@@ -167,43 +171,81 @@ export default Vue.extend({
     coordPrettier(coord: string): string {
       return coordPrettier(coord);
     },
+
+    matrixLabels(darkStyle = true): string {
+      if (darkStyle) {
+        return 'matrix-labels-dark';
+      }
+      return 'matrix-labels-bright';
+    },
   },
 });
 </script>
 
 <style scoped lang="scss">
-text.coord {
-  font-size: 16px;
-  dominant-baseline: central;
-  text-anchor: middle;
-  fill: rgba(255, 255, 255, 0.5);
-  cursor: default;
-  font-weight: 300;
-  &.selected {
-    fill: rgba(255, 255, 255, 1);
-    font-weight: 500;
+.matrix-labels-dark{
+  & text.coord {
+    font-size: 16px;
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill: rgba(255, 255, 255, 0.5);
+    cursor: default;
+    font-weight: 300;
+    &.selected {
+      fill: rgba(255, 255, 255, 1);
+      font-weight: 500;
+    }
+  }
+  & .label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(255, 255, 255, 0.5);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  & .menu-tile {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 1px;
+  }
+  & .menu-tile-outline {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1px;
   }
 }
 
-.label {
-  font-size: 12px;
-  text-anchor: middle;
-  fill: rgba(255, 255, 255, 0.5);
-  cursor: default;
-  text-transform: uppercase;
-  font-weight: 300;
+.matrix-labels-bright{
+  & text.coord {
+    font-size: 16px;
+    dominant-baseline: central;
+    text-anchor: middle;
+    fill: rgba(0, 0, 0, 0.6);
+    cursor: default;
+    font-weight: 300;
+    &.selected {
+      fill: rgba(0, 0, 0, 1);
+      font-weight: 500;
+    }
+  }
+  & .label {
+    font-size: 12px;
+    text-anchor: middle;
+    fill: rgba(0, 0, 0, 0.6);
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+  & .menu-tile {
+    fill: rgba(255, 255, 255, 0);
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 1px;
+  }
+  & .menu-tile-outline {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+  }
 }
-
-.menu-tile {
-  fill: rgba(0, 0, 0, 0);
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 1px;
-}
-
-.menu-tile-outline {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 1px;
-}
-
 </style>
