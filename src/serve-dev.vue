@@ -125,6 +125,13 @@ export default Vue.extend({
     </div>
     <h1>Ket List Quantum Computing</h1>
     <ket-list :steps="stepsQuantumComputing" />
+    <div class="bright">
+      <h1>beamSplitter 50/50</h1>
+      <matrix-viewer
+        :operator-raw="operator"
+        :dark-mode="false"
+      />
+    </div>
     <h1>beamSplitter 50/50</h1>
     <matrix-viewer :operator-raw="operator" />
     <h1>Pauli Z operator for spin</h1>
