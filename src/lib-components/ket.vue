@@ -178,7 +178,7 @@ export default Vue.extend({
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: 'Consolas', monospace;
   & .quantum-state-viewer {
     display: flex;
     flex-wrap: wrap;
