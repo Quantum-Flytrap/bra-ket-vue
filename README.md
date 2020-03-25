@@ -42,6 +42,7 @@ Warning: it is an early alpha version. Everything can change (including core com
 
 * A NPM example in https://codesandbox.io/
 * A frontend JavaScript example in https://jsfiddle.net/ or https://codepen.io/
+    * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
 
 
 ## Notes
