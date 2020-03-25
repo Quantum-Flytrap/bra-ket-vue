@@ -39,6 +39,38 @@
       :selected-option="selectedOption"
       @selected="selectedOption = $event"
     />
+
+    <span>
+      <span
+        v-for="bases in allBases"
+        :key="`basis-${bases.name}`"
+      >
+        <span
+          v-if="bases.name == 'polarization'"
+        >
+          <options-group-svg
+            v-if="dimensionNames.indexOf(bases.name) > -1"
+            :key="`options-group-basis-${bases.name}`"
+            :dark-mode="darkMode"
+            :options="bases.availableBases"
+            :selected-option="bases.selected"
+            @selected="bases.selected = $event"
+          />
+        </span>
+        <span
+          v-else
+        >
+          <options-group
+            v-if="dimensionNames.indexOf(bases.name) > -1"
+            :key="`options-group-basis-${bases.name}`"
+            :dark-mode="darkMode"
+            :options="bases.availableBases"
+            :selected-option="bases.selected"
+            @selected="bases.selected = $event"
+          />
+        </span>
+      </span>
+    </span>
   </div>
 </template>
 
@@ -47,12 +79,14 @@ import Vue from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
+import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import Ket from '@/lib-components/ket.vue';
 
 export default Vue.extend({
   components: {
     CoordinateLegend,
     OptionsGroup,
+    OptionsGroupSvg,
     Ket,
   },
   props: {
