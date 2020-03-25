@@ -197,6 +197,7 @@ export default Vue.extend({
         padding: 0px 0px 0px 6px;
       }
       & .ket-disk {
+        display: inline-flex;
         margin-left: 5px;
       }
       & .ket-ket {
