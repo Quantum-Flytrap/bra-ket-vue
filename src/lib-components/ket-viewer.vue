@@ -102,13 +102,17 @@ export default Vue.extend({
       type: Boolean,
       default: true,
     },
+    initialPolBasis: {
+      type: String,
+      default: 'HV',
+    },
   },
   data(): any {
     return {
       options: ['polar', 'polarTau', 'cartesian', 'color'],
       selectedOption: 'polar',
       allBases: [
-        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: this.initialPolBasis },
         { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
         { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
       ],
