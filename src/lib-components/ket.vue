@@ -185,12 +185,12 @@ export default Vue.extend({
     font-size: 12px;
     & .ket-component-dark {
       background-color: rgba(0, 0, 0, 0.3);
-      margin: 5px 5px 5px 0px;
+      margin: 2px 5px 2px 0px;
       padding: 4px 0px;
       line-height: 1rem;
       flex-wrap: nowrap;
       flex-direction: row;
-      display: flex;
+      display: inline-block;
       align-items: center;
       & .ket-complex {
         color: #d28fff;
