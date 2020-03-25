@@ -190,6 +190,7 @@ export default Vue.extend({
     text-anchor: middle;
     fill: rgba(255, 255, 255, 0.5);
     cursor: default;
+    font-family: 'Consolas', monospace;
     font-weight: 300;
     &.selected {
       fill: rgba(255, 255, 255, 1);
