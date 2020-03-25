@@ -4,7 +4,7 @@
       :class="coordLegendClass(darkMode)"
     >
       <span v-if="complexStyle !== 'color'">
-        <span class="legend-complex">amplitude (complex number)</span>
+        <span class="legend-complex">amplitude</span>
       </span>
       <span>
         <span
@@ -81,6 +81,7 @@ export default Vue.extend({
 }
 
 .legend-dark {
+  display: inline;
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 10px;

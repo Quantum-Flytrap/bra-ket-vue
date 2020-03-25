@@ -48,19 +48,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.btn-group-dark {
-  display: flex;
-  margin-bottom: 5px;
-  overflow: hidden;
-  align-content: space-between;
-  flex-wrap: wrap;
-}
 .button-dark {
+  display: inline-block;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
   color: white;
-  padding: 4px 12px;
+  padding: 3px 8px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
@@ -75,11 +69,12 @@ export default Vue.extend({
   }
 }
 .button-bright {
+  display: inline-block;
   font-family: "Montserrat", Helvetica, Arial, sans-serif;
   background-color: rgba(168, 168, 168, 0.2);
   cursor: pointer;
   color: #242424;
-  padding: 4px 12px;
+  padding: 3px 8px;
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
