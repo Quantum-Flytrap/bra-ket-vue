@@ -14,12 +14,12 @@
         class="base-change"
         :width="38"
         :height="19"
-        :class="buttonColor(darkMode)"
+        :class="buttonStyle(option)"
       >
         <g
           v-if="option == 'HV'"
           class="HV"
-          :style="{ fill: svgColor(darkMode)}"
+          :style="{ fill: svgColor}"
         >
           <polygon points="16.2,9 10.8,9 10.8,7 6.5,9.5 10.8,12 10.8,10 16.2,10 16.2,12 20.5,9.5 16.2,7" />
           <polygon points="29,6.3 31,6.3 28.5,2 26,6.3 28,6.3 28,12.7 26,12.7 28.5,17 31,12.7 29,12.7" />
@@ -27,7 +27,7 @@
         <g
           v-if="option == 'DA'"
           class="DA"
-          :style="{ fill: svgColor(darkMode)}"
+          :style="{ fill: svgColor}"
         >
           <polygon points="14.1,11.4 9.6,6.9 11,5.5 6.2,4.2 7.5,9 8.9,7.6 13.4,12.1 12,13.5 16.8,14.8 15.5,10" />
           <polygon points="30.5,9 31.8,4.2 27,5.5 28.4,6.9 23.9,11.4 22.5,10 21.2,14.8 26,13.5 24.6,12.1 29.1,7.6" />
@@ -35,7 +35,7 @@
         <g
           v-if="option == 'LR'"
           class="LR"
-          :style="{ fill: svgColor(darkMode)}"
+          :style="{ fill: svgColor}"
         >
           <path
             d="M10.4,2.9c-3.2,0-5.8,2.6-5.8,5.8h1c0-2.6,2.2-4.8,4.8-4.8c2.6,0,4.8,2.2,4.8,4.8c0,2.4-1.9,4.4-4.2,4.7,
@@ -69,18 +69,18 @@ export default Vue.extend({
       default: true,
     },
   },
-  methods: {
-    buttonColor(darkStyle = true): string {
-      if (darkStyle) {
-        return 'button-dark';
-      }
-      return 'button-bright';
+  computed: {
+    svgColor(): string {
+      return this.darkMode ? 'white' : '#242424';
     },
-    svgColor(darkStyle = true): string {
-      if (darkStyle) {
-        return 'white';
-      }
-      return '#242424';
+  },
+  methods: {
+    buttonStyle(option: string): Record<string, boolean> {
+      return {
+        'button-dark': this.darkMode,
+        'button-bright': !this.darkMode,
+        selected: option === this.selectedOption,
+      };
     },
   },
 });
