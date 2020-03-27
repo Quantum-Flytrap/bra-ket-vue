@@ -19,8 +19,9 @@
         </span>
         <svg
           v-if="selectedOption === 'color'"
-          height="16"
-          width="16"
+          height="100%"
+          width="100%"
+          viewBox="0 0 16 16"
           class="ket-disk"
         >
           <circle
@@ -189,16 +190,13 @@ export default Vue.extend({
       padding: 3px 4px;
       flex-wrap: nowrap;
       flex-direction: row;
-      display: inline-block;
+      display: flex;
       align-items: center;
       & .ket-complex {
         color: #d28fff;
         margin-right: 2px;
       }
-      & .ket-disk {
-        display: inline-flex;
-        margin-left: 5px;
-      }
+
       & .ket-coords {
         display: inline-flex;
         color: #fff;
@@ -232,9 +230,6 @@ export default Vue.extend({
         padding-right: 3px;
         color: #242424;
       }
-    }
-    & .ket-disk {
-      margin-left: 5px;
     }
     & .ket-parenthesis {
       padding: 0px;
