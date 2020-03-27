@@ -174,12 +174,14 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .ket {
   display: flex;
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;
-  font-family: 'Consolas', monospace;
+  font-family: $ketFont;
   & .quantum-state-viewer {
     display: flex;
     flex-wrap: wrap;

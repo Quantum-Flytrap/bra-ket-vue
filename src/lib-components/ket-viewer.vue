@@ -127,6 +127,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .ket-viewer {
   width: 100%;
   display: flex;
@@ -135,7 +137,7 @@ export default Vue.extend({
   align-items: center;
   transition: height 0.5s;
   overflow: hidden;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   @media screen and (max-width: 1000px) {
     border: none;
   }

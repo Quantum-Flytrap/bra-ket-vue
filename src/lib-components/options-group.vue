@@ -48,9 +48,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .button-dark {
   display: inline-block;
-  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
   color: white;
@@ -70,7 +72,7 @@ export default Vue.extend({
 }
 .button-bright {
   display: inline-block;
-  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   background-color: rgba(168, 168, 168, 0.2);
   cursor: pointer;
   color: #242424;

@@ -183,6 +183,8 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import "../style-variables.scss";
+
 .matrix-labels-dark{
   & text.coord {
     font-size: 16px;
@@ -190,7 +192,7 @@ export default Vue.extend({
     text-anchor: middle;
     fill: rgba(255, 255, 255, 0.5);
     cursor: default;
-    font-family: 'Consolas', monospace;
+    font-family: $ketFont;
     font-weight: 300;
     &.selected {
       fill: rgba(255, 255, 255, 1);
