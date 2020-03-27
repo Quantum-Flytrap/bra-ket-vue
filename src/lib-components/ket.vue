@@ -106,14 +106,15 @@ export default Vue.extend({
         selectedBasis[basis.name] = basis.selected;
       });
 
-      return this.vector
+      const vectorRotated = this.vector
         .toBasisAll('polarization', selectedBasis.polarization)
         .toBasisAll('spin', selectedBasis.spin)
-        .toBasisAll('qubit', selectedBasis.qubit)
-        .entries
+        .toBasisAll('qubit', selectedBasis.qubit);
+
+      return vectorRotated.entries
         .map((entry: VectorEntry): IKetComponent => ({
           amplitude: entry.value,
-          coordStrs: entry.coord.map((c: number, dim: number) => this.vector.coordNames[dim][c]),
+          coordStrs: entry.coord.map((c: number, dim: number) => vectorRotated.coordNames[dim][c]),
         }))
         .filter((d) => d.amplitude.r ** 2 > probThreshold);
     },
