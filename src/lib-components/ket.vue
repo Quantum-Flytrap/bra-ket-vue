@@ -30,7 +30,7 @@
             :fill="complexToColor(ketComponent.amplitude)"
           />
         </svg>
-        <span class="ket-ket">
+        <span class="ket-coords">
           <span class="ket-parenthesis">|</span>
           <span
             v-for="(coordStr, i) in ketComponent.coordStrs"
@@ -185,28 +185,27 @@ export default Vue.extend({
     font-size: 12px;
     & .ket-component-dark {
       background-color: rgba(0, 0, 0, 0.3);
-      margin: 2px 5px 2px 0px;
-      padding: 4px 0px;
-      line-height: 1rem;
+      margin: 2px 6px 0px 0px;
+      padding: 3px 4px;
       flex-wrap: nowrap;
       flex-direction: row;
       display: inline-block;
       align-items: center;
       & .ket-complex {
         color: #d28fff;
-        padding: 0px 0px 0px 6px;
+        margin-right: 2px;
       }
       & .ket-disk {
         display: inline-flex;
         margin-left: 5px;
       }
-      & .ket-ket {
+      & .ket-coords {
+        display: inline-flex;
         color: #fff;
-        padding: 0px 3px;
-        margin: 2px;
       }
       & .ket-coord {
-        padding: 2px;
+        padding-right: 1px;
+        padding-right: 3px;
       }
     }
     & .ket-component-bright {
@@ -214,24 +213,23 @@ export default Vue.extend({
       border-style: solid;
       border-color: rgb(240, 240, 240);
       background-color: white;
-      margin: 5px 5px 5px 0px;
-      padding: 4px 0px;
-      line-height: 1rem;
+      margin: 2px 6px 0px 0px;
+      padding: 3px 4px;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
       align-items: center;
       & .ket-complex {
         color: #7a06c7;
-        padding: 0px 0px 0px 6px;
+        margin-right: 2px;
       }
-      & .ket-ket {
+      & .ket-coords {
+        display: inline-flex;
         color: #242424;
-        padding: 0px 3px;
-        margin: 2px;
       }
       & .ket-coord {
-        padding: 2px;
+        padding-right: 1px;
+        padding-right: 3px;
         color: #242424;
       }
     }
