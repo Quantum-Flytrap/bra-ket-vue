@@ -75,6 +75,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .dim-label {
   color: white;
   padding: 5px;
@@ -85,7 +87,7 @@ export default Vue.extend({
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 10px;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   text-transform: uppercase;
   & .legend-complex {
     color: #d28fff;
@@ -100,7 +102,7 @@ export default Vue.extend({
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 10px;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   text-transform: uppercase;
   & .legend-complex {
     color: #7a06c7;

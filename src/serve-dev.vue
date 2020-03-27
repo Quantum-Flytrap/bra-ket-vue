@@ -151,6 +151,8 @@ export default Vue.extend({
 </template>
 
 <style lang="scss" scoped>
+@import "./style-variables.scss";
+
 #app {
   // background-color: rgb(255, 255, 255);
   background-color: #242424; //GREY
@@ -190,7 +192,7 @@ export default Vue.extend({
   padding: 30px;
 }
 h1 {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   color: rgba(255, 255, 255, 0.6);
   text-align: left;
   text-decoration: none;

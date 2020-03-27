@@ -168,6 +168,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .table-dark {
   font-size: 12px;
   font-weight: 300;
@@ -209,7 +211,7 @@ th {
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   & .hidebutton {
     font-size: 0.8rem;
   }

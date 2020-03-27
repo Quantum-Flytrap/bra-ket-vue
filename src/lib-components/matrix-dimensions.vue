@@ -118,6 +118,8 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import "../style-variables.scss";
+
 .dimension-labels-dark {
   & .dimension-label {
     font-size: 12px;

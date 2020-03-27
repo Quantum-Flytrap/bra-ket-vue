@@ -291,9 +291,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@import "../style-variables.scss";
+
 .matrix-viewer {
   display: flex;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
 }
 .legend-container-dark {
   //display: block;

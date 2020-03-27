@@ -87,6 +87,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "../style-variables.scss";
+
 .btn-group {
   display: flex;
   margin-bottom: 5px;
@@ -95,7 +97,7 @@ export default Vue.extend({
   flex-wrap: wrap;
 }
 .button {
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: $mainFont;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
