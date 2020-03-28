@@ -153,7 +153,7 @@ export default Vue.extend({
       return this.size * this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
     },
     matrixLabels(): string {
-      return this.darkMode ? 'matrix-label-dark' : 'matrix-label-bright';
+      return this.darkMode ? 'matrix-labels-dark' : 'matrix-labels-bright';
     },
   },
 
@@ -211,7 +211,7 @@ export default Vue.extend({
   }
 }
 
-.matrix-labels-dark{
+.matrix-labels-dark {
   & text.coord {
     fill: rgba(255, 255, 255, 0.5);
     &.selected {
@@ -230,7 +230,7 @@ export default Vue.extend({
   }
 }
 
-.matrix-labels-bright{
+.matrix-labels-bright {
   & text.coord {
     fill: rgba(0, 0, 0, 0.6);
     &.selected {
