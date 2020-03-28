@@ -49,15 +49,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import {
-  Dimension, Complex, Vector, VectorEntry,
+  Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
 import { coordPrettier } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
-
-interface IKetComponent {
-  amplitude: Complex;
-  coordStrs: string[];
-}
 
 interface IBasisSelector {
     name: string;
@@ -96,27 +91,20 @@ export default Vue.extend({
       return this.vector.names;
     },
 
-    ketComponents(): IKetComponent[] {
+    ketComponents(): interfaces.IKetComponent[] {
       if (!this.vector) {
         return [];
       }
-      const probThreshold = 1e-4;
       const selectedBasis: Record<string, string> = {};
       this.allBases.forEach((basis) => {
         selectedBasis[basis.name] = basis.selected;
       });
 
-      const vectorRotated = this.vector
+      return this.vector
         .toBasisAll('polarization', selectedBasis.polarization)
         .toBasisAll('spin', selectedBasis.spin)
-        .toBasisAll('qubit', selectedBasis.qubit);
-
-      return vectorRotated.entries
-        .map((entry: VectorEntry): IKetComponent => ({
-          amplitude: entry.value,
-          coordStrs: entry.coord.map((c: number, dim: number) => vectorRotated.coordNames[dim][c]),
-        }))
-        .filter((d) => d.amplitude.r ** 2 > probThreshold);
+        .toBasisAll('qubit', selectedBasis.qubit)
+        .toKetComponents(1e-4);
     },
   },
   methods: {
