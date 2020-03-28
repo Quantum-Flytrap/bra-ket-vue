@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      :class="coordLegendClass(darkMode)"
+      :class="coordLegendClass"
     >
       <span v-if="complexStyle !== 'color'">
         <span class="legend-complex">amplitude</span>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { dimensionNameToColor } from '@/lib-components/utils';
 
 export default Vue.extend({
   props: {
@@ -38,37 +39,14 @@ export default Vue.extend({
       default: true,
     },
   },
-  methods: {
-    coordLegendClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'legend-dark';
-      }
-      return 'legend-bright';
+  computed: {
+    coordLegendClass(): string {
+      return this.darkMode ? 'legend-dark' : 'legend-bright';
     },
-    dimensionNameToColor(dimName: string, darkStyle = false): string {
-      if (darkStyle) {
-        switch (dimName) {
-          case 'direction':
-            return '#ff0055';
-          case 'polarization':
-            return '#ff9100';
-          case 'spin':
-            return '#0091ff';
-          default:
-            return '#ffffff';
-        }
-      } else {
-        switch (dimName) {
-          case 'direction':
-            return '#ff0055';
-          case 'polarization':
-            return '#ff9100';
-          case 'spin':
-            return '#0091ff';
-          default:
-            return '#242424';
-        }
-      }
+  },
+  methods: {
+    dimensionNameToColor(dimName: string, darkStyle: boolean): string {
+      return dimensionNameToColor(dimName, darkStyle);
     },
   },
 });
@@ -77,12 +55,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import "../style-variables.scss";
 
-.dim-label {
-  color: white;
-  padding: 5px;
-}
-
-.legend-dark {
+.legend-dark, .legend-bright {
   display: inline;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -90,27 +63,28 @@ export default Vue.extend({
   font-family: $mainFont;
   text-transform: uppercase;
   & .legend-complex {
-    color: #d28fff;
     margin-right: 5px;
   }
   & .legend-dimension {
-    color: #fff;
     margin: 5px;
   }
 }
+
+.legend-dark {
+  & .legend-complex {
+    color: #d28fff;
+  }
+  & .legend-dimension {
+    color: #fff;
+  }
+}
+
 .legend-bright {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 10px;
-  font-family: $mainFont;
-  text-transform: uppercase;
   & .legend-complex {
     color: #7a06c7;
-    margin-right: 5px;
   }
   & .legend-dimension {
     color: #000;
-    margin: 5px;
   }
 }
 </style>

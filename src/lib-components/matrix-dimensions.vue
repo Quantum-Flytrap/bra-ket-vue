@@ -1,6 +1,6 @@
 <template>
   <g
-    :class="dimensionLabels(darkMode)"
+    :class="dimensionLabels"
     :transform="transformation"
   >
     <text
@@ -102,16 +102,13 @@ export default Vue.extend({
           return '';
       }
     },
+    dimensionLabels(): string {
+      return this.darkMode ? 'dimension-labels-dark' : 'dimension-labels-bright';
+    },
   },
   methods: {
     scale(i: number): number {
       return i * this.size;
-    },
-    dimensionLabels(darkStyle = true): string {
-      if (darkStyle) {
-        return 'dimension-labels-dark';
-      }
-      return 'dimension-labels-bright';
     },
   },
 });
@@ -120,12 +117,11 @@ export default Vue.extend({
 <style scoped lang="scss">
 @import "../style-variables.scss";
 
-.dimension-labels-dark {
+.dimension-labels-dark, .dimension-labels-bright {
   & .dimension-label {
     font-size: 12px;
     text-anchor: end;
     dominant-baseline: central;
-    fill: rgba(255, 255, 255, 0.5);
     cursor: default;
     text-transform: uppercase;
     font-weight: 300;
@@ -134,28 +130,26 @@ export default Vue.extend({
     font-size: 18px;
     text-anchor: middle;
     dominant-baseline: central;
-    fill: white;
     cursor: pointer;
     text-transform: uppercase;
   }
 }
-.dimension-labels-bright {
+
+.dimension-labels-dark {
   & .dimension-label {
-    font-size: 12px;
-    text-anchor: end;
-    dominant-baseline: central;
-    fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
+    fill: rgba(255, 255, 255, 0.5);
   }
   & .dimension-swap {
-    font-size: 18px;
-    text-anchor: middle;
-    dominant-baseline: central;
+    fill: white;
+  }
+}
+
+.dimension-labels-bright {
+  & .dimension-label {
+    fill: rgba(0, 0, 0, 0.6);
+  }
+  & .dimension-swap {
     fill: rgb(0, 0, 0);
-    cursor: pointer;
-    text-transform: uppercase;
   }
 }
 </style>

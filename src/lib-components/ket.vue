@@ -9,7 +9,7 @@
       <span
         v-for="(ketComponent, index) in ketComponents"
         :key="`ket-component-${index}`"
-        :class="ketComponentClass(darkMode)"
+        :class="ketComponentClass"
       >
         <span
           v-if="selectedOption !== 'color'"
@@ -51,7 +51,7 @@ import Vue from 'vue';
 import {
   Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
-import { coordPrettier } from '@/lib-components/utils';
+import { coordPrettier, dimensionNameToColor } from '@/lib-components/utils';
 import { hslToHex, TAU } from '@/lib-components/colors';
 
 interface IBasisSelector {
@@ -106,6 +106,9 @@ export default Vue.extend({
         .toBasisAll('qubit', selectedBasis.qubit)
         .toKetComponents(1e-4);
     },
+    ketComponentClass(): string {
+      return this.darkMode ? 'ket-component-dark' : 'ket-component-bright';
+    },
   },
   methods: {
 
@@ -126,37 +129,8 @@ export default Vue.extend({
       return coordPrettier(coord);
     },
 
-    ketComponentClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'ket-component-dark';
-      }
-      return 'ket-component-bright';
-    },
-
-    dimensionNameToColor(dimName: string, darkStyle = false): string {
-      if (darkStyle) {
-        switch (dimName) {
-          case 'direction':
-            return '#ff0055';
-          case 'polarization':
-            return '#ff9100';
-          case 'spin':
-            return '#0091ff';
-          default:
-            return '#ffffff';
-        }
-      } else {
-        switch (dimName) {
-          case 'direction':
-            return '#ff0055';
-          case 'polarization':
-            return '#ff9100';
-          case 'spin':
-            return '#0091ff';
-          default:
-            return '#242424';
-        }
-      }
+    dimensionNameToColor(dimName: string, darkStyle: boolean): string {
+      return dimensionNameToColor(dimName, darkStyle);
     },
   },
 });

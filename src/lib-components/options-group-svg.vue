@@ -96,6 +96,7 @@ export default Vue.extend({
   align-content: space-between;
   flex-wrap: wrap;
 }
+
 .button {
   font-family: $mainFont;
   cursor: pointer;
@@ -106,6 +107,7 @@ export default Vue.extend({
   transition: 0.5s;
   margin: 3px;
 }
+
 .button-dark {
   background-color: rgba(255, 255, 255, 0.1);
   &:hover {
@@ -115,6 +117,7 @@ export default Vue.extend({
     background: rgba(255, 255, 255, 0.3);
   }
 }
+
 .button-bright {
   background-color: rgba(168, 168, 168, 0.2);
   &:hover {

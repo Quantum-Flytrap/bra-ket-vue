@@ -2,7 +2,7 @@
   <div class="matrix-viewer">
     <div>
       <svg
-        :class="quantumMatrixClass(darkMode)"
+        :class="quantumMatrixClass"
         :width="columnSize + (1.5 + coordNamesIn.length) * size"
         :height="rowSize + (4.5 + coordNamesOut.length) * size"
       >
@@ -73,7 +73,7 @@
         </g>
       </svg>
     </div>
-    <div :class="legendContainer(darkMode)">
+    <div :class="legendContainer">
       <div class="matrix-legend">
         <div class="legend-text">
           base change
@@ -229,6 +229,13 @@ export default Vue.extend({
         })));
     },
 
+    legendContainer(): string {
+      return this.darkMode ? 'legend-container-dark' : 'legend-container-bright';
+    },
+
+    quantumMatrixClass(): string {
+      return this.darkMode ? 'quantum-matrix-dark' : 'quantum-matrix-bright';
+    },
   },
   methods: {
     scale(i: number): number {
@@ -274,18 +281,6 @@ export default Vue.extend({
     changeBasis(bases: IBases, basis: string) {
       this.operator = this.operator.toBasisAll(bases.name, basis);
     },
-    legendContainer(darkStyle = true): string {
-      if (darkStyle) {
-        return 'legend-container-dark';
-      }
-      return 'legend-container-bright';
-    },
-    quantumMatrixClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'quantum-matrix-dark';
-      }
-      return 'quantum-matrix-bright';
-    },
   },
 });
 </script>
@@ -297,134 +292,119 @@ export default Vue.extend({
   display: flex;
   font-family: $mainFont;
 }
+
+.legend-container-dark, .legend-container-bright {
+  margin-top: 40px;
+    & .matrix-legend {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    & .legend-text {
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 300;
+      padding-bottom: 10px;
+    }
+  }
+}
+
 .legend-container-dark {
-  //display: block;
-  margin-top: 40px;
     & .matrix-legend {
-    padding-top: 10px;
-    padding-bottom: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.3);
-    //width: 300px;
     & .legend-text {
-      font-size: 12px;
       color: rgba(255, 255, 255, 0.5);
-      text-transform: uppercase;
-      font-weight: 300;
-      padding-bottom: 10px;
     }
   }
 }
+
 .legend-container-bright {
-  //display: block;
-  margin-top: 40px;
     & .matrix-legend {
-    padding-top: 10px;
-    padding-bottom: 30px;
     border-top: 1px solid rgba(0, 0, 0, 0.3);
-    //width: 300px;
     & .legend-text {
-      font-size: 12px;
       color: rgba(0, 0, 0, 0.6);
-      text-transform: uppercase;
-      font-weight: 300;
-      padding-bottom: 10px;
     }
   }
 }
-.quantum-matrix-dark {
+
+.quantum-matrix-dark, .quantum-matrix-bright {
   display: inline-block;
   & .label {
     font-size: 12px;
     text-anchor: middle;
-    fill: rgba(255, 255, 255, 0.5);
     cursor: default;
     text-transform: uppercase;
     font-weight: 300;
   }
+  & .selected-column {
+    stroke-width: 1px;
+  }
+  & .entry-tile {
+    stroke-width: 1px;
+  }
+  & .entry-boarder {
+    fill: none;
+    stroke-width: 1px;
+  }
+  & .tile-value {
+    cursor: pointer;
+  }
+  & .tile-value:hover {
+    stroke-width: 2px;
+  }
+  & .swap-label,
+  & .dimension-label {
+    font-size: 12px;
+    text-anchor: middle;
+    cursor: default;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+}
 
+.quantum-matrix-dark {
+  & .label {
+    fill: rgba(255, 255, 255, 0.5);
+  }
   & .selected-column {
     fill: rgba(255, 255, 255, 0.1);
     stroke: #ffffff;
-    stroke-width: 1px;
   }
-
   & .entry-tile {
     fill: rgba(0, 0, 0, 0);
     stroke: rgba(255, 255, 255, 0.1);
-    stroke-width: 1px;
   }
-
   & .entry-boarder {
-    fill: none;
     stroke: #fff;
-    stroke-width: 1px;
   }
-
-  & .tile-value {
-    cursor: pointer;
-  }
-
   & .tile-value:hover {
     stroke: rgb(255, 255, 255);
-    stroke-width: 2px;
   }
-
   & .swap-label,
   & .dimension-label {
-    font-size: 12px;
-    text-anchor: middle;
     fill: rgba(255, 255, 255, 0.5);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
   }
 }
-.quantum-matrix-bright {
-  display: inline-block;
-  & .label {
-    font-size: 12px;
-    text-anchor: middle;
-    fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
-  }
 
+.quantum-matrix-bright {
+  & .label {
+    fill: rgba(0, 0, 0, 0.6);
+  }
   & .selected-column {
     fill: rgba(0, 0, 0, 0.1);
     stroke: #000;
-    stroke-width: 1px;
   }
-
   & .entry-tile {
     fill: rgba(255, 255, 255, 0);
     stroke: rgba(0, 0, 0, 0.1);
-    stroke-width: 1px;
   }
-
   & .entry-boarder {
-    fill: none;
     stroke: rgb(0, 0, 0);
-    stroke-width: 1px;
   }
-
-  & .tile-value {
-    cursor: pointer;
-  }
-
   & .tile-value:hover {
     stroke: rgb(255, 255, 255);
-    stroke-width: 2px;
   }
-
   & .swap-label,
   & .dimension-label {
-    font-size: 12px;
-    text-anchor: middle;
     fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
   }
 }
 

@@ -1,6 +1,6 @@
 <template>
   <g
-    :class="matrixLabels(darkMode)"
+    :class="matrixLabels"
     :transform="transformation"
   >
     <text
@@ -152,7 +152,11 @@ export default Vue.extend({
     spatialLength(): number {
       return this.size * this.coordNames.map((coords) => coords.length).reduce((a, b) => a * b);
     },
+    matrixLabels(): string {
+      return this.darkMode ? 'matrix-label-dark' : 'matrix-label-bright';
+    },
   },
+
   methods: {
     scale(i: number): number {
       return i * this.size;
@@ -172,12 +176,6 @@ export default Vue.extend({
       return coordPrettier(coord);
     },
 
-    matrixLabels(darkStyle = true): string {
-      if (darkStyle) {
-        return 'matrix-labels-dark';
-      }
-      return 'matrix-labels-bright';
-    },
   },
 });
 </script>
@@ -185,70 +183,69 @@ export default Vue.extend({
 <style scoped lang="scss">
 @import "../style-variables.scss";
 
-.matrix-labels-dark{
+.matrix-labels-dark, .matrix-labels-bright {
   & text.coord {
     font-size: 16px;
     dominant-baseline: central;
     text-anchor: middle;
-    fill: rgba(255, 255, 255, 0.5);
     cursor: default;
     font-family: $ketFont;
     font-weight: 300;
     &.selected {
-      fill: rgba(255, 255, 255, 1);
       font-weight: 500;
     }
   }
   & .label {
     font-size: 12px;
     text-anchor: middle;
-    fill: rgba(255, 255, 255, 0.5);
     cursor: default;
     text-transform: uppercase;
     font-weight: 300;
   }
   & .menu-tile {
-    fill: rgba(0, 0, 0, 0);
-    stroke: rgba(255, 255, 255, 0.1);
     stroke-width: 1px;
   }
   & .menu-tile-outline {
     fill: none;
-    stroke: #fff;
     stroke-width: 1px;
+  }
+}
+
+.matrix-labels-dark{
+  & text.coord {
+    fill: rgba(255, 255, 255, 0.5);
+    &.selected {
+      fill: rgba(255, 255, 255, 1);
+    }
+  }
+  & .label {
+    fill: rgba(255, 255, 255, 0.5);
+  }
+  & .menu-tile {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+  & .menu-tile-outline {
+    stroke: #fff;
   }
 }
 
 .matrix-labels-bright{
   & text.coord {
-    font-size: 16px;
-    dominant-baseline: central;
-    text-anchor: middle;
     fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    font-weight: 300;
     &.selected {
       fill: rgba(0, 0, 0, 1);
-      font-weight: 500;
     }
   }
   & .label {
-    font-size: 12px;
-    text-anchor: middle;
     fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
   }
   & .menu-tile {
     fill: rgba(255, 255, 255, 0);
     stroke: rgba(0, 0, 0, 0.1);
-    stroke-width: 1px;
   }
   & .menu-tile-outline {
-    fill: none;
     stroke: #000;
-    stroke-width: 1px;
   }
 }
 </style>

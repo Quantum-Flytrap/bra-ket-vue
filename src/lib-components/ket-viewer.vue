@@ -10,28 +10,14 @@
       :all-bases="allBases"
       :dark-mode="darkMode"
     />
-    <hr
-      v-if="darkMode === true"
-      class="hr-dark"
-    >
-    <hr
-      v-if="darkMode === false"
-      class="hr-bright"
-    >
+    <hr :class="darkMode ? 'hr-dark' : 'hr-bright'">
     <coordinate-legend
       class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
       :dark-mode="darkMode"
     />
-    <hr
-      v-if="darkMode === true"
-      class="hr-dark"
-    >
-    <hr
-      v-if="darkMode === false"
-      class="hr-bright"
-    >
+    <hr :class="darkMode ? 'hr-dark' : 'hr-bright'">
     <options-group
       class="options"
       :options="options"
@@ -142,24 +128,27 @@ export default Vue.extend({
     border: none;
   }
 }
+
 .ket {
   padding: 5px 0px;
 }
+
 .options {
   margin-top: 5px;
 }
-.hr-dark {
+
+.hr-dark, .hr-bright {
   border: 0;
   height: 0;
   margin: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   width:100%
 }
+
+.hr-dark {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .hr-bright {
-  border: 0;
-  height: 0;
-  margin: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.6);
-  width:100%
 }
 </style>
