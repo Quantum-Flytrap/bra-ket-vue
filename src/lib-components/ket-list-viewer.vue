@@ -163,7 +163,7 @@ export default Vue.extend({
 @import "../style-variables.scss";
 
 .table-dark, .table-bright {
-  font-size: 12px;
+  font-size: $fontSizeDefault;
   font-weight: 300;
   text-align: left;
   border-collapse: separate;
@@ -247,7 +247,7 @@ th {
     margin: 0px 10px;
   }
   & .btn-legend {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     font-weight: 300;
     text-transform: uppercase;
   }

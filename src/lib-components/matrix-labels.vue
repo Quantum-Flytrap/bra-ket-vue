@@ -196,7 +196,7 @@ export default Vue.extend({
     }
   }
   & .label {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     text-anchor: middle;
     cursor: default;
     text-transform: uppercase;

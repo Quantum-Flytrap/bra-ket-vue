@@ -137,7 +137,7 @@ export default Vue.extend({
 .quantum-state-viewer {
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: $fontSizeDefault;
   font-family: $ketFont;
   & .ket-component-dark, .ket-component-bright {
     margin: 2px 6px 0px 0px;
