@@ -149,8 +149,7 @@ export default Vue.extend({
     display: flex;
     flex-wrap: wrap;
     font-size: 12px;
-    & .ket-component-dark {
-      background-color: rgba(0, 0, 0, 0.3);
+    & .ket-component-dark, .ket-component-bright {
       margin: 2px 6px 0px 0px;
       padding: 3px 4px;
       flex-wrap: nowrap;
@@ -158,17 +157,23 @@ export default Vue.extend({
       display: flex;
       align-items: center;
       & .ket-complex {
-        color: #d28fff;
         margin-right: 2px;
       }
-
       & .ket-coords {
         display: inline-flex;
-        color: #fff;
       }
       & .ket-coord {
         padding-right: 1px;
         padding-right: 3px;
+      }
+    }
+    & .ket-component-dark {
+      background-color: rgba(0, 0, 0, 0.3);
+      & .ket-complex {
+        color: #d28fff;
+      }
+      & .ket-coords {
+        color: #fff;
       }
     }
     & .ket-component-bright {
@@ -176,28 +181,12 @@ export default Vue.extend({
       border-style: solid;
       border-color: rgb(240, 240, 240);
       background-color: white;
-      margin: 2px 6px 0px 0px;
-      padding: 3px 4px;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      display: flex;
-      align-items: center;
       & .ket-complex {
         color: #7a06c7;
-        margin-right: 2px;
       }
       & .ket-coords {
-        display: inline-flex;
         color: #242424;
       }
-      & .ket-coord {
-        padding-right: 1px;
-        padding-right: 3px;
-        color: #242424;
-      }
-    }
-    & .ket-parenthesis {
-      padding: 0px;
     }
   }
 }
