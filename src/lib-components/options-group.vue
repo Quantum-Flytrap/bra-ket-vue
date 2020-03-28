@@ -3,26 +3,14 @@
     ref="wrapper"
     class="btn-group"
   >
-    <div v-if="darkMode === true">
-      <span
-        v-for="(option, index) in options"
-        :key="`option-${index}`"
-        class="button-dark"
-        :class="{ selected: option === selectedOption }"
-        @click="$emit('selected', option)"
-      >
-        {{ option }}
-      </span>
-    </div>
-    <div v-if="darkMode === false">
-      <span
-        v-for="(option, index) in options"
-        :key="`option-${index}`"
-        class="button-bright"
-        :class="{ selected: option === selectedOption }"
-        @click="$emit('selected', option)"
-      >{{ option }}</span>
-    </div>
+    <span
+      v-for="(option, index) in options"
+      :key="`option-${index}`"
+      :class="buttonStyle(option)"
+      @click="$emit('selected', option)"
+    >
+      {{ option }}
+    </span>
   </div>
 </template>
 
@@ -44,18 +32,25 @@ export default Vue.extend({
       default: true,
     },
   },
+  methods: {
+    buttonStyle(option: string): Record<string, boolean> {
+      return {
+        'button-dark': this.darkMode,
+        'button-bright': !this.darkMode,
+        selected: option === this.selectedOption,
+      };
+    },
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 @import "../style-variables.scss";
 
-.button-dark {
+.button-dark, .button-bright {
   display: inline-block;
   font-family: $mainFont;
-  background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  color: white;
   padding: 3px 8px;
   text-align: center;
   text-decoration: none;
@@ -63,6 +58,11 @@ export default Vue.extend({
   font-size: 9px;
   transition: 0.5s;
   margin: 3px;
+}
+
+.button-dark {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
@@ -70,19 +70,10 @@ export default Vue.extend({
     background: rgba(255, 255, 255, 0.3);
   }
 }
+
 .button-bright {
-  display: inline-block;
-  font-family: $mainFont;
   background-color: rgba(168, 168, 168, 0.2);
-  cursor: pointer;
   color: #242424;
-  padding: 3px 8px;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 9px;
-  transition: 0.5s;
-  margin: 3px;
   &:hover {
     background: rgba(168, 168, 168, 0.4);
   }

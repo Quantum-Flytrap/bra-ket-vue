@@ -1,6 +1,6 @@
 <template>
   <svg
-    :class="quantumMatrixClass(darkMode)"
+    :class="quantumMatrixClass"
     :width="150"
     :height="100"
   >
@@ -125,6 +125,9 @@ export default Vue.extend({
       const phi = Math.atan2(this.im, this.re);
       return phi / (2 * Math.PI);
     },
+    quantumMatrixClass(): string {
+      return this.darkMode ? 'quantum-matrix-dark' : 'quantum-matrix-bright';
+    },
   },
   methods: {
     scale(i: number): number {
@@ -138,57 +141,56 @@ export default Vue.extend({
     rScale(re: number, im = 0): number {
       return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
     },
-    quantumMatrixClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'quantum-matrix-dark';
-      }
-      return 'quantum-matrix-bright';
-    },
   },
 });
 </script>
 
 <style scoped lang="scss">
-.quantum-matrix-dark {
+@import "../style-variables.scss";
+
+.quantum-matrix-dark, .quantum-matrix-bright {
   & .label {
     font-size: 12px;
     text-anchor: middle;
-    fill: rgba(255, 255, 255, 0.5);
     cursor: default;
     text-transform: uppercase;
     font-weight: 300;
   }
   & .radius-reference {
-    fill: white;
     opacity: 0.25;
+  }
+  & .phase-arc {
+    stroke-width: 0.5px;
+  }
+}
+
+.quantum-matrix-dark {
+  & .label {
+    fill: rgba(255, 255, 255, 0.5);
+  }
+  & .radius-reference {
+    fill: white;
   }
   & .radius-value {
     fill: white;
   }
   & .phase-arc {
     stroke: rgba(0, 0, 0, 0.5);
-    stroke-width: 0.5px;
   }
 }
+
 .quantum-matrix-bright {
   & .label {
-    font-size: 12px;
-    text-anchor: middle;
     fill: rgba(0, 0, 0, 0.6);
-    cursor: default;
-    text-transform: uppercase;
-    font-weight: 300;
   }
   & .radius-reference {
     fill: rgba(0, 0, 0, 0.3);
-    opacity: 0.25;
   }
   & .radius-value {
     fill: rgba(0, 0, 0, 0.3);
   }
   & .phase-arc {
     stroke: rgba(0, 0, 0, 0.1);
-    stroke-width: 0.5px;
   }
 }
 </style>

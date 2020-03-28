@@ -4,7 +4,7 @@
     class="ket-list"
   >
     <table
-      :class="tableClass(darkMode)"
+      :class="tableClass"
     >
       <thead>
         <tr>
@@ -41,7 +41,7 @@
       </tbody>
     </table>
     <div
-      :class="legendClass(darkMode)"
+      :class="legendClass"
     >
       <div>
         <coordinate-legend
@@ -149,19 +149,11 @@ export default Vue.extend({
       }
       return this.steps[0].vector.names;
     },
-  },
-  methods: {
-    tableClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'table-dark';
-      }
-      return 'table-bright';
+    legendClass(): string {
+      return this.darkMode ? 'legend-dark' : 'legend-bright';
     },
-    legendClass(darkStyle = true): string {
-      if (darkStyle) {
-        return 'legend-dark';
-      }
-      return 'legend-bright';
+    tableClass(): string {
+      return this.darkMode ? 'table-dark' : 'table-bright';
     },
   },
 });
@@ -170,38 +162,41 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import "../style-variables.scss";
 
+.table-dark, .table-bright {
+  font-size: 12px;
+  font-weight: 300;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
 .table-dark {
-  font-size: 12px;
-  font-weight: 300;
-  text-align: left;
   color: rgba(255, 255, 255, 0.6);
-  border-collapse: separate;
-  border-spacing: 10px;
   & .td {
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
   }
 }
+
 .table-bright {
-  font-size: 12px;
-  font-weight: 300;
-  text-align: left;
   color: rgba(0, 0, 0, 0.6);
-  border-collapse: separate;
-  border-spacing: 10px;
   & .td {
-  border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
   }
 }
+
 th {
   font-weight: 300;
   text-transform: uppercase;
 }
+
 .w1 {
   width: 40px;
 }
+
 .w2 {
   width: 80px;
 }
+
 .ket-list {
   padding-top: 10px;
   width: 100%;
@@ -243,44 +238,48 @@ th {
     border: none;
   }
 }
+
+.legend-dark, .legend-bright {
+  & .btn-legend-group {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    margin: 0px 10px;
+  }
+  & .btn-legend {
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+  & .legend-list {
+    margin: 0px 10px;
+  }
+}
+
 .legend-dark {
   & .btn-legend-group {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 1);
-    margin: 0px 10px;
   }
   & .btn-legend {
-    font-size: 12px;
-    font-weight: 300;
     color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
   }
   & .legend-list {
-    margin: 0px 10px;
     border-top: 1px solid rgba(255, 255, 255, 1);
   }
 }
+
 .legend-bright {
   & .btn-legend-group {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
     border-top: 1px solid rgba(0, 0, 0, 0.8);
-    margin: 0px 10px;
   }
   & .btn-legend {
-    font-size: 12px;
-    font-weight: 300;
     color: rgba(0, 0, 0, 0.6);
-    text-transform: uppercase;
   }
   & .legend-list {
-    margin: 0px 10px;
     border-top: 1px solid rgba(0, 0, 0, 0.8);
   }
 }
+
 .step {
   font-size: 0.8rem;
   line-height: 150%;
