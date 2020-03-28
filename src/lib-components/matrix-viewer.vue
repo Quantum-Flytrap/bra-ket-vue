@@ -265,22 +265,32 @@ export default Vue.extend({
      * (After using Operator rather than passed parameteres.)
      */
     swapDimensions(i: number, both = true): void {
-      this.selectedEntry = {
-        i: -1, j: -1, re: 0, im: 0,
-      };
       const newOrder = range(this.operator.dimensionsOut.length);
       newOrder[i] += 1;
       newOrder[i + 1] -= 1;
       if (both) {
-        this.operator = this.operator.permute(newOrder);
+        if (this.selectedEntry.j >= 0) {
+          const oldSelectedCoords = helpers.coordsFromIndex(this.selectedEntry.j, this.operator.sizeIn);
+          this.operator = this.operator.permute(newOrder);
+          const newSelectedCoords = range(this.operator.dimensionsIn.length).map((k) => oldSelectedCoords[newOrder[k]]);
+          this.selectedEntry.j = helpers.coordsToIndex(newSelectedCoords, this.operator.sizeIn);
+        } else {
+          this.operator = this.operator.permute(newOrder);
+        }
       } else {
         this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
       }
     },
 
     changeBasis(bases: IBases, basis: string) {
+      // eslint-disable-next-line no-param-reassign
+      bases.selected = basis;
+      this.selectedEntry = {
+        i: -1, j: -1, re: 0, im: 0,
+      };
       this.operator = this.operator.toBasisAll(bases.name, basis);
     },
+
   },
 });
 </script>
