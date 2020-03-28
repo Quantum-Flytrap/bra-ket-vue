@@ -19,8 +19,8 @@
         </span>
         <svg
           v-if="selectedOption === 'color'"
-          height="100%"
-          width="100%"
+          height="1em"
+          width="1em"
           viewBox="0 0 16 16"
           class="ket-disk"
         >
