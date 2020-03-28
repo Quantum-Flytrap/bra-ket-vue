@@ -7,6 +7,7 @@ module.exports = {
       'plugin:vue/recommended',
       '@vue/airbnb',
       '@vue/typescript',
+      'plugin:vue-scoped-css/recommended',
     ],
     parserOptions: {
       parser: '@typescript-eslint/parser',
@@ -20,4 +21,3 @@ module.exports = {
       "@typescript-eslint/no-unused-vars": "error" // https://stackoverflow.com/questions/55280555/
     }
   };
-  

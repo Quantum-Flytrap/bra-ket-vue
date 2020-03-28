@@ -284,8 +284,4 @@ th {
   font-size: 0.8rem;
   line-height: 150%;
 }
-
-h3 {
-  font-size: 1rem;
-}
 </style>
