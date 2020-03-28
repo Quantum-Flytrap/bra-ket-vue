@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.6] - 2020-03-28
+
+### Change
+
+* Even more compact style
+
+### Fixed
+
+* Font style and display
+* Color disk display
+* Highlighted column interaction with dimension swap and basis change
+* show-legend option for ket-viewer
+
+### Refactored
+
+* SCSS styles
+
 ## [0.2.3] - 2020-03-25
 
 Adjustments with Quantum Game in mind. See https://github.com/Quantum-Game/bra-ket-vue/pull/29.
