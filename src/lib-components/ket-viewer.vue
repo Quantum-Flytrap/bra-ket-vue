@@ -10,8 +10,12 @@
       :all-bases="allBases"
       :dark-mode="darkMode"
     />
-    <hr :class="darkMode ? 'hr-dark' : 'hr-bright'">
+    <hr
+      v-if="showLegend"
+      :class="darkMode ? 'hr-dark' : 'hr-bright'"
+    >
     <coordinate-legend
+      v-if="showLegend"
       class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
