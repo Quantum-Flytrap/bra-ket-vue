@@ -179,18 +179,7 @@ export default Vue.extend({
     border-top: 1px solid rgba(0, 0, 0, 0.6);
   }
 }
-.ket-viewer{
-  max-width: 500px;
-  padding: 30px;
-}
-.quantum-matrix{
-  max-width: 500px;
-  //padding: 30px;
-}
-.ket-list{
-  max-width: 700px;
-  padding: 30px;
-}
+
 h1 {
   font-family: $mainFont;
   color: rgba(255, 255, 255, 0.6);
