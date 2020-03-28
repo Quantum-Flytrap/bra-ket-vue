@@ -1,6 +1,6 @@
 {
   "name": "bra-ket-vue",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Interactive display of quantum states and operations, Vue components.",
   "contributors": [
     "Piotr Migdał",
