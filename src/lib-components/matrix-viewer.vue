@@ -299,7 +299,7 @@ export default Vue.extend({
     padding-top: 10px;
     padding-bottom: 30px;
     & .legend-text {
-      font-size: 12px;
+      font-size: $fontSizeDefault;
       text-transform: uppercase;
       font-weight: 300;
       padding-bottom: 10px;
@@ -328,7 +328,7 @@ export default Vue.extend({
 .quantum-matrix-dark, .quantum-matrix-bright {
   display: inline-block;
   & .label {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     text-anchor: middle;
     cursor: default;
     text-transform: uppercase;
@@ -352,7 +352,7 @@ export default Vue.extend({
   }
   & .swap-label,
   & .dimension-label {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     text-anchor: middle;
     cursor: default;
     text-transform: uppercase;

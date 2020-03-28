@@ -119,7 +119,7 @@ export default Vue.extend({
 
 .dimension-labels-dark, .dimension-labels-bright {
   & .dimension-label {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     text-anchor: end;
     dominant-baseline: central;
     cursor: default;

@@ -150,7 +150,7 @@ export default Vue.extend({
 
 .quantum-matrix-dark, .quantum-matrix-bright {
   & .label {
-    font-size: 12px;
+    font-size: $fontSizeDefault;
     text-anchor: middle;
     cursor: default;
     text-transform: uppercase;
