@@ -6,6 +6,7 @@
 [![Twitter @QuantumGameIO](https://img.shields.io/twitter/follow/QuantumGameIO)](https://twitter.com/quantumgameio)
 
 A visualizer for quantum states and matrices. In Vue.js.
+See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or just [live examples](https://cydtt.csb.app/).
 
 By [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design).
 
@@ -38,10 +39,11 @@ Warning: it is an early alpha version. Everything can change (including core com
 
 ![](imgs/cnot_gate.png)
 
-### TODO
+### Live examples with code
 
-* A NPM example in https://codesandbox.io/
-* A frontend JavaScript example in https://jsfiddle.net/ or https://codepen.io/
+* A NPM examples:
+   * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
+* A frontend JavaScript examples:
     * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
 
 
