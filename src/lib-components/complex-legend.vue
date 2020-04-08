@@ -166,7 +166,7 @@ export default Vue.extend({
 
 .quantum-matrix-dark {
   & .label {
-    fill: rgba(255, 255, 255, 0.5);
+    fill: rgba(255, 255, 255, 0.7);
   }
   & .radius-reference {
     fill: white;
@@ -181,7 +181,7 @@ export default Vue.extend({
 
 .quantum-matrix-bright {
   & .label {
-    fill: rgba(0, 0, 0, 0.6);
+    fill: rgba(0, 0, 0, 0.9);
   }
   & .radius-reference {
     fill: rgba(0, 0, 0, 0.3);

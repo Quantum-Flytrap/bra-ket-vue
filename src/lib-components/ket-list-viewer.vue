@@ -171,14 +171,14 @@ export default Vue.extend({
 }
 
 .table-dark {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   & .td {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
   }
 }
 
 .table-bright {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.9);
   & .td {
     border-top: 1px solid rgba(0, 0, 0, 0.3);
   }
@@ -231,7 +231,7 @@ th {
     text-align: center;
     display: flex;
     justify-content: space-between;
-    padding-top: 10px;
+    padding-top: 4px;
     margin: 0px 4px;
   }
   @media screen and (max-width: 1000px) {
@@ -259,25 +259,25 @@ th {
 
 .legend-dark {
   & .btn-legend-group {
-    border-top: 1px solid rgba(255, 255, 255, 1);
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
   }
   & .btn-legend {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
   }
   & .legend-list {
-    border-top: 1px solid rgba(255, 255, 255, 1);
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
   }
 }
 
 .legend-bright {
   & .btn-legend-group {
-    border-top: 1px solid rgba(0, 0, 0, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.9);
   }
   & .btn-legend {
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.9);
   }
   & .legend-list {
-    border-top: 1px solid rgba(0, 0, 0, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.9);
   }
 }
 
