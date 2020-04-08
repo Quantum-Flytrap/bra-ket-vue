@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="legend-main">
     <div
       :class="coordLegendClass"
     >
@@ -55,10 +55,13 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import "../style-variables.scss";
 
+.legend-main {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
 .legend-dark, .legend-bright {
   display: inline;
-  padding-top: 10px;
-  padding-bottom: 10px;
   font-size: 10px;
   font-family: $mainFont;
   text-transform: uppercase;
