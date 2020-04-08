@@ -148,6 +148,10 @@ export default Vue.extend({
   width:100%
 }
 
+.legend {
+  margin-top: 0px;
+}
+
 .hr-dark {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }

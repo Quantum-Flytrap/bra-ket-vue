@@ -252,7 +252,8 @@ th {
     text-transform: uppercase;
   }
   & .legend-list {
-    margin: 0px 10px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 
