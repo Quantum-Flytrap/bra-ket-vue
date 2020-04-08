@@ -137,7 +137,7 @@ export default Vue.extend({
 
 .dimension-labels-dark {
   & .dimension-label {
-    fill: rgba(255, 255, 255, 0.5);
+    fill: rgba(255, 255, 255, 0.7);
   }
   & .dimension-swap {
     fill: white;
@@ -146,7 +146,7 @@ export default Vue.extend({
 
 .dimension-labels-bright {
   & .dimension-label {
-    fill: rgba(0, 0, 0, 0.6);
+    fill: rgba(0, 0, 0, 0.9);
   }
   & .dimension-swap {
     fill: rgb(0, 0, 0);

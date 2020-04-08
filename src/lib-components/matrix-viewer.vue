@@ -321,7 +321,7 @@ export default Vue.extend({
     & .matrix-legend {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     & .legend-text {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.7);
     }
   }
 }
@@ -330,7 +330,7 @@ export default Vue.extend({
     & .matrix-legend {
     border-top: 1px solid rgba(0, 0, 0, 0.3);
     & .legend-text {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.9);
     }
   }
 }

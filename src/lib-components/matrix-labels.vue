@@ -192,7 +192,7 @@ export default Vue.extend({
     font-family: $ketFont;
     font-weight: 300;
     &.selected {
-      font-weight: 500;
+      font-weight: bold;
     }
   }
   & .label {
@@ -219,7 +219,7 @@ export default Vue.extend({
     }
   }
   & .label {
-    fill: rgba(255, 255, 255, 0.5);
+    fill: rgba(255, 255, 255, 0.7);
   }
   & .menu-tile {
     fill: rgba(0, 0, 0, 0);
@@ -238,7 +238,7 @@ export default Vue.extend({
     }
   }
   & .label {
-    fill: rgba(0, 0, 0, 0.6);
+    fill: rgba(0, 0, 0, 0.9);
   }
   & .menu-tile {
     fill: rgba(255, 255, 255, 0);
