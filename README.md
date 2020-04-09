@@ -45,6 +45,10 @@ Warning: it is an early alpha version. Everything can change (including core com
    * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
 * A frontend JavaScript examples:
     * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
+* DARK color mode example:
+    * https://codesandbox.io/s/bra-ket-vue-dark-6zr46?fontsize=14&hidenavigation=1&theme=dark
+* BRIGHT color mode example:
+    * https://codesandbox.io/s/bra-ket-vue-dark-l88er?fontsize=14&hidenavigation=1&theme=dark
 
 
 ## Notes
