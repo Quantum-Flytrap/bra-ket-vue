@@ -11,45 +11,69 @@ See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or ju
 By [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design).
 
 * Uses [Quantum Tensors](https://www.npmjs.com/package/quantum-tensors) library.
-* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quanutum Technologies, National University of Sinagpore](https://www.quantumlah.org/)).
+* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quanutum Technologies, National University of Sinagpore](https://www.quantumlah.org/)) we use it heavily.
 * Founded by the [Unitary Fund](https://unitary.fund/).
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
 
 ## Installation
 
-```
+For a node project use:
+
+```{bash}
 npm install bra-ket-vue
 ```
 
-Warning: it is an early alpha version. Everything can change (including core component names) at no prior notice.
+or for yarn:
 
+```{bash}
+yarn add bra-ket-vue
+```
+
+For browser HTML files, put in `<head>...</head>`:
+
+```{html}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://unpkg.com/quantum-tensors"></script>
+<script src="https://unpkg.com/bra-ket-vue"></script>
+```
+
+Or if you want to stick to specific versions
+
+```{html}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.7/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/bra-ket-vue@0.2.7/dist/bra-ket-vue.min.js"></script>
+```
+
+For some applications you may want to read a bit about [Vue.js](https://vuejs.org/).
 
 ## Examples
 
+Here are examples in the dark style. All components are aviable in two styles: dark and bright.
+
 ### States (vectors)
 
-![](imgs/quantum_computing.png)
+![Ket list for quantum computing](imgs/quantum_computing.png)
 
-![](imgs/ket_list.png)
+![Ket list for quantum optics](imgs/ket_list.png)
 
 ### Operators (matrices)
 
-![](imgs/beam_splitter.png)
+![Matrix - beam-spliutter](imgs/beam_splitter.png)
 
-![](imgs/cnot_gate.png)
+![Matrix - CNOT gate](imgs/cnot_gate.png)
 
 ### Live examples with code
 
-* A NPM examples:
-   * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
+* NPM examples:
+  * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
+  * DARK color mode example: https://codesandbox.io/s/bra-ket-vue-dark-6zr46?fontsize=14&hidenavigation=1&theme=dark
+  * BRIGHT color mode example: https://codesandbox.io/s/bra-ket-vue-dark-l88er?fontsize=14&hidenavigation=1&theme=dark
 * A frontend JavaScript examples:
-    * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
-* DARK color mode example:
-    * https://codesandbox.io/s/bra-ket-vue-dark-6zr46?fontsize=14&hidenavigation=1&theme=dark
-* BRIGHT color mode example:
-    * https://codesandbox.io/s/bra-ket-vue-dark-l88er?fontsize=14&hidenavigation=1&theme=dark
-
+  * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
+* In-action:
+  * [Quantum Game with Photons 2](https://quantumgame.io/), especially entries of the element encyclopedia (e.g. [Faraday rotator](https://quantumgame.io/info/faraday-rotator)).
 
 ## Notes
 
