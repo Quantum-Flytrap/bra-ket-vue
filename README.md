@@ -58,11 +58,15 @@ Here are examples in the dark style. All components are aviable in two styles: d
 
 ![Ket list for quantum optics](imgs/ket_list.png)
 
+![Ket](imgs/ket.gif)
+
 ### Operators (matrices)
 
 ![Matrix - beam-spliutter](imgs/beam_splitter.png)
 
 ![Matrix - CNOT gate](imgs/cnot_gate.png)
+
+![Matrix - Toffoli gate](imgs/toffoli.gif)
 
 ### Live examples with code
 
