@@ -114,7 +114,10 @@ export default Vue.extend({
     <h1>AND</h1>
     <matrix-viewer :operator-raw="opAnd" />
     <h1>COPY</h1>
-    <matrix-viewer :operator-raw="opCopy" />
+    <matrix-viewer
+      :operator-raw="opCopy"
+      :show-legend="false"
+    />
     <h1>Ket</h1>
     <ket
       :vector="singlet"

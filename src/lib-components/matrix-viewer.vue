@@ -73,7 +73,10 @@
         </g>
       </svg>
     </div>
-    <div :class="legendContainer">
+    <div
+      v-if="showLegend"
+      :class="legendContainer"
+    >
       <div class="matrix-legend">
         <div class="legend-text">
           base change
@@ -163,6 +166,10 @@ export default Vue.extend({
       required: true,
     },
     darkMode: {
+      type: Boolean,
+      default: true,
+    },
+    showLegend: {
       type: Boolean,
       default: true,
     },
