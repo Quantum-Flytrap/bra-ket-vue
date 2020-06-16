@@ -3,8 +3,8 @@
     <div>
       <svg
         :class="quantumMatrixClass"
-        :width="columnSize + (1.5 + coordNamesIn.length) * size"
-        :height="rowSize + (4.5 + coordNamesOut.length) * size"
+        :width="columnSize + (1.5 + coordNamesOut.length) * size"
+        :height="rowSize + (3.5 + coordNamesIn.length) * size"
       >
         <g :transform="`translate(${(coordNamesOut.length + 1) * size}, ${1 * size})`">
           <matrix-labels
@@ -16,7 +16,7 @@
             :selected="selectedIn"
           />
         </g>
-        <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesOut.length) * size})`">
+        <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesIn.length) * size})`">
           <matrix-dimensions
             :dimensionNames="dimensionNamesOut"
             :dark-mode="darkMode"
@@ -58,7 +58,7 @@
             :x="scale(selectedEntry.j)"
             :y="0"
             :width="size"
-            :height="columnSize"
+            :height="rowSize"
           />
           <circle
             v-for="d in matrixElements"
@@ -214,17 +214,23 @@ export default Vue.extend({
         .map((d) => d.i);
     },
 
+    /**
+     * Width
+     */
     columnSize(): number {
       return this.size * this.operator.totalSizeIn;
     },
 
+    /**
+     * Height
+     */
     rowSize(): number {
       return this.size * this.operator.totalSizeOut;
     },
 
     allTileLocations(): { i: number; j: number }[] {
       return range(this.operator.totalSizeOut)
-        .flatMap((j) => range(this.operator.totalSizeIn).map((i) => ({
+        .flatMap((i) => range(this.operator.totalSizeIn).map((j) => ({
           i, j, re: 0, im: 0,
         })));
     },
