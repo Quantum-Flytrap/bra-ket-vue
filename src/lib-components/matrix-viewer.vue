@@ -79,7 +79,7 @@
     >
       <div class="matrix-legend">
         <div class="legend-text">
-          base change
+          change basis
         </div>
         <div
           v-for="bases in allBases"
