@@ -269,7 +269,7 @@ export default Vue.extend({
     tileMouseOver(tile: IMatrixElement): void {
       this.selectedEntry = tile;
       const coords = helpers.coordsFromIndex(tile.j, this.operator.sizeIn);
-      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsOut]);
+      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsIn]);
       this.$emit('columnMouseover', vec);
     },
 
