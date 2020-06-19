@@ -18,7 +18,7 @@
         </g>
         <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesIn.length) * size})`">
           <matrix-dimensions
-            :dimensionNames="dimensionNamesOut"
+            :dimensionNamesNumbered="dimensionNamesOutNumbered"
             :dark-mode="darkMode"
             location="left"
             @swapDimensions="swapDimensions($event)"
@@ -148,6 +148,21 @@ interface IBases {
   selected: string
 }
 
+/**
+ * When there are more dimensions with the same name, adding numbers to them,
+ * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
+ */
+function numberDimNames(dimNames: string[]): string[] {
+  const counter = new Map<string, number>();
+  return dimNames
+    .map((name): [string, number] => {
+      const count = 1 + (counter.get(name) || 0);
+      counter.set(name, count);
+      return [name, count];
+    })
+    .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
+}
+
 export default Vue.extend({
   components: {
     MatrixLabels,
@@ -174,7 +189,9 @@ export default Vue.extend({
       default: true,
     },
   },
-  data(): { operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement} {
+  data(): {
+    operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement, dimensionNamesOutNumbered: string[]
+    } {
     return {
       operator: this.operatorRaw,
       allBases: [
@@ -185,6 +202,7 @@ export default Vue.extend({
       selectedEntry: {
         i: -1, j: -1, re: 0, im: 0,
       },
+      dimensionNamesOutNumbered: numberDimNames(this.operatorRaw.dimensionsOut.map((d) => d.name)),
     };
   },
   computed: {
@@ -293,6 +311,12 @@ export default Vue.extend({
       } else {
         this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
       }
+
+      // for labels
+      const a = this.dimensionNamesOutNumbered[i];
+      const b = this.dimensionNamesOutNumbered[i + 1];
+      Vue.set(this.dimensionNamesOutNumbered, i, b);
+      Vue.set(this.dimensionNamesOutNumbered, i + 1, a);
     },
 
     changeBasis(bases: IBases, basis: string) {
