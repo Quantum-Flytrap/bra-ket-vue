@@ -51,6 +51,8 @@ For some applications you may want to read a bit about [Vue.js](https://vuejs.or
 ## Examples
 
 Here are examples in the dark style. All components are available in two styles: dark and bright.
+By default we use the dark style.
+Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is an `Operator` object.
 
 ### States (vectors)
 
@@ -58,9 +60,17 @@ Here are examples in the dark style. All components are available in two styles:
 
 ![Ket list for quantum optics](imgs/ket_list.png)
 
+```{html}
+<ket-viewer :vector="vector" :dark-mode="true" />
+```
+
 ![Ket](imgs/ket.gif)
 
 ### Operators (matrices)
+
+```{html}
+<matrix-viewer :operator-raw="operator" :dark-mode="true" />
+```
 
 ![Matrix - beam-splitter](imgs/beam_splitter.png)
 
