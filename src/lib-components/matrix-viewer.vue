@@ -202,7 +202,7 @@ export default Vue.extend({
       selectedEntry: {
         i: -1, j: -1, re: 0, im: 0,
       },
-      dimensionNamesOutNumbered: numberDimNames(this.operatorRaw.dimensionsOut.map((d) => d.name)),
+      dimensionNamesOutNumbered: numberDimNames(this.operatorRaw.namesOut),
     };
   },
   computed: {
@@ -295,7 +295,11 @@ export default Vue.extend({
      * @todo Make all dimension changes within this component.
      * (After using Operator rather than passed parameteres.)
      */
-    swapDimensions(i: number, both = true): void {
+    swapDimensions(i: number): void {
+      const both = (this.operatorRaw.dimensionsOut.length === this.operatorRaw.dimensionsIn.length)
+        && this.operatorRaw.dimensionsOut
+          .map((d, di) => d.isEqual(this.operatorRaw.dimensionsIn[di]))
+          .reduce((a, b) => a && b, true);
       const newOrder = range(this.operator.dimensionsOut.length);
       newOrder[i] += 1;
       newOrder[i + 1] -= 1;
@@ -309,7 +313,9 @@ export default Vue.extend({
           this.operator = this.operator.permute(newOrder);
         }
       } else {
-        this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
+        // console.log('perm out', newOrder);
+        // console.log('perm in', range(this.operator.dimensionsIn.length));
+        this.operator = this.operator.permuteDimsOut(newOrder);
       }
 
       // for labels
