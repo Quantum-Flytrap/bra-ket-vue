@@ -11,7 +11,7 @@ See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or ju
 By [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design).
 
 * Uses [Quantum Tensors](https://www.npmjs.com/package/quantum-tensors) library.
-* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quanutum Technologies, National University of Sinagpore](https://www.quantumlah.org/)) we use it heavily.
+* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quantum Technologies, National University of Sinagpore](https://www.quantumlah.org/)) we use it heavily.
 * Founded by the [Unitary Fund](https://unitary.fund/).
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
@@ -42,15 +42,17 @@ Or if you want to stick to specific versions
 
 ```{html}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
-<script src="https://unpkg.com/quantum-tensors@0.4.7/dist/quantum-tensors.min.js"></script>
-<script src="https://unpkg.com/bra-ket-vue@0.3.0/dist/bra-ket-vue.min.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.8/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/bra-ket-vue@0.3.1/dist/bra-ket-vue.min.js"></script>
 ```
 
 For some applications you may want to read a bit about [Vue.js](https://vuejs.org/).
 
 ## Examples
 
-Here are examples in the dark style. All components are aviable in two styles: dark and bright.
+Here are examples in the dark style. All components are available in two styles: dark and bright.
+By default we use the dark style.
+Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is an `Operator` object.
 
 ### States (vectors)
 
@@ -58,11 +60,19 @@ Here are examples in the dark style. All components are aviable in two styles: d
 
 ![Ket list for quantum optics](imgs/ket_list.png)
 
+```{html}
+<ket-viewer :vector="vector" :dark-mode="true" />
+```
+
 ![Ket](imgs/ket.gif)
 
 ### Operators (matrices)
 
-![Matrix - beam-spliutter](imgs/beam_splitter.png)
+```{html}
+<matrix-viewer :operator-raw="operator" :dark-mode="true" />
+```
+
+![Matrix - beam-splitter](imgs/beam_splitter.png)
 
 ![Matrix - CNOT gate](imgs/cnot_gate.png)
 

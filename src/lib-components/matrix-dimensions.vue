@@ -37,7 +37,7 @@ export default Vue.extend({
       type: String,
       required: true,
     },
-    dimensionNames: {
+    dimensionNamesNumbered: {
       type: Array as () => string[],
       default: () => [],
     },
@@ -48,22 +48,7 @@ export default Vue.extend({
   },
   computed: {
     swaps(): number[] {
-      return range(this.dimensionNames.length - 1);
-    },
-
-    /**
-     * When there are more dimensions with the same name, adding numbers to them,
-     * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
-     */
-    dimensionNamesNumbered(): string[] {
-      const counter = new Map<string, number>();
-      return this.dimensionNames
-        .map((name): [string, number] => {
-          const count = 1 + (counter.get(name) || 0);
-          counter.set(name, count);
-          return [name, count];
-        })
-        .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
+      return range(this.dimensionNamesNumbered.length - 1);
     },
 
     /**

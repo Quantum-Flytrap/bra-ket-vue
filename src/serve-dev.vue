@@ -56,6 +56,22 @@ Circuit.qubits(3)
   .TOFFOLI(0, 1, 2)
   .saveTo(circuitHistory);
 
+const opAnd = Operator.fromSparseCoordNames([
+  ['0', '00', Cx(1)],
+  ['0', '01', Cx(1)],
+  ['0', '10', Cx(1)],
+  ['1', '11', Cx(1)],
+],
+[Dimension.position(2, 'bit')],
+[Dimension.position(2, 'bit'), Dimension.position(2, 'bit')]);
+
+const opCopy = Operator.fromSparseCoordNames([
+  ['00', '0', Cx(1)],
+  ['11', '1', Cx(1)],
+],
+[Dimension.position(2, 'bit'), Dimension.position(2, 'bit')],
+[Dimension.position(2, 'bit')]);
+
 export default Vue.extend({
   name: 'ServeDev',
   components: {
@@ -71,6 +87,8 @@ export default Vue.extend({
       operator,
       operator2,
       operator3,
+      opAnd,
+      opCopy,
       opSugar: Elements.sugarSolution(),
       opMirror: Elements.mirror(0),
       opCNOT: Gates.CX(),
@@ -93,6 +111,13 @@ export default Vue.extend({
 
 <template>
   <div id="app">
+    <h1>AND</h1>
+    <matrix-viewer :operator-raw="opAnd" />
+    <h1>COPY</h1>
+    <matrix-viewer
+      :operator-raw="opCopy"
+      :show-legend="false"
+    />
     <h1>Ket</h1>
     <ket
       :vector="singlet"

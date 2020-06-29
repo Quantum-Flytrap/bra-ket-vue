@@ -3,8 +3,8 @@
     <div>
       <svg
         :class="quantumMatrixClass"
-        :width="columnSize + (1.5 + coordNamesIn.length) * size"
-        :height="rowSize + (4.5 + coordNamesOut.length) * size"
+        :width="columnSize + (1.5 + coordNamesOut.length) * size"
+        :height="rowSize + (3.5 + coordNamesIn.length) * size"
       >
         <g :transform="`translate(${(coordNamesOut.length + 1) * size}, ${1 * size})`">
           <matrix-labels
@@ -16,9 +16,9 @@
             :selected="selectedIn"
           />
         </g>
-        <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesOut.length) * size})`">
+        <g :transform="`translate(${size}, ${rowSize + (1 + coordNamesIn.length) * size})`">
           <matrix-dimensions
-            :dimensionNames="dimensionNamesOut"
+            :dimensionNamesNumbered="dimensionNamesOutNumbered"
             :dark-mode="darkMode"
             location="left"
             @swapDimensions="swapDimensions($event)"
@@ -58,7 +58,7 @@
             :x="scale(selectedEntry.j)"
             :y="0"
             :width="size"
-            :height="columnSize"
+            :height="rowSize"
           />
           <circle
             v-for="d in matrixElements"
@@ -73,10 +73,13 @@
         </g>
       </svg>
     </div>
-    <div :class="legendContainer">
+    <div
+      v-if="showLegend"
+      :class="legendContainer"
+    >
       <div class="matrix-legend">
         <div class="legend-text">
-          base change
+          change basis
         </div>
         <div
           v-for="bases in allBases"
@@ -145,6 +148,21 @@ interface IBases {
   selected: string
 }
 
+/**
+ * When there are more dimensions with the same name, adding numbers to them,
+ * e.g. ['qubit', 'polarization', 'spin', 'qubit'] -> ['qubit 1', 'polarization', 'spin', 'qubit 2']
+ */
+function numberDimNames(dimNames: string[]): string[] {
+  const counter = new Map<string, number>();
+  return dimNames
+    .map((name): [string, number] => {
+      const count = 1 + (counter.get(name) || 0);
+      counter.set(name, count);
+      return [name, count];
+    })
+    .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
+}
+
 export default Vue.extend({
   components: {
     MatrixLabels,
@@ -166,8 +184,14 @@ export default Vue.extend({
       type: Boolean,
       default: true,
     },
+    showLegend: {
+      type: Boolean,
+      default: true,
+    },
   },
-  data(): { operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement} {
+  data(): {
+    operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement, dimensionNamesOutNumbered: string[]
+    } {
     return {
       operator: this.operatorRaw,
       allBases: [
@@ -178,6 +202,7 @@ export default Vue.extend({
       selectedEntry: {
         i: -1, j: -1, re: 0, im: 0,
       },
+      dimensionNamesOutNumbered: numberDimNames(this.operatorRaw.namesOut),
     };
   },
   computed: {
@@ -214,17 +239,23 @@ export default Vue.extend({
         .map((d) => d.i);
     },
 
+    /**
+     * Width
+     */
     columnSize(): number {
       return this.size * this.operator.totalSizeIn;
     },
 
+    /**
+     * Height
+     */
     rowSize(): number {
       return this.size * this.operator.totalSizeOut;
     },
 
     allTileLocations(): { i: number; j: number }[] {
       return range(this.operator.totalSizeOut)
-        .flatMap((j) => range(this.operator.totalSizeIn).map((i) => ({
+        .flatMap((i) => range(this.operator.totalSizeIn).map((j) => ({
           i, j, re: 0, im: 0,
         })));
     },
@@ -256,7 +287,7 @@ export default Vue.extend({
     tileMouseOver(tile: IMatrixElement): void {
       this.selectedEntry = tile;
       const coords = helpers.coordsFromIndex(tile.j, this.operator.sizeIn);
-      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsOut]);
+      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsIn]);
       this.$emit('columnMouseover', vec);
     },
 
@@ -264,7 +295,11 @@ export default Vue.extend({
      * @todo Make all dimension changes within this component.
      * (After using Operator rather than passed parameteres.)
      */
-    swapDimensions(i: number, both = true): void {
+    swapDimensions(i: number): void {
+      const both = (this.operatorRaw.dimensionsOut.length === this.operatorRaw.dimensionsIn.length)
+        && this.operatorRaw.dimensionsOut
+          .map((d, di) => d.isEqual(this.operatorRaw.dimensionsIn[di]))
+          .reduce((a, b) => a && b, true);
       const newOrder = range(this.operator.dimensionsOut.length);
       newOrder[i] += 1;
       newOrder[i + 1] -= 1;
@@ -278,8 +313,16 @@ export default Vue.extend({
           this.operator = this.operator.permute(newOrder);
         }
       } else {
-        this.operator = this.operator.permute(newOrder, range(this.operator.dimensionsIn.length));
+        // console.log('perm out', newOrder);
+        // console.log('perm in', range(this.operator.dimensionsIn.length));
+        this.operator = this.operator.permuteDimsOut(newOrder);
       }
+
+      // for labels
+      const a = this.dimensionNamesOutNumbered[i];
+      const b = this.dimensionNamesOutNumbered[i + 1];
+      Vue.set(this.dimensionNamesOutNumbered, i, b);
+      Vue.set(this.dimensionNamesOutNumbered, i + 1, a);
     },
 
     changeBasis(bases: IBases, basis: string) {
