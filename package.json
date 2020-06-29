@@ -33,7 +33,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "quantum-tensors": "^0.4.7"
+    "quantum-tensors": "^0.4.8"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
