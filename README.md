@@ -42,8 +42,8 @@ Or if you want to stick to specific versions
 
 ```{html}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
-<script src="https://unpkg.com/quantum-tensors@0.4.7/dist/quantum-tensors.min.js"></script>
-<script src="https://unpkg.com/bra-ket-vue@0.3.0/dist/bra-ket-vue.min.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.8/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/bra-ket-vue@0.3.1/dist/bra-ket-vue.min.js"></script>
 ```
 
 For some applications you may want to read a bit about [Vue.js](https://vuejs.org/).
