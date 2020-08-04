@@ -84,10 +84,12 @@ Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is 
   * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
   * DARK color mode example: https://codesandbox.io/s/bra-ket-vue-dark-6zr46?fontsize=14&hidenavigation=1&theme=dark
   * BRIGHT color mode example: https://codesandbox.io/s/bra-ket-vue-dark-l88er?fontsize=14&hidenavigation=1&theme=dark
-* A frontend JavaScript examples:
-  * https://jsfiddle.net/stared/1Lbuoxte/ - for the first example
+* A frontend JavaScript examples
+  * <https://jsfiddle.net/user/stared/fiddles/>
+
 * In-action:
   * [Quantum Game with Photons 2](https://quantumgame.io/), especially entries of the element encyclopedia (e.g. [Faraday rotator](https://quantumgame.io/info/faraday-rotator)).
+  * Presentation with Reveal.js (RISE in Jupyter Notebook): <https://p.migdal.pl/piterpy-matrix/#/17>
 
 ## Notes
 
