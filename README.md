@@ -1,4 +1,4 @@
-# bra-ket-vue
+# bra-ket-vue / ⟨𝜑|𝜓⟩.vue
 
 [![npm version](https://badge.fury.io/js/bra-ket-vue.svg)](https://badge.fury.io/js/bra-ket-vue)
 ![License](https://img.shields.io/npm/l/bra-ket-vue)
