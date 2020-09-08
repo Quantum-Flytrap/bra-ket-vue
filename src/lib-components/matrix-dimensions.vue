@@ -16,7 +16,7 @@
       :key="`label-${i}`"
       class="dimension-swap"
       :transform="`translate(${scale(0.5)}, ${scale(i + 1)}) ${invTransformation}`"
-      @click="$emit('swapDimensions', i)"
+      @click="$emit('swap-dimensions', i)"
     >
       ⇄
     </text>
@@ -24,10 +24,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { range } from '@/lib-components/utils';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     size: {
       type: Number,

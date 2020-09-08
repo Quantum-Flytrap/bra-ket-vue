@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
   Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
@@ -61,7 +61,7 @@ const allBasesDefault: IBasisSelector[] = [
   { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
 ];
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     vector: {
       type: Object as () => Vector,

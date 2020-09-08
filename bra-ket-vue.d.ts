@@ -1,20 +1,12 @@
-import Vue, { PluginFunction, VueConstructor } from 'vue';
+import { defineComponent } from 'vue';
 
-
-interface InstallFunction extends PluginFunction<any> {
-  installed?: boolean;
-}
-
-declare const BraKetVue: { install: InstallFunction };
-export default BraKetVue;
-
-export const Ket: VueConstructor<Vue>;
-export const KetViewer: VueConstructor<Vue>;
-export const MatrixViewer: VueConstructor<Vue>;
-export const KetListViewer: VueConstructor<Vue>;
-export const ComplexLegend: VueConstructor<Vue>;
-export const CoordinateLegend: VueConstructor<Vue>;
-export const MatrixDimensions: VueConstructor<Vue>;
-export const MatrixLabels: VueConstructor<Vue>;
-export const OptionsGroup: VueConstructor<Vue>;
-export const OptionsGroupSvg: VueConstructor<Vue>;
+export const Ket: ReturnType<typeof defineComponent>;
+export const KetViewer: ReturnType<typeof defineComponent>;
+export const MatrixViewer: ReturnType<typeof defineComponent>;
+export const KetListViewer: ReturnType<typeof defineComponent>;
+export const ComplexLegend: ReturnType<typeof defineComponent>;
+export const CoordinateLegend: ReturnType<typeof defineComponent>;
+export const MatrixDimensions: ReturnType<typeof defineComponent>;
+export const MatrixLabels: ReturnType<typeof defineComponent>;
+export const OptionsGroup: ReturnType<typeof defineComponent>;
+export const OptionsGroupSvg: ReturnType<typeof defineComponent>;

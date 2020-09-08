@@ -71,11 +71,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { range } from '@/lib-components/utils';
 import { colorComplex } from '@/lib-components/colors';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     size: {
       type: Number,

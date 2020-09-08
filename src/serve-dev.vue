@@ -1,5 +1,5 @@
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
   Photons, Vector, Operator, Elements, Dimension, Cx, Gates, Circuit,
 } from 'quantum-tensors';
@@ -72,7 +72,7 @@ const opCopy = Operator.fromSparseCoordNames([
 [Dimension.position(2, 'bit'), Dimension.position(2, 'bit')],
 [Dimension.position(2, 'bit')]);
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ServeDev',
   components: {
     KetViewer,

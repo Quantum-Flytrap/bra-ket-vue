@@ -21,7 +21,7 @@
             :dimensionNamesNumbered="dimensionNamesOutNumbered"
             :dark-mode="darkMode"
             location="left"
-            @swapDimensions="swapDimensions($event)"
+            @swap-dimensions="swapDimensions($event)"
           />
         </g>
         <g :transform="`translate(${1 * size}, ${(coordNamesIn.length + 1) * size})`">
@@ -123,7 +123,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import {
   Vector, VectorEntry, Operator, helpers, Cx,
 } from 'quantum-tensors';
@@ -163,7 +163,7 @@ function numberDimNames(dimNames: string[]): string[] {
     .map(([name, count]) => (counter.get(name) === 1 ? name : `${name} ${count}`));
 }
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     MatrixLabels,
     MatrixDimensions,
@@ -288,7 +288,7 @@ export default Vue.extend({
       this.selectedEntry = tile;
       const coords = helpers.coordsFromIndex(tile.j, this.operator.sizeIn);
       const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsIn]);
-      this.$emit('columnMouseover', vec);
+      this.$emit('column-mouseover', vec);
     },
 
     /**
@@ -321,8 +321,8 @@ export default Vue.extend({
       // for labels
       const a = this.dimensionNamesOutNumbered[i];
       const b = this.dimensionNamesOutNumbered[i + 1];
-      Vue.set(this.dimensionNamesOutNumbered, i, b);
-      Vue.set(this.dimensionNamesOutNumbered, i + 1, a);
+      this.dimensionNamesOutNumbered[i] = b;
+      this.dimensionNamesOutNumbered[i + 1] = a;
     },
 
     changeBasis(bases: IBases, basis: string) {

@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="wrapper"
-    class="ket-viewer"
-  >
+  <div class="ket-viewer">
     <ket
       class="ket"
       :vector="vector"
@@ -65,14 +62,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
 import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import Ket from '@/lib-components/ket.vue';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     CoordinateLegend,
     OptionsGroup,
@@ -97,7 +94,7 @@ export default Vue.extend({
       default: 'HV',
     },
   },
-  data(): any {
+  data() {
     return {
       options: ['polar', 'polarTau', 'cartesian', 'color'],
       selectedOption: 'polar',
@@ -112,6 +109,9 @@ export default Vue.extend({
     dimensionNames(): string[] {
       return this.vector.names;
     },
+  },
+  setup() {
+    console.log('KetViewer setup');
   },
 });
 </script>
