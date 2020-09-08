@@ -8,6 +8,7 @@ import replace from '@rollup/plugin-replace';
 import babel from 'rollup-plugin-babel';
 import { terser } from 'rollup-plugin-terser';
 import minimist from 'minimist';
+import postcss from 'rollup-plugin-postcss';
 
 // Get browserslist config and remove ie from es build targets
 const esbrowserslist = fs.readFileSync('./.browserslistrc')
@@ -36,6 +37,7 @@ const baseConfig = {
     ],
     vue: {
       css: true,
+      preprocessStyles: true,
       template: {
         isProduction: true,
       },
@@ -79,6 +81,9 @@ if (!argv.format || argv.format === 'es') {
     plugins: [
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
+      postcss({
+        extract: path.resolve('dist/bra-ket-vue.css'),
+      }),
       babel({
         ...baseConfig.plugins.babel,
         presets: [
@@ -116,6 +121,9 @@ if (!argv.format || argv.format === 'cjs') {
           optimizeSSR: true,
         },
       }),
+      postcss({
+        extract: path.resolve('dist/bra-ket-vue.css'),
+      }),
       babel(baseConfig.plugins.babel),
     ],
   };
@@ -138,6 +146,9 @@ if (!argv.format || argv.format === 'iife') {
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
       babel(baseConfig.plugins.babel),
+      postcss({
+        extract: path.resolve('dist/bra-ket-vue.css'),
+      }),
       terser({
         output: {
           ecma: 5,

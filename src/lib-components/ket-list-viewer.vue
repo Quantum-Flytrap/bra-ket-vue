@@ -103,14 +103,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
 import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import Ket from '@/lib-components/ket.vue';
 
-export default Vue.extend({
+export default defineComponent({
   components: {
     CoordinateLegend,
     OptionsGroup,
@@ -119,7 +119,7 @@ export default Vue.extend({
   },
   props: {
     steps: {
-      type: Array as () => {value: number | string, vector: Vector}[],
+      type: Array as PropType<{value: number | string, vector: Vector}[]>,
       default: () => [],
     },
     showLegend: {
@@ -131,7 +131,7 @@ export default Vue.extend({
       default: true,
     },
   },
-  data(): any {
+  data() {
     return {
       options: ['polar', 'polarTau', 'cartesian', 'color'],
       selectedOption: 'polar',

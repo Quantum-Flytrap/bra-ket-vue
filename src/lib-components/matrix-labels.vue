@@ -50,10 +50,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import { range, coordPrettier } from '@/lib-components/utils';
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     size: {
       type: Number,
