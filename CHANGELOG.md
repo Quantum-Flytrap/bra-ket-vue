@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2020-09-08
+
+## Change
+
+* Moved from Vue 2.x to Vue 3.0.0. If you want to use Vue 2.x, use `bra-ket-vue<0.4.0`.
+* Updated quantum-tensors to 0.4.10.
+
 ## [0.3.1] - 2020-06-29
 
 ## Added
