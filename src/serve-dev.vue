@@ -12,8 +12,9 @@ const sizeY = 8;
 const state = Photons.emptySpace(sizeX, sizeY);
 
 state.addPhotonFromIndicator(0, 2, '>', 'H');
+state.updateOperators([{ x: 0, y: 2, op: Elements.beamSplitter(135) }]);
 const state0 = state.copy();
-state.actOnSinglePhotons([{ x: 0, y: 2, op: Elements.beamSplitter(135) }]);
+state.actOnSinglePhotons();
 const state1 = state.copy();
 state.propagatePhotons();
 

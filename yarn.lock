@@ -1762,9 +1762,9 @@
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
 "@types/lodash@^4.14.138":
-  version "4.14.157"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.157.tgz#fdac1c52448861dfde1a2e1515dbc46e54926dc8"
-  integrity sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
+  version "4.14.161"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.161.tgz#a21ca0777dabc6e4f44f3d07f37b765f54188b18"
+  integrity sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==
 
 "@types/minimatch@*":
   version "3.0.3"
@@ -8233,10 +8233,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.4.8:
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.8.tgz#6f3c39d5270ffe8e5cbbe0cb2e779945da338162"
-  integrity sha512-rAER6BCGGaFKf/cGXgVnbU17mzWb8C0V9bglPOcksyLRcHnFmgxzHYxdgaYeJnX/IE6OFqwzETuPRVmtFbZ1cw==
+quantum-tensors@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.10.tgz#cad1ad37898380ecdca9f3368ab788180a5c95b0"
+  integrity sha512-SDZ/CvJAN8C+8YnqUBj6l5CEhmQ4uNolMDieju/7D829HfoYLOHkd2kaA0uZ12QD6R0HD/4QR8mosNVCgBxCCw==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
