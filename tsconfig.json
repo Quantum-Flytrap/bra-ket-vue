@@ -15,7 +15,6 @@
         "sourceMap": true,
         "baseUrl": ".",
         "types": [
-            "node",
             "vue"
         ],
         "paths": {
