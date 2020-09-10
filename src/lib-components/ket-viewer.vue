@@ -13,7 +13,6 @@
     >
     <coordinate-legend
       v-if="showLegend"
-      class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
       :dark-mode="darkMode"
@@ -70,6 +69,7 @@ import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import Ket from '@/lib-components/ket.vue';
 
 export default defineComponent({
+  name: 'KetViewer',
   components: {
     CoordinateLegend,
     OptionsGroup,
@@ -110,9 +110,6 @@ export default defineComponent({
       return this.vector.names;
     },
   },
-  setup() {
-    console.log('KetViewer setup');
-  },
 });
 </script>
 
@@ -146,10 +143,6 @@ export default defineComponent({
   height: 0;
   margin: 0;
   width:100%
-}
-
-.legend {
-  margin-top: 0px;
 }
 
 .hr-dark {

@@ -164,6 +164,7 @@ function numberDimNames(dimNames: string[]): string[] {
 }
 
 export default defineComponent({
+  name: 'MatrixViewer',
   components: {
     MatrixLabels,
     MatrixDimensions,
@@ -171,6 +172,7 @@ export default defineComponent({
     OptionsGroupSvg,
     ComplexLegend,
   },
+  emits: ['column-mouseover'],
   props: {
     size: {
       type: Number,

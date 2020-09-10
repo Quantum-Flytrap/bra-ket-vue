@@ -28,6 +28,8 @@ import { defineComponent } from 'vue';
 import { range } from '@/lib-components/utils';
 
 export default defineComponent({
+  name: 'MatrixDimensions',
+  emits: ['swap-dimensions'],
   props: {
     size: {
       type: Number,

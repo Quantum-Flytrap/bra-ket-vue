@@ -4,10 +4,10 @@ module.exports = {
       node: true,
     },
     extends: [
-      'plugin:vue/recommended',
+      'plugin:vue/vue3-recommended',
       '@vue/airbnb',
       '@vue/typescript',
-      'plugin:vue-scoped-css/recommended',
+      'plugin:vue-scoped-css/vue3-recommended',
     ],
     parserOptions: {
       parser: '@typescript-eslint/parser',
@@ -18,6 +18,6 @@ module.exports = {
       'no-debugger':  'error',
       "class-methods-use-this": 0, // https://github.com/vuejs/vue-cli/issues/1203
       "no-unused-vars": "off", // https://stackoverflow.com/questions/55280555/
-      "@typescript-eslint/no-unused-vars": "error" // https://stackoverflow.com/questions/55280555/
+      "@typescript-eslint/no-unused-vars": "error", // https://stackoverflow.com/questions/55280555/
     }
   };

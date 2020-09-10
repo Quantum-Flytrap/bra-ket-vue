@@ -111,73 +111,81 @@ export default defineComponent({
 </script>
 
 <template>
-  <div id="app">
-    <h1>AND</h1>
-    <matrix-viewer :operator-raw="opAnd" />
-    <h1>COPY</h1>
-    <matrix-viewer
-      :operator-raw="opCopy"
-      :show-legend="false"
+  <h1>AND</h1>
+  <matrix-viewer :operator-raw="opAnd" />
+  <h1>COPY</h1>
+  <matrix-viewer
+    :operator-raw="opCopy"
+    :show-legend="false"
+  />
+  <h1>Ket</h1>
+  <ket
+    :vector="singlet"
+    :dark-mode="true"
+  />
+  <div class="bright">
+    <h1>Ket Viewer</h1>
+    <ket-viewer
+      :vector="state.vector"
+      :dark-mode="false"
     />
-    <h1>Ket</h1>
-    <ket
-      :vector="singlet"
-      :dark-mode="true"
-    />
-    <div class="bright">
-      <h1>Ket Viewer</h1>
-      <ket-viewer
-        :vector="state.vector"
-        :dark-mode="false"
-      />
-    </div>
-    <div class="bright2">
-      <h1>Ket Viewer</h1>
-      <ket-viewer
-        :vector="state.vector"
-        :dark-mode="false"
-      />
-    </div>
-    <h1>Ket Viewer for a singlet state</h1>
-    <ket-viewer :vector="singlet" />
-    <h1>Ket List</h1>
-    <ket-list :steps="steps" />
-    <div class="bright">
-      <h1>Ket List</h1>
-      <ket-list
-        :steps="steps"
-        :dark-mode="false"
-      />
-    </div>
-    <h1>Ket List Quantum Computing</h1>
-    <ket-list :steps="stepsQuantumComputing" />
-    <div class="bright">
-      <h1>beamSplitter 50/50</h1>
-      <matrix-viewer
-        :operator-raw="operator"
-        :dark-mode="false"
-      />
-    </div>
-    <h1>beamSplitter 50/50</h1>
-    <matrix-viewer :operator-raw="operator" />
-    <h1>Pauli Z operator for spin</h1>
-    <matrix-viewer :operator-raw="operator2" />
-    <h1>Another example</h1>
-    <matrix-viewer :operator-raw="operator3" />
-    <h1>Sugar Solution</h1>
-    <matrix-viewer :operator-raw="opSugar" />
-    <h1>Mirror</h1>
-    <matrix-viewer :operator-raw="opMirror" />
-    <h1>CNOT gate</h1>
-    <matrix-viewer :operator-raw="opCNOT" />
-    <h1>Toffoli gate</h1>
-    <matrix-viewer :operator-raw="opToffoli" />
-    <div />
   </div>
+  <div class="bright2">
+    <h1>Ket Viewer</h1>
+    <ket-viewer
+      :vector="state.vector"
+      :dark-mode="false"
+    />
+  </div>
+  <div class="bright2">
+    <h1>Ket Viewer (short)</h1>
+    <ket-viewer
+      :style="{width: '200px'}"
+      :vector="state.vector"
+      :dark-mode="false"
+    />
+  </div>
+  <h1>Ket Viewer for a singlet state</h1>
+  <ket-viewer :vector="singlet" />
+  <h1>Ket List</h1>
+  <ket-list :steps="steps" />
+  <div class="bright">
+    <h1>Ket List</h1>
+    <ket-list
+      :steps="steps"
+      :dark-mode="false"
+    />
+  </div>
+  <h1>Ket List Quantum Computing</h1>
+  <ket-list :steps="stepsQuantumComputing" />
+  <div class="bright">
+    <h1>beamSplitter 50/50</h1>
+    <matrix-viewer
+      :operator-raw="operator"
+      :dark-mode="false"
+    />
+  </div>
+  <h1>beamSplitter 50/50</h1>
+  <matrix-viewer :operator-raw="operator" />
+  <h1>Pauli Z operator for spin</h1>
+  <matrix-viewer :operator-raw="operator2" />
+  <h1>Another example</h1>
+  <matrix-viewer :operator-raw="operator3" />
+  <h1>Sugar Solution</h1>
+  <matrix-viewer :operator-raw="opSugar" />
+  <h1>Mirror</h1>
+  <matrix-viewer :operator-raw="opMirror" />
+  <h1>CNOT gate</h1>
+  <matrix-viewer :operator-raw="opCNOT" />
+  <h1>Toffoli gate</h1>
+  <matrix-viewer :operator-raw="opToffoli" />
 </template>
-
-<style lang="scss" scoped>
-@import "./style-variables.scss";
+<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
+<style lang="scss">
+html, body {
+  margin: 0;
+  padding: 0;
+}
 
 #app {
   // background-color: rgb(255, 255, 255);
@@ -187,6 +195,10 @@ export default defineComponent({
   padding-left: 80px;
   padding-top: 30px;
 }
+</style>
+<style lang="scss" scoped>
+@import "./style-variables.scss";
+
 .bright {
   padding: 30px;
   max-width: 700px;
