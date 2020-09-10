@@ -13,7 +13,6 @@
     >
     <coordinate-legend
       v-if="showLegend"
-      class="legend"
       :complex-style="selectedOption"
       :dimension-names="dimensionNames"
       :dark-mode="darkMode"
@@ -110,9 +109,6 @@ export default defineComponent({
       return this.vector.names;
     },
   },
-  setup() {
-    console.log('KetViewer setup');
-  },
 });
 </script>
 
@@ -146,10 +142,6 @@ export default defineComponent({
   height: 0;
   margin: 0;
   width:100%
-}
-
-.legend {
-  margin-top: 0px;
 }
 
 .hr-dark {

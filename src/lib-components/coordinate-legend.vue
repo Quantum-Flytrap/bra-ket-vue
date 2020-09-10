@@ -1,20 +1,17 @@
 <template>
   <div class="legend-main">
-    <div
-      :class="coordLegendClass"
-    >
-      <span v-if="complexStyle !== 'color'">
-        <span class="legend-complex">amplitude</span>
-      </span>
-      <span>
-        <span
-          v-for="(dimName, i) in dimensionNames"
-          :key="`legend-dimension-${dimName}-${i}`"
-          class="legend-dimension"
-          :style="{ color: dimensionNameToColor(dimName, darkMode) }"
-        >
-          {{ dimName }}
-        </span>
+    <div :class="coordLegendClass">
+      <span
+        v-if="complexStyle !== 'color'"
+        class="legend-complex"
+      >amplitude</span>
+      <span
+        v-for="(dimName, i) in dimensionNames"
+        :key="i"
+        class="legend-dimension"
+        :style="{ color: dimensionNameToColor(dimName, darkMode) }"
+      >
+        {{ dimName }}
       </span>
     </div>
   </div>
@@ -55,38 +52,34 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import "../style-variables.scss";
 
-.legend-main {
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
 .legend-dark, .legend-bright {
-  display: inline;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   font-size: 10px;
   font-family: $mainFont;
   text-transform: uppercase;
-  & .legend-complex {
-    margin-right: 5px;
-  }
-  & .legend-dimension {
-    margin: 5px;
-  }
+}
+
+.legend-complex, .legend-dimension {
+  margin: 5px 5px;
 }
 
 .legend-dark {
-  & .legend-complex {
+  & > .legend-complex {
     color: #d28fff;
   }
-  & .legend-dimension {
+  & > .legend-dimension {
     color: #fff;
   }
 }
 
 .legend-bright {
-  & .legend-complex {
+  & > .legend-complex {
     color: #7a06c7;
   }
-  & .legend-dimension {
+  & > .legend-dimension {
     color: #000;
   }
 }
