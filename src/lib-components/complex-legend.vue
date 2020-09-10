@@ -76,6 +76,7 @@ import { range } from '@/lib-components/utils';
 import { colorComplex } from '@/lib-components/colors';
 
 export default defineComponent({
+  name: 'ComplexLegend',
   props: {
     size: {
       type: Number,

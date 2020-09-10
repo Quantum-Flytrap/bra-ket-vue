@@ -69,6 +69,7 @@ import OptionsGroupSvg from '@/lib-components/options-group-svg.vue';
 import Ket from '@/lib-components/ket.vue';
 
 export default defineComponent({
+  name: 'KetViewer',
   components: {
     CoordinateLegend,
     OptionsGroup,

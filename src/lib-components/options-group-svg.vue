@@ -55,6 +55,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  name: 'OptionsGroupSvg',
   emits: ['selected'],
   props: {
     selectedOption: {

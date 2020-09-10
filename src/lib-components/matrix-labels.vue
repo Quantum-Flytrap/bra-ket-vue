@@ -54,6 +54,7 @@ import { defineComponent } from 'vue';
 import { range, coordPrettier } from '@/lib-components/utils';
 
 export default defineComponent({
+  name: 'MatrixLabels',
   props: {
     size: {
       type: Number,

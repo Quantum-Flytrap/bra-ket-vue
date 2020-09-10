@@ -62,6 +62,7 @@ const allBasesDefault: IBasisSelector[] = [
 ];
 
 export default defineComponent({
+  name: 'Ket',
   props: {
     vector: {
       type: Object as () => Vector,

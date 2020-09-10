@@ -22,6 +22,7 @@ import { defineComponent } from 'vue';
 import { dimensionNameToColor } from '@/lib-components/utils';
 
 export default defineComponent({
+  name: 'CoordinateLegend',
   props: {
     complexStyle: {
       type: String,
