@@ -18,6 +18,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  emits: ['selected'],
   props: {
     selectedOption: {
       type: String,

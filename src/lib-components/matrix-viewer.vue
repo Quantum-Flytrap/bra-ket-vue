@@ -164,6 +164,7 @@ function numberDimNames(dimNames: string[]): string[] {
 }
 
 export default defineComponent({
+  emits: ['column-mouseover'],
   components: {
     MatrixLabels,
     MatrixDimensions,
