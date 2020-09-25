@@ -112,10 +112,10 @@ export default defineComponent({
 
 <template>
   <h1>AND</h1>
-  <matrix-viewer :operator-raw="opAnd" />
+  <matrix-viewer :operator="opAnd" />
   <h1>COPY</h1>
   <matrix-viewer
-    :operator-raw="opCopy"
+    :operator="opCopy"
     :show-legend="false"
   />
   <h1>Ket</h1>
@@ -161,24 +161,24 @@ export default defineComponent({
   <div class="bright">
     <h1>beamSplitter 50/50</h1>
     <matrix-viewer
-      :operator-raw="operator"
+      :operator="operator"
       :dark-mode="false"
     />
   </div>
   <h1>beamSplitter 50/50</h1>
-  <matrix-viewer :operator-raw="operator" />
+  <matrix-viewer :operator="operator" />
   <h1>Pauli Z operator for spin</h1>
-  <matrix-viewer :operator-raw="operator2" />
+  <matrix-viewer :operator="operator2" />
   <h1>Another example</h1>
-  <matrix-viewer :operator-raw="operator3" />
+  <matrix-viewer :operator="operator3" />
   <h1>Sugar Solution</h1>
-  <matrix-viewer :operator-raw="opSugar" />
+  <matrix-viewer :operator="opSugar" />
   <h1>Mirror</h1>
-  <matrix-viewer :operator-raw="opMirror" />
+  <matrix-viewer :operator="opMirror" />
   <h1>CNOT gate</h1>
-  <matrix-viewer :operator-raw="opCNOT" />
+  <matrix-viewer :operator="opCNOT" />
   <h1>Toffoli gate</h1>
-  <matrix-viewer :operator-raw="opToffoli" />
+  <matrix-viewer :operator="opToffoli" />
 </template>
 <!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
 <style lang="scss">

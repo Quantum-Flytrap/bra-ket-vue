@@ -61,7 +61,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import {
+  computed,
+  defineComponent,
+  PropType,
+  proxyRefs,
+  ref,
+  watch,
+} from 'vue';
 import { Vector } from 'quantum-tensors';
 import CoordinateLegend from '@/lib-components/coordinate-legend.vue';
 import OptionsGroup from '@/lib-components/options-group.vue';
@@ -77,38 +84,27 @@ export default defineComponent({
     Ket,
   },
   props: {
-    vector: {
-      type: Object as () => Vector,
-      required: true,
-    },
-    showLegend: {
-      type: Boolean,
-      default: true,
-    },
-    darkMode: {
-      type: Boolean,
-      default: true,
-    },
-    initialPolBasis: {
-      type: String,
-      default: 'HV',
-    },
+    vector: { type: Object as PropType<Vector>, required: true },
+    showLegend: { type: Boolean, default: true },
+    darkMode: { type: Boolean, default: true },
+    polBasis: { type: String, default: 'HV' },
   },
-  data() {
+  setup(props) {
+    const innerPolBasis = ref(props.polBasis);
+    watch(() => props.polBasis, (basis) => {
+      innerPolBasis.value = basis;
+    });
+
     return {
+      dimensionNames: computed(() => props.vector.names),
       options: ['polar', 'polarTau', 'cartesian', 'color'],
       selectedOption: 'polar',
       allBases: [
-        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: this.initialPolBasis },
+        proxyRefs({ name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: innerPolBasis }),
         { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
         { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
       ],
     };
-  },
-  computed: {
-    dimensionNames(): string[] {
-      return this.vector.names;
-    },
   },
 });
 </script>

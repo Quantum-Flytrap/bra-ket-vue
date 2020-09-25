@@ -29,7 +29,6 @@ import { range } from '@/lib-components/utils';
 
 export default defineComponent({
   name: 'MatrixDimensions',
-  emits: ['swap-dimensions'],
   props: {
     size: {
       type: Number,
@@ -48,6 +47,7 @@ export default defineComponent({
       default: true,
     },
   },
+  emits: ['swap-dimensions'],
   computed: {
     swaps(): number[] {
       return range(this.dimensionNamesNumbered.length - 1);

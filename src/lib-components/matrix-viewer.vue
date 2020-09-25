@@ -53,7 +53,7 @@
             :height="rowSize"
           />
           <rect
-            v-if="selectedEntry.j > -1"
+            v-if="selectedEntry"
             class="selected-column"
             :x="scale(selectedEntry.j)"
             :y="0"
@@ -82,7 +82,7 @@
           change basis
         </div>
         <div
-          v-for="bases in allBases"
+          v-for="(bases, index) in allBases"
           :key="`basis-${bases.name}`"
         >
           <span
@@ -94,7 +94,7 @@
               :options="bases.availableBases"
               :dark-mode="darkMode"
               :selected-option="bases.selected"
-              @selected="changeBasis(bases, $event)"
+              @selected="changeBasis(index, $event)"
             />
           </span>
           <span
@@ -106,7 +106,7 @@
               :options="bases.availableBases"
               :dark-mode="darkMode"
               :selected-option="bases.selected"
-              @selected="changeBasis(bases, $event)"
+              @selected="changeBasis(index, $event)"
             />
           </span>
         </div>
@@ -123,9 +123,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import {
-  Vector, VectorEntry, Operator, helpers, Cx,
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+} from 'vue';
+import {
+  Vector, VectorEntry, Operator, helpers, Cx, Dimension,
 } from 'quantum-tensors';
 import { colorComplexPhaseToHue } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
@@ -140,12 +146,6 @@ interface IMatrixElement {
   j: number
   re: number
   im: number
-}
-
-interface IBases {
-  name: string
-  availableBases: string[]
-  selected: string
 }
 
 /**
@@ -172,170 +172,203 @@ export default defineComponent({
     OptionsGroupSvg,
     ComplexLegend,
   },
-  emits: ['column-mouseover'],
   props: {
-    size: {
-      type: Number,
-      default: 40,
-    },
-    operatorRaw: {
-      type: Object as () => Operator,
-      required: true,
-    },
-    darkMode: {
-      type: Boolean,
-      default: true,
-    },
-    showLegend: {
-      type: Boolean,
-      default: true,
-    },
+    size: { type: Number, default: 40 },
+    operator: { type: Object as PropType<Operator>, required: true },
+    darkMode: { type: Boolean, default: true },
+    showLegend: { type: Boolean, default: true },
   },
-  data(): {
-    operator: Operator, allBases: IBases[], selectedEntry: IMatrixElement, dimensionNamesOutNumbered: string[]
-    } {
-    return {
-      operator: this.operatorRaw,
-      allBases: [
-        { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
-        { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
-        { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
-      ],
-      selectedEntry: {
-        i: -1, j: -1, re: 0, im: 0,
-      },
-      dimensionNamesOutNumbered: numberDimNames(this.operatorRaw.namesOut),
+  emits: ['column-mouseover'],
+  setup(props, { emit }) {
+    const allBases = ref([
+      { name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: 'HV' },
+      { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
+      { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
+    ]);
+
+    const permuteOrder = ref(range(props.operator.dimensionsOut.length));
+
+    watch(() => props.operator.dimensionsOut.length, (len) => {
+      if (len !== permuteOrder.value.length) {
+        permuteOrder.value = range(props.operator.dimensionsOut.length);
+      }
+    });
+
+    const innerOperator = computed(() => {
+      const op = props.operator;
+      const permuteBoth = (op.dimensionsOut.length === op.dimensionsIn.length)
+        && op.dimensionsOut
+          .every((d, di) => d.isEqual(op.dimensionsIn[di]));
+
+      const permuted = permuteBoth ? op.permute(permuteOrder.value) : op.permuteDimsOut(permuteOrder.value);
+      const bases = allBases.value;
+      return permuted
+        .toBasisAll('polarization', bases[0].selected)
+        .toBasisAll('spin', bases[1].selected)
+        .toBasisAll('qubit', bases[2].selected);
+    });
+
+    type AbsoluteCoord = Record<string, number>
+
+    function fromAbsoluteCoord(coord: AbsoluteCoord, dims: Dimension[]): number | null {
+      if (Object.entries(coord).length !== dims.length) return null;
+      const out = dims.map((dim) => coord[dim.name]);
+      if (out.some((n) => n == null)) return null;
+      return helpers.coordsToIndex(out, dims.map((d) => d.size));
+    }
+
+    function toAbsoluteCoord(idx: number, dims: Dimension[]): AbsoluteCoord {
+      const coord = helpers.coordsFromIndex(idx, dims.map((d) => d.size));
+      const abs: AbsoluteCoord = {};
+      for (let i = 0; i < coord.length; i += 1) {
+        abs[dims[i].name] = coord[i];
+      }
+      return abs;
+    }
+
+    const selection = ref<[AbsoluteCoord, AbsoluteCoord] | null>(null);
+
+
+    const matrixElements = computed((): IMatrixElement[] => innerOperator.value
+      .toIndexIndexValues()
+      .map((entry) => ({
+        i: entry.i,
+        j: entry.j,
+        re: entry.v.re,
+        im: entry.v.im,
+      })));
+
+    const defaultEntry = {
+      i: -1,
+      j: -1,
+      re: 0,
+      im: 0,
     };
-  },
-  computed: {
-    matrixElements(): IMatrixElement[] {
-      return this.operator
-        .toIndexIndexValues()
-        .map((entry) => ({
-          i: entry.i,
-          j: entry.j,
-          re: entry.v.re,
-          im: entry.v.im,
-        }));
-    },
 
-    coordNamesIn(): string[][] {
-      return this.operator.coordNamesIn;
-    },
+    const selectedEntry = computed((): IMatrixElement => {
+      const op = innerOperator.value;
+      if (selection.value == null) return defaultEntry;
 
-    coordNamesOut(): string[][] {
-      return this.operator.coordNamesOut;
-    },
+      const [absCoordOut, absCoordIn] = selection.value;
+      const coordOut = fromAbsoluteCoord(absCoordOut, op.dimensionsOut);
+      const coordIn = fromAbsoluteCoord(absCoordIn, op.dimensionsIn);
+      if (coordIn == null || coordOut == null) return defaultEntry;
+      return matrixElements.value.find(({ i, j }) => i === coordOut && j === coordIn)
+        || {
+          i: coordOut, j: coordIn, re: 0, im: 0,
+        };
+    });
 
-    dimensionNamesOut(): string[] {
-      return this.operator.dimensionsOut.map((dim) => dim.name);
-    },
+    const coordNamesIn = computed(() => innerOperator.value.coordNamesIn);
 
-    selectedIn(): number[] {
-      return [this.selectedEntry.j];
-    },
+    const coordNamesOut = computed(() => innerOperator.value.coordNamesOut);
 
-    selectedOut(): number[] {
-      return this.matrixElements
-        .filter((d) => d.j === this.selectedEntry.j)
+    const dimensionNamesOut = computed(() => innerOperator.value.dimensionsOut.map((dim) => dim.name));
+
+    const selectedIn = computed((): number[] => {
+      if (selectedEntry.value == null) return [];
+      return [selectedEntry.value.j];
+    });
+
+    const selectedOut = computed((): number[] => {
+      if (selectedEntry.value == null) return [];
+      const { j } = selectedEntry.value;
+      return matrixElements.value
+        .filter((d) => d.j === j)
         .map((d) => d.i);
-    },
+    });
 
     /**
      * Width
      */
-    columnSize(): number {
-      return this.size * this.operator.totalSizeIn;
-    },
+    const columnSize = computed((): number => props.size * innerOperator.value.totalSizeIn);
 
     /**
      * Height
      */
-    rowSize(): number {
-      return this.size * this.operator.totalSizeOut;
-    },
+    const rowSize = computed((): number => props.size * innerOperator.value.totalSizeOut);
 
-    allTileLocations(): { i: number; j: number }[] {
-      return range(this.operator.totalSizeOut)
-        .flatMap((i) => range(this.operator.totalSizeIn).map((j) => ({
-          i, j, re: 0, im: 0,
-        })));
-    },
+    const allTileLocations = computed((): { i: number; j: number }[] => range(innerOperator.value.totalSizeOut)
+      .flatMap((i) => range(innerOperator.value.totalSizeIn).map((j) => ({
+        i, j, re: 0, im: 0,
+      }))));
 
-    legendContainer(): string {
-      return this.darkMode ? 'legend-container-dark' : 'legend-container-bright';
-    },
+    const legendContainer = computed((): string => (
+      props.darkMode
+        ? 'legend-container-dark'
+        : 'legend-container-bright'));
 
-    quantumMatrixClass(): string {
-      return this.darkMode ? 'quantum-matrix-dark' : 'quantum-matrix-bright';
-    },
-  },
-  methods: {
-    scale(i: number): number {
-      return i * this.size;
-    },
+    const quantumMatrixClass = computed((): string => (
+      props.darkMode
+        ? 'quantum-matrix-dark'
+        : 'quantum-matrix-bright'));
 
-    generateColor(re: number, im: number): string {
+    const dimensionNamesOutNumbered = computed(() => numberDimNames(innerOperator.value.namesOut));
+
+    function scale(i: number): number {
+      return i * props.size;
+    }
+
+    function generateColor(re: number, im: number): string {
       return colorComplexPhaseToHue(re, im, 100, 50);
-    },
+    }
 
-    rScale(re: number, im = 0): number {
-      return 0.46 * this.size * Math.sqrt(re ** 2 + im ** 2);
-    },
+    function rScale(re: number, im = 0): number {
+      return 0.46 * props.size * Math.sqrt(re ** 2 + im ** 2);
+    }
 
     /**
      * Emit unit vector for input
      */
-    tileMouseOver(tile: IMatrixElement): void {
-      this.selectedEntry = tile;
-      const coords = helpers.coordsFromIndex(tile.j, this.operator.sizeIn);
-      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...this.operator.dimensionsIn]);
-      this.$emit('column-mouseover', vec);
-    },
+    function tileMouseOver(tile: IMatrixElement): void {
+      const coordOut = toAbsoluteCoord(tile.i, innerOperator.value.dimensionsOut);
+      const coordIn = toAbsoluteCoord(tile.j, innerOperator.value.dimensionsIn);
+      selection.value = [coordOut, coordIn];
+
+      const coords = helpers.coordsFromIndex(tile.j, innerOperator.value.sizeIn);
+      const vec = new Vector([new VectorEntry(coords, Cx(1))], [...innerOperator.value.dimensionsIn]);
+      emit('column-mouseover', vec);
+    }
 
     /**
      * @todo Make all dimension changes within this component.
      * (After using Operator rather than passed parameteres.)
      */
-    swapDimensions(i: number): void {
-      const both = (this.operatorRaw.dimensionsOut.length === this.operatorRaw.dimensionsIn.length)
-        && this.operatorRaw.dimensionsOut
-          .map((d, di) => d.isEqual(this.operatorRaw.dimensionsIn[di]))
-          .reduce((a, b) => a && b, true);
-      const newOrder = range(this.operator.dimensionsOut.length);
-      newOrder[i] += 1;
-      newOrder[i + 1] -= 1;
-      if (both) {
-        if (this.selectedEntry.j >= 0) {
-          const oldSelectedCoords = helpers.coordsFromIndex(this.selectedEntry.j, this.operator.sizeIn);
-          this.operator = this.operator.permute(newOrder);
-          const newSelectedCoords = range(this.operator.dimensionsIn.length).map((k) => oldSelectedCoords[newOrder[k]]);
-          this.selectedEntry.j = helpers.coordsToIndex(newSelectedCoords, this.operator.sizeIn);
-        } else {
-          this.operator = this.operator.permute(newOrder);
-        }
-      } else {
-        // console.log('perm out', newOrder);
-        // console.log('perm in', range(this.operator.dimensionsIn.length));
-        this.operator = this.operator.permuteDimsOut(newOrder);
-      }
+    function swapDimensions(i: number): void {
+      const newOrder = [...permuteOrder.value];
+      const swap = newOrder[i + 1];
+      newOrder[i + 1] = newOrder[i];
+      newOrder[i] = swap;
+      permuteOrder.value = newOrder;
+    }
 
-      // for labels
-      const a = this.dimensionNamesOutNumbered[i];
-      const b = this.dimensionNamesOutNumbered[i + 1];
-      this.dimensionNamesOutNumbered[i] = b;
-      this.dimensionNamesOutNumbered[i + 1] = a;
-    },
+    function changeBasis(index: number, basis: string) {
+      allBases.value[index].selected = basis;
+    }
 
-    changeBasis(bases: IBases, basis: string) {
-      // eslint-disable-next-line no-param-reassign
-      bases.selected = basis;
-      this.selectedEntry = {
-        i: -1, j: -1, re: 0, im: 0,
-      };
-      this.operator = this.operator.toBasisAll(bases.name, basis);
-    },
-
+    return {
+      allBases,
+      innerOperator,
+      selectedEntry,
+      matrixElements,
+      coordNamesIn,
+      coordNamesOut,
+      dimensionNamesOut,
+      selectedIn,
+      selectedOut,
+      columnSize,
+      rowSize,
+      allTileLocations,
+      legendContainer,
+      quantumMatrixClass,
+      dimensionNamesOutNumbered,
+      scale,
+      generateColor,
+      rScale,
+      tileMouseOver,
+      swapDimensions,
+      changeBasis,
+    };
   },
 });
 </script>

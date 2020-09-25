@@ -19,7 +19,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'OptionsGroup',
-  emits: ['selected'],
   props: {
     selectedOption: {
       type: String,
@@ -34,6 +33,7 @@ export default defineComponent({
       default: true,
     },
   },
+  emits: ['selected'],
   methods: {
     buttonStyle(option: string): Record<string, boolean> {
       return {

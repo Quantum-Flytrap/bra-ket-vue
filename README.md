@@ -71,7 +71,7 @@ Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is 
 ### Operators (matrices)
 
 ```{html}
-<matrix-viewer :operator-raw="operator" :dark-mode="true" />
+<matrix-viewer :operator="operator" :dark-mode="true" />
 ```
 
 ![Matrix - beam-splitter](imgs/beam_splitter.png)
