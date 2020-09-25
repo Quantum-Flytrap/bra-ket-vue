@@ -328,8 +328,9 @@ export default defineComponent({
      */
     function swapDimensions(i: number): void {
       const newOrder = [...permuteOrder.value];
-      newOrder[i] += 1;
-      newOrder[i + 1] -= 1;
+      const swap = newOrder[i + 1];
+      newOrder[i + 1] = newOrder[i];
+      newOrder[i] = swap;
       permuteOrder.value = newOrder;
     }
 
