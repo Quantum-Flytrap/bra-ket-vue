@@ -128,6 +128,7 @@ import {
   defineComponent,
   PropType,
   ref,
+  watch,
 } from 'vue';
 import {
   Vector, VectorEntry, Operator, helpers, Cx, Dimension,
@@ -186,6 +187,13 @@ export default defineComponent({
     ]);
 
     const permuteOrder = ref(range(props.operator.dimensionsOut.length));
+
+    watch(() => props.operator.dimensionsOut.length, (len) => {
+      if (len !== permuteOrder.value.length) {
+        permuteOrder.value = range(props.operator.dimensionsOut.length);
+      }
+    });
+
     const innerOperator = computed(() => {
       const op = props.operator;
       const permuteBoth = (op.dimensionsOut.length === op.dimensionsIn.length)
