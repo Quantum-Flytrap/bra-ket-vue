@@ -56,7 +56,6 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'OptionsGroupSvg',
-  emits: ['selected'],
   props: {
     selectedOption: {
       type: String,
@@ -71,6 +70,7 @@ export default defineComponent({
       default: true,
     },
   },
+  emits: ['selected'],
   computed: {
     svgColor(): string {
       return this.darkMode ? 'white' : '#242424';
