@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import {
   Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
@@ -65,7 +65,7 @@ export default defineComponent({
   name: 'Ket',
   props: {
     vector: {
-      type: Object as () => Vector,
+      type: Object as PropType<Vector>,
       default: () => Vector.indicator([Dimension.qubit()], '0'),
     },
     selectedOption: {
@@ -73,7 +73,7 @@ export default defineComponent({
       default: 'polar',
     },
     allBases: {
-      type: Array as () => IBasisSelector[],
+      type: Array as PropType<IBasisSelector[]>,
       default: () => allBasesDefault,
     },
     darkMode: {
