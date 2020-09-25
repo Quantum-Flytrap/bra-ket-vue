@@ -82,7 +82,7 @@
           change basis
         </div>
         <div
-          v-for="(index, bases) in allBases"
+          v-for="(bases, index) in allBases"
           :key="`basis-${bases.name}`"
         >
           <span
@@ -94,7 +94,7 @@
               :options="bases.availableBases"
               :dark-mode="darkMode"
               :selected-option="bases.selected"
-              @selected="changeBasis(bases, $event)"
+              @selected="changeBasis(index, $event)"
             />
           </span>
           <span
