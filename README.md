@@ -42,8 +42,8 @@ Or if you want to stick to specific versions
 
 ```{html}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.0-rc.10/vue.esm-browser.prod.js"></script>
-<script src="https://unpkg.com/quantum-tensors@0.4.10/dist/quantum-tensors.min.js"></script>
-<script src="https://unpkg.com/bra-ket-vue@0.4.0/dist/bra-ket-vue.min.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.11/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/bra-ket-vue@0.4.1/dist/bra-ket-vue.min.js"></script>
 ```
 
 For some applications you may want to read a bit about [Vue.js](https://vuejs.org/).
@@ -93,6 +93,10 @@ Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is 
   * [Quantum Game with Photons 2](https://quantumgame.io/), especially entries of the element encyclopedia (e.g. [Faraday rotator](https://quantumgame.io/info/faraday-rotator)).
   * Presentation with Reveal.js (RISE in Jupyter Notebook): <https://p.migdal.pl/piterpy-matrix/#/17>
   * Presentation with R Markdown Raveal.js <http://p.migdal.pl/nyc-qc-braketvue/#/>
+  * Distill in R Markdown: <https://p.migdal.pl/bra-ket-vue-art/>
+    * [Quantum computing states and operators](https://p.migdal.pl/bra-ket-vue-art/ket.html)
+    * [Classic logic operation truth tables](https://p.migdal.pl/bra-ket-vue-art/logic_operations.html)
+
 
 ## Notes
 
