@@ -4,7 +4,7 @@
       class="ket"
       :vector="vector"
       :selected-option="selectedOption"
-      :all-bases="allBases"
+      :all-bases="activeBases"
       :dark-mode="darkMode"
     />
     <hr
@@ -28,7 +28,7 @@
 
     <span>
       <span
-        v-for="bases in allBases"
+        v-for="bases in activeBases"
         :key="`basis-${bases.name}`"
       >
         <span
@@ -95,15 +95,22 @@ export default defineComponent({
       innerPolBasis.value = basis;
     });
 
+    const allBases = [
+      proxyRefs({ name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: innerPolBasis }),
+      proxyRefs({ name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: ref('spin-z') }),
+      proxyRefs({ name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: ref('01') }),
+    ];
+
+    const activeBases = computed(() => {
+      const { names } = props.vector;
+      return allBases.filter((base) => names.includes(base.name));
+    });
+
     return {
       dimensionNames: computed(() => props.vector.names),
       options: ['polar', 'polarTau', 'cartesian', 'color'],
-      selectedOption: 'polar',
-      allBases: [
-        proxyRefs({ name: 'polarization', availableBases: ['HV', 'DA', 'LR'], selected: innerPolBasis }),
-        { name: 'spin', availableBases: ['spin-x', 'spin-y', 'spin-z'], selected: 'spin-z' },
-        { name: 'qubit', availableBases: ['01', '+-', '+i-i'], selected: '01' },
-      ],
+      selectedOption: ref('polar'),
+      activeBases,
     };
   },
 });

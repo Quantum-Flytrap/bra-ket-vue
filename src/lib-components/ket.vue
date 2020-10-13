@@ -91,15 +91,9 @@ export default defineComponent({
       if (!this.vector) {
         return [];
       }
-      const selectedBasis: Record<string, string> = {};
-      this.allBases.forEach((basis) => {
-        selectedBasis[basis.name] = basis.selected;
-      });
 
-      return this.vector
-        .toBasisAll('polarization', selectedBasis.polarization)
-        .toBasisAll('spin', selectedBasis.spin)
-        .toBasisAll('qubit', selectedBasis.qubit)
+      return this.allBases
+        .reduce((vector, basis) => vector.toBasisAll(basis.name, basis.selected), this.vector)
         .toKetComponents(1e-4);
     },
     ketComponentClass(): string {
