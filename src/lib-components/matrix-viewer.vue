@@ -202,10 +202,7 @@ export default defineComponent({
 
       const permuted = permuteBoth ? op.permute(permuteOrder.value) : op.permuteDimsOut(permuteOrder.value);
       const bases = allBases.value;
-      return permuted
-        .toBasisAll('polarization', bases[0].selected)
-        .toBasisAll('spin', bases[1].selected)
-        .toBasisAll('qubit', bases[2].selected);
+      return bases.reduce((vector, basis) => vector.toBasisAll(basis.name, basis.selected), permuted);
     });
 
     type AbsoluteCoord = Record<string, number>
