@@ -3,7 +3,7 @@ import { defineComponent } from 'vue';
 import {
   Photons, Vector, Operator, Elements, Dimension, Cx, Gates, Circuit,
 } from 'quantum-tensors';
-import { KetViewer, MatrixViewer } from '@/entry';
+import { KetViewer, MatrixViewer, MatrixViewerChords } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
 import Ket from './lib-components/ket.vue';
 
@@ -78,6 +78,7 @@ export default defineComponent({
   components: {
     KetViewer,
     MatrixViewer,
+    MatrixViewerChords,
     KetList,
     Ket,
   },
@@ -111,6 +112,10 @@ export default defineComponent({
 </script>
 
 <template>
+  <h1>CNOT gate - chords</h1>
+  <matrix-viewer-chords :operator="opCNOT" />
+  <h1>BeamSplitter 50/50 - chords</h1>
+  <matrix-viewer-chords :operator="operator" />
   <h1>AND</h1>
   <matrix-viewer :operator="opAnd" />
   <h1>COPY</h1>
