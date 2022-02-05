@@ -2,17 +2,17 @@
 
 [![npm version](https://badge.fury.io/js/bra-ket-vue.svg)](https://badge.fury.io/js/bra-ket-vue)
 ![License](https://img.shields.io/npm/l/bra-ket-vue)
-[![Build Status](https://travis-ci.com/Quantum-Game/bra-ket-vue.svg?branch=master)](https://travis-ci.com/Quantum-Game/bra-ket-vue)
-[![Twitter @QuantumGameIO](https://img.shields.io/twitter/follow/QuantumGameIO)](https://twitter.com/quantumgameio)
+[![Build Status](https://travis-ci.com/Quantum-Game/bra-ket-vue.svg?branch=master)](https://travis-ci.com/Quantum-Flytrap/bra-ket-vue)
+[![Twitter @QuantumGameIO](https://img.shields.io/twitter/follow/QuantumGameIO)](https://twitter.com/QuantumFlytrap)
 
 A visualizer for quantum states and matrices. In Vue.js.
 See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or just [live examples](https://cydtt.csb.app/).
 
-By [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design).
+By [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design) from [Quantum Flytrap](https://quantumflytrap.com/).
 
 * Uses [Quantum Tensors](https://www.npmjs.com/package/quantum-tensors) library.
-* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quantum Technologies, National University of Sinagpore](https://www.quantumlah.org/)) we use it heavily.
-* Founded by the [Unitary Fund](https://unitary.fund/).
+* A separated part of [Quantum Game 2](https://github.com/Quantum-Game/quantum-game-2) (developed at the [Centre for Quantum Technologies, National University of Sinagpore](https://www.quantumlah.org/)) and [Virtual Lab](lab.quantumflytrap.com/).
+* Supported by the [Unitary Fund](https://unitary.fund/).
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
 
