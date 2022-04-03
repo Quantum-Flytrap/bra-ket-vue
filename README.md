@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/bra-ket-vue.svg)](https://badge.fury.io/js/bra-ket-vue)
 ![License](https://img.shields.io/npm/l/bra-ket-vue)
-[![Build Status](https://travis-ci.com/Quantum-Game/bra-ket-vue.svg?branch=master)](https://travis-ci.com/Quantum-Flytrap/bra-ket-vue)
+![Build](https://github.com/Quantum-Flytrap/bra-ket-vue/actions/workflows/build_lint.yml/badge.svg)
 [![Twitter @QuantumFlytrap](https://img.shields.io/twitter/follow/QuantumFlytrap)](https://twitter.com/QuantumFlytrap)
 
 A visualizer for quantum states and matrices. In Vue.js.
