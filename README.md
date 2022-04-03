@@ -43,7 +43,7 @@ Or if you want to stick to specific versions
 
 ```{html}
 <script src="https://www.unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
-<script src="https://unpkg.com/quantum-tensors@0.4.11/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.15/dist/quantum-tensors.min.js"></script>
 <script src="https://unpkg.com/bra-ket-vue@0.4.3/dist/bra-ket-vue.min.js"></script>
 ```
 
