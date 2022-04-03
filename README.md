@@ -5,15 +5,16 @@
 ![Build](https://github.com/Quantum-Flytrap/bra-ket-vue/actions/workflows/build_lint.yml/badge.svg)
 [![Twitter @QuantumFlytrap](https://img.shields.io/twitter/follow/QuantumFlytrap)](https://twitter.com/QuantumFlytrap)
 
-A visualizer for quantum states and matrices. In Vue.js.
-See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or just [live examples](https://cydtt.csb.app/). For more details, see our preprint:
-
-- P. Migdał, K. Jankiewicz, P. Grabarz, et al., [Visualizing quantum mechanics in an interactive simulation - Virtual Lab by Quantum Flytrap](https://arxiv.org/abs/2203.13300), arXiv:2203.13300
+An interactive visualizer for quantum states and matrices.
 
 * Developed by [Quantum Flytrap](https://quantumflytrap.com): [Piotr Migdał](https://p.migdal.pl/) (quantum physics & programming) and [Klem Jankiewicz](http://jankiewiczstudio.com/) (UX & design) from [Quantum Flytrap](https://quantumflytrap.com/).
 * Based on [Quantum Tensors](https://www.npmjs.com/package/quantum-tensors) numerics library, developed at the [Centre for Quantum Technologies, National University of Singapore](https://www.quantumlah.org/).
 * It is being useed in [Quantum Gamne](https://quantumgame.io) and [Virtual Lab by Quantum Flytrap](https://quantumflytrap.com/).
 * Supported by the [Unitary Fund](https://unitary.fund/).
+
+For more details, see our preprint:
+
+- P. Migdał, K. Jankiewicz, P. Grabarz, et al., [Visualizing quantum mechanics in an interactive simulation - Virtual Lab by Quantum Flytrap](https://arxiv.org/abs/2203.13300), arXiv:2203.13300
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
 
@@ -82,6 +83,8 @@ Note: up to 0.3.1 it used [Vue 2](https://v2.vuejs.org/). Starting from 0.4.0, B
 ### Code examples
 
 Folder [examples](./examples/) contains two examples: a plain HTML file and a Vue 3 project.
+
+And interactive version of the Vue 3 demo: <https://codesandbox.io/s/braketvue-f2rgub>.
 
 The easiest one to create a single visualization is to use JSFiddle (see [this example](https://jsfiddle.net/stared/m8gzp4n2/)) and embed it.
 
