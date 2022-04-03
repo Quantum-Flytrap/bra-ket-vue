@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.4.3] - 2022-03-31
+
+## Added
+
+* ArXiv paper citation
+* Examples: HTML and Vue3
+
+## Fixed
+
+* Including CSS in JS file (otherwise compoments were broken-by-default)
+
+## Changed
+
+* Travis Ci -> GitHub Actions
+* README clarification
+
+## [0.4.2] - 2020-10-13
+
+## Fixed
+
+* Ket viewer coordinate and basis selection
+
 ## [0.4.1] - 2020-09-27
 
 ## Change

@@ -81,9 +81,7 @@ if (!argv.format || argv.format === 'es') {
     plugins: [
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
-      postcss({
-        extract: path.resolve('dist/bra-ket-vue.css'),
-      }),
+      postcss(),
       babel({
         ...baseConfig.plugins.babel,
         presets: [
@@ -121,9 +119,7 @@ if (!argv.format || argv.format === 'cjs') {
           optimizeSSR: true,
         },
       }),
-      postcss({
-        extract: path.resolve('dist/bra-ket-vue.css'),
-      }),
+      postcss(),
       babel(baseConfig.plugins.babel),
     ],
   };
@@ -146,9 +142,7 @@ if (!argv.format || argv.format === 'iife') {
       ...baseConfig.plugins.preVue,
       vue(baseConfig.plugins.vue),
       babel(baseConfig.plugins.babel),
-      postcss({
-        extract: path.resolve('dist/bra-ket-vue.css'),
-      }),
+      postcss(),
       terser({
         output: {
           ecma: 5,

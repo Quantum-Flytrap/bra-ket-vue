@@ -1,6 +1,6 @@
 {
   "name": "bra-ket-vue",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Interactive display of quantum states and operations, Vue components.",
   "contributors": [
     "Piotr Migdał",
@@ -33,7 +33,7 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "quantum-tensors": "^0.4.11"
+    "quantum-tensors": "^0.4.15"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
