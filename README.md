@@ -17,40 +17,6 @@ See [live examples with code](https://codesandbox.io/s/bra-ket-vue-cydtt), or ju
 
 [![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
 
-## Installation
-
-For a node project use:
-
-```{bash}
-npm install bra-ket-vue
-```
-
-or for yarn:
-
-```{bash}
-yarn add bra-ket-vue
-```
-
-For browser HTML files, put in `<head>...</head>`:
-
-```{html}
-<script src="https://www.unpkg.com/vue@3"></script>
-<script src="https://unpkg.com/quantum-tensors"></script>
-<script src="https://unpkg.com/bra-ket-vue"></script>
-```
-
-Or if you want to stick to specific versions
-
-```{html}
-<script src="https://www.unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
-<script src="https://unpkg.com/quantum-tensors@0.4.15/dist/quantum-tensors.min.js"></script>
-<script src="https://unpkg.com/bra-ket-vue@0.4.3/dist/bra-ket-vue.min.js"></script>
-```
-
-For some applications you may want to read a bit about [Vue.js](https://vuejs.org/).
-
-Note: up to 0.3.1 it used [Vue 2](https://v2.vuejs.org/). Starting from 0.4.0, BraKetVue uses [Vue 3](https://vuejs.org/).
-
 ## Examples
 
 Here are examples in the dark style. All components are available in two styles: dark and bright.
@@ -81,17 +47,45 @@ Each `vector` is a `Vector` object from Quantum Tensors, and each `operator` is 
 
 ![Matrix - Toffoli gate](imgs/toffoli.gif)
 
-### Live examples with code
+## Installation
 
-* NPM examples:
-  * https://codesandbox.io/s/bra-ket-vue-cydtt - for a short overview
-  * DARK color mode example: https://codesandbox.io/s/bra-ket-vue-dark-6zr46?fontsize=14&hidenavigation=1&theme=dark
-  * BRIGHT color mode example: https://codesandbox.io/s/bra-ket-vue-dark-l88er?fontsize=14&hidenavigation=1&theme=dark
-* A frontend JavaScript examples
-  * <https://jsfiddle.net/user/stared/fiddles/>
+For a node project use:
+
+```{bash}
+npm install bra-ket-vue
+```
+
+or for yarn:
+
+```{bash}
+yarn add bra-ket-vue
+```
+
+For browser HTML files, put in `<head>...</head>`:
+
+```{html}
+<script src="https://www.unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/quantum-tensors"></script>
+<script src="https://unpkg.com/bra-ket-vue"></script>
+```
+
+Or if you want to stick to specific versions
+
+```{html}
+<script src="https://www.unpkg.com/vue@3.2.31/dist/vue.global.prod.js"></script>
+<script src="https://unpkg.com/quantum-tensors@0.4.15/dist/quantum-tensors.min.js"></script>
+<script src="https://unpkg.com/bra-ket-vue@0.4.3/dist/bra-ket-vue.min.js"></script>
+```
+
+Note: up to 0.3.1 it used [Vue 2](https://v2.vuejs.org/). Starting from 0.4.0, BraKetVue uses [Vue 3](https://vuejs.org/).
+
+### Code examples
+
+Folder [examples](./examples/) contains two examples: a plain HTML file and a Vue 3 project.
+
+The easiest one to create a single visualization is to use JSFiddle (see [this example](https://jsfiddle.net/stared/m8gzp4n2/)) and embed it.
 
 * In-action:
-  * [Quantum Game with Photons 2](https://quantumgame.io/), especially entries of the element encyclopedia (e.g. [Faraday rotator](https://quantumgame.io/info/faraday-rotator)).
   * Presentation with Reveal.js (RISE in Jupyter Notebook): <https://p.migdal.pl/piterpy-matrix/#/17>
   * Presentation with R Markdown Raveal.js <http://p.migdal.pl/nyc-qc-braketvue/#/>
   * Distill in R Markdown: <https://p.migdal.pl/bra-ket-vue-art/>
