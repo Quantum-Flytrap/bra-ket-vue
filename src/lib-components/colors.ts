@@ -1,6 +1,16 @@
 export const TAU = 2 * Math.PI;
 
 /**
+ * Converts a number to its hex string. Adds '0' at the start if the hex representation is a single digit.
+ * @param x number
+ * @returns hex string
+ */
+function toHex(x: number): string {
+  const hex = Math.round(x * 255).toString(16);
+  return hex.length === 1 ? `0${hex}` : hex;
+}
+
+/**
  * Stolen from https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
  * Alternatively: d3.hsl
  */
@@ -36,11 +46,25 @@ export function hslToHex(hParam: number, sParam: number, lParam: number): string
     g = hue2rgb(p, q, h);
     b = hue2rgb(p, q, h - 1 / 3);
   }
-  const toHex = (x: number): string => {
-    const hex = Math.round(x * 255).toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
-  };
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+export function cubeHelix(h: number, s: number, l: number) {
+  const A = -0.14861;
+  const B = +1.78277;
+  const C = -0.29227;
+  const D = -0.90649;
+  const E = +1.97294;
+  const hRad = (h + 120) * (Math.PI / 180);
+  const a = s * l * (1 - l);
+  const cosh = Math.cos(hRad);
+  const sinh = Math.sin(hRad);
+
+  const r = (l + a * (A * cosh + B * sinh));
+  const g = (l + a * (C * cosh + D * sinh));
+  const b = (l + a * (E * cosh));
+
+  return [r, g, b];
 }
 
 /**
@@ -49,13 +73,15 @@ export function hslToHex(hParam: number, sParam: number, lParam: number): string
  */
 export function colorComplex(re: number, im: number): string {
   const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360;
-  const r = Math.sqrt(re * re + im * im); // for pure color it should be always 1
-  return hslToHex(angleInDegrees, 100, 100 - 50 * r);
+  const radius = Math.sqrt(re * re + im * im); // for pure color it should be always 1
+  const [r, g, b] = cubeHelix(angleInDegrees, 1, 1 - 0.5 * radius);
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
 export function colorComplexPhaseToHue(re: number, im: number, saturation = 100, lightness = 50): string {
   const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360;
-  return hslToHex(angleInDegrees, saturation, lightness);
+  const [r, g, b] = cubeHelix(angleInDegrees, saturation / 100, lightness / 100);
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 /**
  * Convert angles to unicode arrow symbols
