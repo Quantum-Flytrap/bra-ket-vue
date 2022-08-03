@@ -1,4 +1,4 @@
-import { clamp } from './utils';
+import { clamp } from '@/lib-components/utils';
 
 type ComplexColor = (re: number, im: number) => [number, number, number]
 
