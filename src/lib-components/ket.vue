@@ -47,7 +47,7 @@ import {
   Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
 import { coordPrettier, dimensionNameToColor } from '@/lib-components/utils';
-import { hslToHex, TAU } from '@/lib-components/colors';
+import { colorComplex, linear } from '@/lib-components/colors';
 
 interface IBasisSelector {
     name: string;
@@ -111,8 +111,7 @@ export default defineComponent({
     },
 
     complexToColor(z: Complex): string {
-      const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
-      return hslToHex(angleInDegrees, 100, 50);
+      return colorComplex(z.re, z.im, linear);
     },
 
     coordPrettier(coord: string): string {

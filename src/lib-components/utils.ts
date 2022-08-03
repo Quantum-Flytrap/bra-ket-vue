@@ -36,3 +36,7 @@ export function dimensionNameToColor(dimName: string, darkStyle = false): string
     }
   }
 }
+
+export function clamp(value: number, min: number, max: number) {
+  return Math.max(Math.min(value, max), min);
+}

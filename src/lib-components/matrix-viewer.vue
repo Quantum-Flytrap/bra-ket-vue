@@ -307,7 +307,7 @@ export default defineComponent({
     }
 
     function generateColor(re: number, im: number): string {
-      return colorComplexPhaseToHue(re, im, 100, 50);
+      return colorComplexPhaseToHue(re, im);
     }
 
     function rScale(re: number, im = 0): number {

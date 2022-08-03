@@ -191,7 +191,7 @@ export default defineComponent({
     fill: rgba(0, 0, 0, 0.3);
   }
   & .phase-arc {
-    stroke: rgba(0, 0, 0, 0.5);
+    stroke: rgba(0, 0, 0, 0.1);
   }
 }
 </style>
