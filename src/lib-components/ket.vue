@@ -47,7 +47,7 @@ import {
   Dimension, Complex, Vector, interfaces,
 } from 'quantum-tensors';
 import { coordPrettier, dimensionNameToColor } from '@/lib-components/utils';
-import { colorComplex, linear } from '@/lib-components/colors';
+import { colorComplex } from '@/lib-components/colors';
 
 interface IBasisSelector {
     name: string;
@@ -111,7 +111,7 @@ export default defineComponent({
     },
 
     complexToColor(z: Complex): string {
-      return colorComplex(z.re, z.im, linear);
+      return colorComplex(z.re, z.im);
     },
 
     coordPrettier(coord: string): string {

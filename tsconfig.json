@@ -3,6 +3,7 @@
         "target": "esnext",
         "module": "esnext",
         "strict": true,
+        "jsx": "preserve",
         "declaration": true,
         "declarationDir": "dist",
         "noUnusedLocals": true,
