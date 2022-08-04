@@ -1,11 +1,12 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ComponentInternalInstance } from 'vue';
 import {
   Photons, Vector, Operator, Elements, Dimension, Cx, Gates, Circuit,
 } from 'quantum-tensors';
 import { KetViewer, MatrixViewer } from '@/entry';
 import KetList from './lib-components/ket-list-viewer.vue';
 import Ket from './lib-components/ket.vue';
+import { ComplexPalette, colorComplex } from './lib-components/colors';
 
 const sizeX = 8;
 const sizeY = 8;
@@ -73,6 +74,26 @@ const opCopy = Operator.fromSparseCoordNames([
 [Dimension.position(2, 'bit'), Dimension.position(2, 'bit')],
 [Dimension.position(2, 'bit')]);
 
+function drawPaletteGradient(canvas: HTMLCanvasElement, palette: ComplexPalette) {
+  const w = 400;
+  const h = 50;
+
+  // eslint-disable-next-line no-param-reassign
+  canvas.width = w;
+  // eslint-disable-next-line no-param-reassign
+  canvas.height = h;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  for (let x = 0; x < w; x += 1) {
+    const arg = (x / w) * 2 * Math.PI;
+    const re = Math.cos(arg);
+    const im = Math.sin(arg);
+    ctx.fillStyle = colorComplex(re, im, palette);
+    ctx.fillRect(x, 0, 1, h);
+  }
+}
+
 export default defineComponent({
   name: 'ServeDev',
   components: {
@@ -106,6 +127,13 @@ export default defineComponent({
         { value: 'Toffoli gate on all qubits', vector: circuitHistory[3].vector },
       ],
     };
+  },
+  methods: {
+    drawPalette(palette: ComplexPalette) {
+      return (canvas: Element | ComponentInternalInstance | null) => {
+        drawPaletteGradient(canvas as HTMLCanvasElement, palette);
+      };
+    },
   },
 });
 </script>
@@ -179,6 +207,13 @@ export default defineComponent({
   <matrix-viewer :operator="opCNOT" />
   <h1>Toffoli gate</h1>
   <matrix-viewer :operator="opToffoli" />
+  <h1>Color palettes</h1>
+  <h2>Hsl</h2>
+  <canvas :ref="drawPalette('hsl')" />
+  <h2>cubehelix</h2>
+  <canvas :ref="drawPalette('cubehelix')" />
+  <h2>Oklab</h2>
+  <canvas :ref="drawPalette('oklab')" />
 </template>
 <!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
 <style lang="scss">
@@ -230,5 +265,12 @@ h1 {
   padding-top: 10px;
   margin-top: 30px;
   max-width: 1000px;
+}
+
+h2 {
+  font-family: $mainFont;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
 }
 </style>

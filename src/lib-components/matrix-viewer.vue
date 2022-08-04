@@ -133,7 +133,7 @@ import {
 import {
   Vector, VectorEntry, Operator, helpers, Cx, Dimension,
 } from 'quantum-tensors';
-import { colorComplexPhaseToHue } from '@/lib-components/colors';
+import { colorComplex } from '@/lib-components/colors';
 import { range } from '@/lib-components/utils';
 import MatrixLabels from '@/lib-components/matrix-labels.vue';
 import MatrixDimensions from '@/lib-components/matrix-dimensions.vue';
@@ -307,7 +307,7 @@ export default defineComponent({
     }
 
     function generateColor(re: number, im: number): string {
-      return colorComplexPhaseToHue(re, im, 100, 50);
+      return colorComplex(re, im);
     }
 
     function rScale(re: number, im = 0): number {
