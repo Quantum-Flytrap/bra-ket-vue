@@ -2,6 +2,7 @@
 export { default as Ket } from './ket.vue';
 export { default as KetViewer } from './ket-viewer.vue';
 export { default as MatrixViewer } from './matrix-viewer.vue';
+export { default as MatrixViewerChords } from './matrix-viewer-chords.vue';
 
 // higher-level
 export { default as KetListViewer } from './ket-list-viewer.vue';
